@@ -2,7 +2,6 @@
     display: flex;
     width: 100vw;
     height: 100vh;
-    padding: 2rem;
 
     .login-page-container {
         display: grid;
@@ -11,9 +10,8 @@
 
         .login-right-container {
             display: flex;
-            background-image: url('../../../../../../public/twodo-page-components-images/login-component/twodo-login-background.svg');
+            background-image: url('../../../../../../public/page-components-images/login-component/twodo-login-background.svg');
             background-size: cover;
-            border-radius: 16px;
         }
     }
 }
