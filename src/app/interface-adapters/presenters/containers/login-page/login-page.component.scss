@@ -35,13 +35,15 @@ $breakpoint-mobile: 768px;
                     gap: 0.5rem;
 
                     .twodo-logo-img {
-                        max-height: var(--font-size-xxlarge);
+                        max-height: 2rem;
+                        height: 2rem;
+                        border-radius: 4px;
                     }
 
                     .twodo-logo {
                         font-weight: 900;
                         font-family: 'Inter', sans-serif;
-                        letter-spacing: -4px;
+                        letter-spacing: -3.2px;
                         font-size: var(--font-size-xxlarge);
                         color: var(--primary-contrast);
                     }
