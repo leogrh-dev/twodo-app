@@ -1,0 +1,50 @@
+.ant-btn {
+    height: 2.5rem;
+    border-radius: 5px;
+    background-color: var(--primary);
+    border: none;
+
+    &:hover, &:focus {
+        background-color: var(--primary-light);
+    }
+
+    &:focus-visible {
+        outline: none;
+    }
+}
+
+.ant-form-item {
+    color: var(--primary-text);
+    margin: 0;
+}
+
+.ant-form-item-control-input-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ant-input {
+    height: 2.5rem;
+    border-radius: 5px !important;
+    background-color: var(--background);
+    border-color: var(--border);
+    color: var(--primary-text);
+
+    &:focus {
+        border-color: var(--primary-light);
+        box-shadow: 0 0 0 2px var(--shadow);
+    }
+
+    &:hover {
+        border-color: var(--primary-light);
+    }
+}
+
+.ant-checkbox-input {
+    border-color: var(--border);
+
+    &:hover, &:focus {
+        border-color: var(--primary-light);
+    }
+}

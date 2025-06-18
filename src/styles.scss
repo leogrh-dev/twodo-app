@@ -1,6 +1,13 @@
 //SCSS - Reset StyleSheet
 @use './styles/reset.scss';
 
+//SCSS - Variables 
+@use './styles/themes/variables.scss';
+
+// Ant Design / NgZorro - Overrides
+@use './styles/ant-design-overrides.scss';
+@import '../node_modules/ng-zorro-antd/ng-zorro-antd.min.css';
+
 //SCSS - Font Import
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
@@ -19,20 +26,11 @@
     position: relative;
 }
 
-.default-theme {
-  --surface-a: #f0f0f0;
-  --surface-b: #f4f4f4;
-  --text-color: #000000;
-
-  background-color: var(--surface-a);
-  color: var(--text-color);
-}
-
-.dark-theme {
-  --surface-a: #080808;
-  --surface-b: #1e1e1e;
-  --text-color: #eeeeee;
-
-  background-color: var(--surface-a);
-  color: var(--text-color);
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans", sans-serif;
+  background-color: var(--background);
+  color: var(--primary-text);
 }
