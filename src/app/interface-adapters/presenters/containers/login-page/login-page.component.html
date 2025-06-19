@@ -4,8 +4,7 @@
         <div class="login-left-container full-rlt-container">
             <div class="login-left-container-content">
                 <div class="twodo-logo-container">
-                    <img src="/twodo-logos/twodo-logo.svg" alt="TWODO Logo" class="twodo-logo-img">
-                    <h1 class="twodo-logo">TWODO</h1>
+                    <img [src]="logoPath" alt="TwoDo Logo" class="twodo-logo-img">
                 </div>
                 <div class="login-form-header">
                     <h3>Acesse sua conta</h3>
@@ -16,8 +15,8 @@
                         <nz-form-item>
                             <nz-form-control>
                                 <label for="email">E-mail</label>
-                                <input nz-input type="email" id="email" class="form-control" placeholder="Insira seu e-mail"
-                                    required>
+                                <input nz-input type="email" id="email" class="form-control"
+                                    placeholder="Insira seu e-mail" required>
                             </nz-form-control>
                         </nz-form-item>
                     </div>
@@ -32,16 +31,19 @@
                             </nz-form-control>
                         </nz-form-item>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group remember-and-forgot-container">
                         <div class="form-group-checkbox">
-                            <label nz-checkbox ><p class="small-p">Lembrar-me</p></label>
+                            <label nz-checkbox>
+                                <p class="small-p">Lembrar-me</p>
+                            </label>
                         </div>
+                        <a class="in-link">Esqueceu a senha?</a>
                     </div>
                     <button nz-button nzType="primary" type="submit">Entrar</button>
                 </form>
                 <div class="login-with-division">
                     <span class="inline-effect"></span>
-                    <p>Ou prossiga com:</p>
+                    <p>Ou prossiga com</p>
                     <span class="inline-effect"></span>
                 </div>
                 <div class="login-form-header-login-with">
@@ -50,7 +52,9 @@
                         <p>Google</p>
                     </button>
                 </div>
-                <p style="text-align: center;" class="small-p">Não possui uma conta? <a class="in-link">Crie uma conta</a></p>
+                <p style="text-align: center;" class="small-p">Não possui uma conta?
+                    <a class="in-link">Crie uma conta</a>
+                </p>
             </div>
         </div>
         <div class="login-right-container full-rlt-container">

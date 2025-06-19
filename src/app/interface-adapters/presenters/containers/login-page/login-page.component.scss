@@ -26,26 +26,19 @@ $breakpoint-mobile: 768px;
                 flex-direction: column;
                 justify-content: center;
                 max-width: 600px;
-                min-width: 30vw;
+                min-width: 25vw;
                 gap: 1.5rem;
 
                 .twodo-logo-container {
                     display: flex;
                     align-items: center;
                     gap: 0.5rem;
+                    margin-bottom: 1.5rem;
 
                     .twodo-logo-img {
-                        max-height: 2rem;
-                        height: 2rem;
-                        border-radius: 4px;
-                    }
-
-                    .twodo-logo {
-                        font-weight: 900;
-                        font-family: 'Inter', sans-serif;
-                        letter-spacing: -3.2px;
-                        font-size: var(--font-size-xxlarge);
-                        color: var(--primary-contrast);
+                        max-height: 2.5rem;
+                        height: 2.5rem;
+                        border-radius: 5px;
                     }
                 }
 
@@ -134,6 +127,12 @@ $breakpoint-mobile: 768px;
                     display: flex;
                     flex-direction: column;
                     gap: 1.5rem;
+
+                    .remember-and-forgot-container {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
                 }
             }
         }
@@ -152,14 +151,14 @@ $breakpoint-mobile: 768px;
     .small-p {
         color: var(--secondary-text);
         font-size: var(--font-size-small);
+    }
 
-        a {
-            font-size: var(--font-size-small);
-            color: var(--primary);
+    .in-link {
+        font-size: var(--font-size-small);
+        color: var(--primary);
 
-            &:hover {
-                color: var(--primary-light);
-            }
+        &:hover {
+            color: var(--primary-light);
         }
     }
 }

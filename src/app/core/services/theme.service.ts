@@ -1,8 +1,3 @@
-// ========================================
-// THEME SERVICE - Clean Architecture
-// Use Cases Layer - Business Logic
-// ========================================
-
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -30,10 +25,6 @@ export class ThemeService {
     this.listenToSystemThemeChanges();
   }
 
-  /**
-   * Use Case: Switch Theme Mode
-   * Business Rule: User can manually switch between light and dark themes
-   */
   public switchTheme(mode: ThemeMode): void {
     const newState: ThemeState = {
       mode,
