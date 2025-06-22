@@ -139,7 +139,7 @@ $breakpoint-mobile: 768px;
 
         .login-right-container {
             display: flex;
-            background-image: url('../../../../../../public/page-components-images/login-component/twodo-login-background.svg');
+            background-image: url('/assets/images/page-components-images/login-component/twodo-login-background.svg');
             background-size: cover;
 
             @media (max-width: $breakpoint-mobile) {

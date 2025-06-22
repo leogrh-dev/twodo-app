@@ -8,6 +8,9 @@ import en from '@angular/common/locales/en';
 import { FormsModule } from '@angular/forms';
 import { provideHttpClient } from '@angular/common/http';
 
+import { provideApollo } from 'apollo-angular';
+import { InMemoryCache, createHttpLink } from '@apollo/client/core';
+
 registerLocaleData(en);
 
 export const appConfig: ApplicationConfig = {
@@ -17,6 +20,11 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideNzI18n(en_US),
     importProvidersFrom(FormsModule),
-    provideHttpClient()
-  ]
+    provideHttpClient(),
+
+    provideApollo(() => ({
+      link: createHttpLink({ uri: 'http://localhost:3000/graphql' }),
+      cache: new InMemoryCache(),
+    })),
+  ],
 };

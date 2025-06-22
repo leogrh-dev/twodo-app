@@ -50,14 +50,6 @@ export class ThemeSwitcherComponent {
     this.themeService.toggleTheme();
   }
 
-  public getThemeLabel(mode: ThemeMode): string {
-    const labels = {
-      light: 'Claro',
-      dark: 'Escuro'
-    };
-    return labels[mode];
-  }
-
   public isThemeSelected(mode: ThemeMode): boolean {
     return this.currentTheme.mode === mode && !this.currentTheme.isSystemPreference;
   }

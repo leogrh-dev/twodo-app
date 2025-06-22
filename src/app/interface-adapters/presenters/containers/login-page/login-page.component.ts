@@ -8,11 +8,14 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { ThemeSwitcherComponent } from '../../components/theme-switcher/theme-switcher.component';
 import { ThemeService } from '../../../../core/services/theme.service';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../../../../core/services/auth.service';
+import { environment } from '../../../../../environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
+  standalone: true,
   imports: [
-    CommonModule,
     CommonModule,
     NzFormModule,
     NzInputModule,
@@ -23,38 +26,73 @@ import { Subscription } from 'rxjs';
     ThemeSwitcherComponent,
   ],
   templateUrl: './login-page.component.html',
-  styleUrl: './login-page.component.scss'
+  styleUrl: './login-page.component.scss',
 })
-export class LoginPageComponent {
+export class LoginPageComponent implements OnDestroy {
 
   passwordVisible = false;
   loginForm!: FormGroup;
-  logoPath: string = '/twodo-logos/twodo-logo.svg';
+  logoPath: string = 'assets/images/twodo-logos/twodo-logo.svg';
   themeSubscription: Subscription;
 
   constructor(
     private fb: FormBuilder,
     private themeService: ThemeService,
+    private authService: AuthService,
+    private router: Router,
   ) {
     this.themeSubscription = this.themeService.theme$.subscribe(theme => {
       this.logoPath = theme.mode === 'dark'
-        ? '/twodo-logos/twodo-dark-logo.svg'
-        : '/twodo-logos/twodo-logo.svg';
+        ? 'assets/images/twodo-logos/twodo-dark-logo.svg'
+        : 'assets/images/twodo-logos/twodo-logo.svg';
     });
   }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required]],
+      rememberMe: [false],
     });
   }
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      console.log('Login attempt', email, password);
+      const { email, password, rememberMe } = this.loginForm.value;
+      this.authService.login(email, password, rememberMe).subscribe({
+        next: (token) => {
+          console.log('Login successful. Token:', token);
+          this.router.navigate(['/']);
+        },
+        error: (err) => {
+          console.error('Login failed:', err);
+          alert('Email ou senha inválidos');
+        },
+      });
     }
+  }
+
+  handleGoogleLogin() {
+    // @ts-ignore
+    google.accounts.id.initialize({
+      client_id: environment.googleClientId,
+      callback: (response: any) => {
+        const idToken = response.credential;
+        this.authService.loginWithGoogle(idToken, true).subscribe({
+          next: (token) => {
+            console.log('Login com Google bem-sucedido', token);
+            this.router.navigate(['/']);
+          },
+          error: (err) => {
+            console.error('Erro no login com Google', err);
+            alert('Erro no login com Google');
+          },
+        });
+      },
+      ux_mode: "popup"
+    });
+    // @ts-ignore
+    google.accounts.id.prompt();
   }
 
   togglePasswordVisibility() {

@@ -4,19 +4,19 @@
         <div class="login-left-container full-rlt-container">
             <div class="login-left-container-content">
                 <div class="twodo-logo-container">
-                    <img [src]="logoPath" alt="TwoDo Logo" class="twodo-logo-img">
+                    <img [src]="logoPath" alt="TwoDo Logo" class="twodo-logo-img" />
                 </div>
                 <div class="login-form-header">
                     <h3>Acesse sua conta</h3>
                     <p>Bem-vindo de volta! Selecione o método para fazer login</p>
                 </div>
-                <form class="login-form" (ngSubmit)="onSubmit()">
+                <form [formGroup]="loginForm" class="login-form" (ngSubmit)="onSubmit()">
                     <div class="form-group">
                         <nz-form-item>
                             <nz-form-control>
                                 <label for="email">E-mail</label>
-                                <input nz-input type="email" id="email" class="form-control"
-                                    placeholder="Insira seu e-mail" required>
+                                <input nz-input type="email" id="email" formControlName="email" class="form-control"
+                                    placeholder="Insira seu e-mail" />
                             </nz-form-control>
                         </nz-form-item>
                     </div>
@@ -25,7 +25,8 @@
                             <nz-form-control>
                                 <label for="password">Senha</label>
                                 <nz-input-group>
-                                    <input nz-input id="password" class="login-form-input"
+                                    <input nz-input id="password" formControlName="password"
+                                        [type]="passwordVisible ? 'text' : 'password'" class="login-form-input"
                                         placeholder="Insira sua senha" />
                                 </nz-input-group>
                             </nz-form-control>
@@ -33,7 +34,7 @@
                     </div>
                     <div class="form-group remember-and-forgot-container">
                         <div class="form-group-checkbox">
-                            <label nz-checkbox>
+                            <label nz-checkbox formControlName="rememberMe">
                                 <p class="small-p">Lembrar-me</p>
                             </label>
                         </div>
@@ -47,17 +48,17 @@
                     <span class="inline-effect"></span>
                 </div>
                 <div class="login-form-header-login-with">
-                    <button class="login-with-btn">
-                        <img src="/page-components-images/login-component/login-google-icon.svg" alt="Ícone Google">
+                    <button class="login-with-btn" (click)="handleGoogleLogin()">
+                        <img src="assets/images/page-components-images/login-component/login-google-icon.svg"
+                            alt="Ícone Google" />
                         <p>Google</p>
                     </button>
                 </div>
-                <p style="text-align: center;" class="small-p">Não possui uma conta?
-                    <a class="in-link">Crie uma conta</a>
+                <p style="text-align: center;" class="small-p">
+                    Não possui uma conta? <a class="in-link">Crie uma conta</a>
                 </p>
             </div>
         </div>
-        <div class="login-right-container full-rlt-container">
-        </div>
+        <div class="login-right-container full-rlt-container"></div>
     </div>
 </div>
