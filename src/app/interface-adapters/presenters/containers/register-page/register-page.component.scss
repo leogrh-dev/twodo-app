@@ -1,0 +1,171 @@
+#register-page {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+
+  .register-page-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+
+    .register-left-container {
+      display: flex;
+      background-image: url('/assets/images/page-components-images/login-component/twodo-login-background.svg');
+      background-size: cover;
+
+      @media (max-width: 768px) {
+        display: none;
+      }
+    }
+
+    .register-right-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+
+      .register-right-container-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        max-width: 30vw;
+        min-width: 30vw;
+        gap: 1.5rem;
+
+        .twodo-logo-container {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 1.5rem;
+
+          .twodo-logo-img {
+            max-height: 2.5rem;
+            height: 2.5rem;
+            border-radius: 5px;
+          }
+        }
+
+        .register-form-header {
+          display: flex;
+          gap: 0.5rem;
+          flex-direction: column;
+
+          h3 {
+            font-size: var(--font-size-xxlarge);
+            color: var(--primary-text);
+            font-weight: 600;
+            margin: 0;
+            line-height: 1.5;
+          }
+
+          p {
+            color: var(--secondary-text);
+          }
+        }
+
+        .register-form {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+
+          div {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+
+            .step-buttons {
+              display: flex;
+              justify-content: space-between;
+              gap: 1rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .small-p {
+    color: var(--secondary-text);
+    font-size: var(--font-size-small);
+  }
+
+  .in-link {
+    font-size: var(--font-size-small);
+    color: var(--primary);
+
+    &:hover {
+      color: var(--primary-light);
+    }
+  }
+}
+
+.password-strength-bar {
+  width: 100%;
+  height: 0.25rem;
+  background-color: var(--background-tertiary);
+  margin-top: 4px;
+  border-radius: 4px;
+  overflow: hidden;
+
+  .bar {
+    height: 100%;
+    transition: all 0.3s ease;
+    width: 0;
+
+    &.very-weak {
+      width: 25%;
+      background-color: var(--error);
+    }
+
+    &.weak {
+      width: 50%;
+      background-color: var(--warning);
+    }
+
+    &.medium {
+      width: 75%;
+      background-color: var(--info);
+    }
+
+    &.strong {
+      width: 100%;
+      background-color: var(--success);
+    }
+  }
+}
+
+.password-strength-container {
+  display: flex;
+  flex-direction: row-reverse !important;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+
+  .password-strength-text {
+    font-size: var(--font-size-xsmall);
+    color: var(--secondary-text);
+    margin-top: 2px;
+  }
+
+  .password-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      font-size: var(--font-size-xsmall);
+      color: var(--secondary-text);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+
+      &.met {
+        color: var(--primary-text);
+      }
+    }
+  }
+}

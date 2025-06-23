@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
-import { LOGIN_MUTATION, LOGIN_WITH_GOOGLE_MUTATION } from '../../infrastructure/graphql/auth.graphql';
+import { LOGIN_MUTATION, LOGIN_WITH_GOOGLE_MUTATION, REGISTER_MUTATION } from '../../infrastructure/graphql/auth.graphql';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +9,7 @@ import { LOGIN_MUTATION, LOGIN_WITH_GOOGLE_MUTATION } from '../../infrastructure
 export class AuthService {
   private readonly TOKEN_KEY = 'access_token';
 
-  constructor(private apollo: Apollo) {}
+  constructor(private apollo: Apollo) { }
 
   login(email: string, password: string, rememberMe: boolean): Observable<string> {
     return this.apollo
@@ -47,6 +47,22 @@ export class AuthService {
           return token;
         })
       );
+  }
+
+  register(name: string, email: string, phone: string, password: string): Observable<string> {
+    return this.apollo.mutate({
+      mutation: REGISTER_MUTATION,
+      variables: { name, email, phone, password },
+    }).pipe(
+      map((result: any) => {
+        const token = result?.data?.register?.token;
+        if (token) {
+          localStorage.setItem('auth_token', token);
+          return token;
+        }
+        throw new Error('Register failed');
+      })
+    );
   }
 
   saveToken(token: string, rememberMe: boolean) {

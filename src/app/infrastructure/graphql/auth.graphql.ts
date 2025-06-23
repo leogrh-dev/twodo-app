@@ -8,6 +8,14 @@ export const LOGIN_MUTATION = gql`
   }
 `;
 
+export const REGISTER_MUTATION = gql`
+  mutation UserLogin($input: LoginInput!) {
+    userLogin(input: $input) {
+      accessToken
+    }
+  }
+`;
+
 export const LOGIN_WITH_GOOGLE_MUTATION = gql`
   mutation UserLoginWithGoogle($input: GoogleLoginInput!) {
     userLoginWithGoogle(input: $input) {

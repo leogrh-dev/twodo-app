@@ -1,0 +1,104 @@
+<div id="register-page">
+  <div style="display: none;"><app-theme-switcher></app-theme-switcher></div>
+  <div class="register-page-container full-rlt-container">
+    <div class="register-left-container full-rlt-container"></div>
+
+    <div class="register-right-container full-rlt-container">
+      <div class="register-right-container-content">
+        <div class="twodo-logo-container">
+          <img [src]="logoPath" alt="TwoDo Logo" class="twodo-logo-img" />
+        </div>
+
+        <div class="register-form-header">
+          <h3>{{ getHeaderContent().title }}</h3>
+          <p>{{ getHeaderContent().description }}</p>
+        </div>
+
+        <form [formGroup]="registerForm" class="register-form" (ngSubmit)="onSubmit()">
+          <div *ngIf="currentStep === 1">
+            <nz-form-item>
+              <nz-form-control [nzErrorTip]="
+                registerForm.get('name')?.hasError('required') ? 'Nome é obrigatório' :
+                registerForm.get('name')?.hasError('minlength') ? 'Nome deve ter no mínimo 2 caracteres' :
+                registerForm.get('name')?.hasError('maxlength') ? 'Nome deve ter no máximo 50 caracteres' : ''
+              ">
+                <label for="name">Nome</label>
+                <input nz-input id="name" formControlName="name" placeholder="Digite seu nome" />
+              </nz-form-control>
+            </nz-form-item>
+            <button nz-button nzType="primary" type="button" (click)="nextStep()">
+              Continuar
+            </button>
+          </div>
+          <div *ngIf="currentStep === 2">
+            <nz-form-item>
+              <nz-form-control [nzErrorTip]="
+                registerForm.get('email')?.hasError('required') ? 'Email é obrigatório' :
+                registerForm.get('email')?.hasError('email') ? 'Insira um email válido' : ''
+              ">
+                <label for="email">Email</label>
+                <input nz-input id="email" formControlName="email" placeholder="usuario@dominio.com" />
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-control>
+                <label for="phone">Telefone</label>
+                <app-phone-input-with-ddi-selector [control]="phoneControl"></app-phone-input-with-ddi-selector>
+              </nz-form-control>
+            </nz-form-item>
+
+            <div class="step-buttons">
+              <button nz-button nzType="primary" type="button" (click)="nextStep()">
+                Continuar
+              </button>
+              <button nz-button nzType="default" type="button" (click)="prevStep()">Voltar</button>
+            </div>
+          </div>
+          <div *ngIf="currentStep === 3">
+            <nz-form-item>
+              <nz-form-control>
+                <label for="password">Senha</label>
+                <input nz-input [type]="passwordVisible ? 'text' : 'password'" id="password" formControlName="password"
+                  placeholder="Digite sua senha" (input)="checkPasswordStrength()" />
+                <div class="password-strength-bar">
+                  <div class="bar" [ngClass]="{
+                    'very-weak': passwordStrength === 1,
+                    'weak': passwordStrength === 2,
+                    'medium': passwordStrength === 3,
+                    'strong': passwordStrength === 4
+                  }"></div>
+                </div>
+                <div class="password-strength-container">
+
+                  <p class="password-strength-text">
+                    {{
+                    passwordStrength === 1 ? 'Muito fraca' :
+                    passwordStrength === 2 ? 'Fraca' :
+                    passwordStrength === 3 ? 'Forte' :
+                    passwordStrength === 4 ? 'Extremamente forte' : ''
+                    }}
+                  </p>
+                  <ul class="password-checklist">
+                    <li [ngClass]="{ met: passwordChecks.length }">• Pelo menos 10 caracteres</li>
+                    <li [ngClass]="{ met: passwordChecks.letters }">• Contém letras (a-z, A-Z)</li>
+                    <li [ngClass]="{ met: passwordChecks.numbers }">• Contém números (0-9)</li>
+                    <li [ngClass]="{ met: passwordChecks.special }">• Contém caracteres especiais (!&#64;#$%...)</li>
+                  </ul>
+                </div>
+              </nz-form-control>
+            </nz-form-item>
+
+            <div class="step-buttons">
+              <button nz-button nzType="primary" type="submit">Criar Conta</button>
+              <button nz-button type="button" (click)="prevStep()">Voltar</button>
+            </div>
+          </div>
+          <p style="text-align: center;" class="small-p">
+            Já possui uma conta? <a class="in-link" href="/login">Entre agora</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

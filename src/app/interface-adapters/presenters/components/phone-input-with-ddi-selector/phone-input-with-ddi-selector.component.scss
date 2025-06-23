@@ -1,0 +1,11 @@
+::ng-deep .phone-input-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    
+    .ant-select-single .ant-select-selector .ant-select-selection-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+}

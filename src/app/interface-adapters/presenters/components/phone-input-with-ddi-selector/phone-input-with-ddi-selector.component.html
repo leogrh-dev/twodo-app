@@ -1,0 +1,21 @@
+<div class="phone-input-container">
+    <nz-select [(ngModel)]="selectedCountry" (ngModelChange)="onInputChange()" class="ddi-select" nzShowSearch
+        [nzFilterOption]="filterOption" [nzCustomTemplate]="customTpl">
+        <nz-option *ngFor="let country of countries" [nzLabel]="countryLabel(country)" [nzValue]="country">
+            <img width="22" style="height: 1rem; margin-right: 8px; vertical-align: middle;"
+                [src]="'https://flagcdn.com/w20/' + country.code.toLowerCase() + '.png'" [alt]="country.name" />
+            {{ country.name }} ({{ country.dial_code }})
+        </nz-option>
+    </nz-select>
+
+    <ng-template #customTpl let-selected>
+        <img width="22" style="height: 1rem; vertical-align: middle;"
+            [src]="'https://flagcdn.com/w20/' + selected.nzValue?.code?.toLowerCase() + '.png'"
+            [alt]="selected.nzValue?.name" *ngIf="selected.nzValue" />
+        {{ selected.nzLabel }}
+    </ng-template>
+
+    <input nz-input [ngModel]="formatPhoneForDisplay(phoneNumber)" (ngModelChange)="onInputChange($event)"
+        (keypress)="onKeyPress($event)" (paste)="onPaste($event)" [placeholder]="getPlaceholder()" inputmode="numeric"
+        pattern="[0-9]*" />
+</div>
