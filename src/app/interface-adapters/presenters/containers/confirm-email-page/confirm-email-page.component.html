@@ -1,0 +1,34 @@
+<div id="confirm-email-page">
+  <div class="confirm-email-page-container full-rlt-container">
+    <div class="confirm-email-left-container full-rlt-container"></div>
+
+    <div class="confirm-email-right-container full-rlt-container">
+      <div class="confirm-email-right-container-content">
+        <div class="twodo-logo-container">
+          <img [src]="logoPath" alt="TwoDo Logo" class="twodo-logo-img" />
+        </div>
+
+        <div class="login-form-header">
+          <h3 *ngIf="loading">Verificando seu E-mail...</h3>
+          <h3 *ngIf="success">E-mail verificado com sucesso!</h3>
+          <h3 *ngIf="success === false">Ops! Algo parece ter dado errado 😥</h3>
+
+          <p *ngIf="loading">Estamos verificando seu e-mail, por favor aguarde...</p>
+          <p *ngIf="success">Sucesso! Seu e-mail foi verificado com sucesso.</p>
+          <p *ngIf="success === false">
+            Infelizmente algo deu errado.
+            <br />Por favor, entre em contato com nosso suporte.
+          </p>
+        </div>
+
+        <button *ngIf="success !== false" nz-button nzType="primary" (click)="goToLogin()">
+          Ir para Login
+        </button>
+
+        <button *ngIf="success === false" nz-button nzType="primary" (click)="contactSupport()">
+          Contatar Suporte
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

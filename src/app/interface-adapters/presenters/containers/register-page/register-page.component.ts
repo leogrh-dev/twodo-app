@@ -100,8 +100,12 @@ export class RegisterPageComponent implements OnDestroy {
   }
 
   onSubmit() {
-    const isPasswordValid = [this.passwordChecks.length, this.passwordChecks.letters, this.passwordChecks.numbers, this.passwordChecks.special]
-      .filter(Boolean).length >= 3;
+    const isPasswordValid = [
+      this.passwordChecks.length,
+      this.passwordChecks.letters,
+      this.passwordChecks.numbers,
+      this.passwordChecks.special,
+    ].filter(Boolean).length >= 3;
 
     if (!isPasswordValid) {
       this.notification.error(
@@ -116,19 +120,27 @@ export class RegisterPageComponent implements OnDestroy {
 
       this.authService.register(name, email, phone, password).subscribe({
         next: () => {
-          this.notification.success('Cadastro realizado!', 'Sua conta foi criada com sucesso.');
-          this.router.navigate(['/']);
+          this.notification.success(
+            'Cadastro realizado!',
+            'Enviamos um link de confirmação para seu e-mail.'
+          );
+          this.router.navigate(['/email-pending']);
         },
         error: (err) => {
           console.error('Erro no cadastro:', err);
-          this.notification.error('Erro no cadastro', 'Ocorreu um erro ao tentar criar sua conta.');
+          this.notification.error(
+            'Erro no cadastro',
+            'Ocorreu um erro ao tentar criar sua conta.'
+          );
         },
       });
     } else {
-      this.notification.warning('Formulário inválido', 'Preencha todos os campos corretamente.');
+      this.notification.warning(
+        'Formulário inválido',
+        'Preencha todos os campos corretamente.'
+      );
     }
   }
-
 
   togglePasswordVisibility() {
     this.passwordVisible = !this.passwordVisible;

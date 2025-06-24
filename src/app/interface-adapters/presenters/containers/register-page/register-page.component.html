@@ -59,8 +59,12 @@
             <nz-form-item>
               <nz-form-control>
                 <label for="password">Senha</label>
-                <input nz-input [type]="passwordVisible ? 'text' : 'password'" id="password" formControlName="password"
-                  placeholder="Digite sua senha" (input)="checkPasswordStrength()" />
+                <div class="password-input-wrapper">
+                  <input nz-input [type]="passwordVisible ? 'text' : 'password'" id="password"
+                    formControlName="password" placeholder="Digite sua senha" (input)="checkPasswordStrength()" />
+                  <span class="toggle-password-btn iconify-1rem" (click)="togglePasswordVisibility()"
+                    [ngClass]="passwordVisible ? 'material-design-eye' : 'material-design-eye-closed'"></span>
+                </div>
                 <div class="password-strength-bar">
                   <div class="bar" [ngClass]="{
                     'very-weak': passwordStrength === 1,

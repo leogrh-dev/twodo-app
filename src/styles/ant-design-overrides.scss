@@ -49,6 +49,7 @@
     background-color: var(--background) !important;
     border-color: var(--border);
     color: var(--primary-text);
+    font-size: var(--font-size-base);
 
     &:focus {
         border-color: var(--primary-light);
@@ -67,7 +68,7 @@
 
 .ant-select-single .ant-select-selector .ant-select-selection-item {
     line-height: 2.5rem;
-    font-size: var(--font-size-small);
+    font-size: var(--font-size-base);
 }
 
 .ant-checkbox-input {

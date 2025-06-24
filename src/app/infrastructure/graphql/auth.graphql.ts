@@ -9,9 +9,12 @@ export const LOGIN_MUTATION = gql`
 `;
 
 export const REGISTER_MUTATION = gql`
-  mutation UserLogin($input: LoginInput!) {
-    userLogin(input: $input) {
-      accessToken
+  mutation UserRegister($input: RegisterInput!) {
+    userRegister(input: $input) {
+      id
+      name
+      email
+      phone
     }
   }
 `;
@@ -21,5 +24,11 @@ export const LOGIN_WITH_GOOGLE_MUTATION = gql`
     userLoginWithGoogle(input: $input) {
       accessToken
     }
+  }
+`;
+
+export const CONFIRM_EMAIL_MUTATION = gql`
+  mutation ConfirmEmail($token: String!) {
+    confirmEmail(token: $token)
   }
 `;

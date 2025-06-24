@@ -1,7 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
-import { LOGIN_MUTATION, LOGIN_WITH_GOOGLE_MUTATION, REGISTER_MUTATION } from '../../infrastructure/graphql/auth.graphql';
+import { jwtDecode } from 'jwt-decode';
+import { CONFIRM_EMAIL_MUTATION, LOGIN_MUTATION, LOGIN_WITH_GOOGLE_MUTATION, REGISTER_MUTATION } from '../../infrastructure/graphql/auth.graphql';
+
+interface DecodedToken {
+  userId: string;
+  name: string;
+  email: string;
+  phone: string;
+  emailVerified: boolean;
+  iat: number;
+  exp: number;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -49,20 +60,28 @@ export class AuthService {
       );
   }
 
-  register(name: string, email: string, phone: string, password: string): Observable<string> {
+  register(name: string, email: string, phone: string, password: string): Observable<{ id: string; name: string; email: string; phone: string }> {
     return this.apollo.mutate({
       mutation: REGISTER_MUTATION,
-      variables: { name, email, phone, password },
+      variables: {
+        input: { name, email, phone, password },
+      },
     }).pipe(
       map((result: any) => {
-        const token = result?.data?.register?.token;
-        if (token) {
-          localStorage.setItem('auth_token', token);
-          return token;
+        const user = result?.data?.userRegister;
+        if (user) {
+          return user;
         }
         throw new Error('Register failed');
       })
     );
+  }
+
+  confirmEmail(token: string) {
+    return this.apollo.mutate({
+      mutation: CONFIRM_EMAIL_MUTATION,
+      variables: { token },
+    });
   }
 
   saveToken(token: string, rememberMe: boolean) {
@@ -88,5 +107,20 @@ export class AuthService {
   removeToken() {
     localStorage.removeItem(this.TOKEN_KEY);
     sessionStorage.removeItem(this.TOKEN_KEY);
+  }
+
+  getCurrentUser(): DecodedToken | null {
+    const token = this.getToken();
+    if (!token) {
+      return null;
+    }
+
+    try {
+      const decoded = jwtDecode<DecodedToken>(token);
+      return decoded;
+    } catch (error) {
+      console.error('Erro ao decodificar o token:', error);
+      return null;
+    }
   }
 }

@@ -1,3 +1,5 @@
+$breakpoint-mobile: 768px;
+
 #register-page {
   display: flex;
   width: 100vw;
@@ -8,7 +10,7 @@
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 1fr;
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-mobile) {
       grid-template-columns: 1fr;
     }
 
@@ -17,7 +19,7 @@
       background-image: url('/assets/images/page-components-images/login-component/twodo-login-background.svg');
       background-size: cover;
 
-      @media (max-width: 768px) {
+      @media (max-width: $breakpoint-mobile) {
         display: none;
       }
     }
@@ -33,7 +35,6 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        max-width: 30vw;
         min-width: 30vw;
         gap: 1.5rem;
 
@@ -42,6 +43,10 @@
           align-items: center;
           gap: 0.5rem;
           margin-bottom: 1.5rem;
+
+          @media (max-width: $breakpoint-mobile) {
+            margin-bottom: 0rem;
+          }
 
           .twodo-logo-img {
             max-height: 2.5rem;
@@ -82,6 +87,30 @@
               display: flex;
               justify-content: space-between;
               gap: 1rem;
+            }
+
+            .password-input-wrapper {
+              position: relative;
+              height: 2.5rem;
+
+              #password {
+                padding-right: 2.25rem;
+              }
+
+              .toggle-password-btn {
+                position: absolute;
+                top: 50%;
+                right: 12px;
+                transform: translateY(-50%);
+                background-color: var(--secondary-text);
+                cursor: pointer;
+                transition: all 0.3s ease;
+                z-index: 1;
+
+                &:hover {
+                  background-color: var(--primary);
+                }
+              }
             }
           }
         }
@@ -146,7 +175,7 @@
   margin-top: 0.5rem;
 
   .password-strength-text {
-    font-size: var(--font-size-xsmall);
+    font-size: var(--font-size-small);
     color: var(--secondary-text);
     margin-top: 2px;
   }
@@ -157,7 +186,7 @@
     margin: 0;
 
     li {
-      font-size: var(--font-size-xsmall);
+      font-size: var(--font-size-small);
       color: var(--secondary-text);
       margin-bottom: 0.5rem;
       display: flex;

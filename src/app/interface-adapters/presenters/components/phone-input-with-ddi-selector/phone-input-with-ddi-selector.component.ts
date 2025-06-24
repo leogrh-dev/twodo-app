@@ -45,14 +45,6 @@ export class PhoneInputWithDdiSelectorComponent {
 
     this.control.setValue(completePhone);
 
-    console.log('%c[DEBUG] 📞 Input Change', 'color: #00c1ff; font-weight: bold;');
-    console.log('→ Raw Phone:', rawPhone);
-    console.log('→ Formatted for Display:', this.formatPhoneForDisplay(rawPhone));
-    console.log('→ Complete Phone (with DDI):', completePhone);
-    console.log('→ Is Valid:', isValid);
-    console.log('→ Current FormControl Value:', this.control.value);
-    console.log('→ Current Errors:', this.control.errors);
-
     if (!isValid && this.phoneNumber.length > 0) {
       const min = this.getMinLength();
       const max = this.getMaxLength();

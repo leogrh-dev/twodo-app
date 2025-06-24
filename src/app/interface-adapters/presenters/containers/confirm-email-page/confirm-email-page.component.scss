@@ -1,0 +1,78 @@
+$breakpoint-mobile: 768px;
+
+#confirm-email-page {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+
+  .confirm-email-page-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+
+    @media (max-width: $breakpoint-mobile) {
+      grid-template-columns: 1fr;
+    }
+
+    .confirm-email-left-container {
+      display: flex;
+      background-image: url('/assets/images/page-components-images/login-component/twodo-login-background.svg');
+      background-size: cover;
+
+      @media (max-width: $breakpoint-mobile) {
+        display: none;
+      }
+    }
+
+    .confirm-email-right-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+
+      .confirm-email-right-container-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 30vw;
+        gap: 1.5rem;
+
+        .twodo-logo-container {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 1.5rem;
+
+          @media (max-width: $breakpoint-mobile) {
+            margin-bottom: 0;
+          }
+
+          .twodo-logo-img {
+            max-height: 2.5rem;
+            height: 2.5rem;
+            border-radius: 5px;
+          }
+        }
+
+        .login-form-header {
+          display: flex;
+          gap: 0.5rem;
+          flex-direction: column;
+
+          h3 {
+            font-size: var(--font-size-xxlarge);
+            color: var(--primary-text);
+            font-weight: 600;
+            margin: 0;
+            line-height: 1.5;
+          }
+
+          p {
+            color: var(--secondary-text);
+          }
+        }
+      }
+    }
+  }
+}

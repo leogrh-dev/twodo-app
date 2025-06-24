@@ -25,9 +25,14 @@
                             <nz-form-control>
                                 <label for="password">Senha</label>
                                 <nz-input-group>
-                                    <input nz-input id="password" formControlName="password"
-                                        [type]="passwordVisible ? 'text' : 'password'" class="login-form-input"
-                                        placeholder="Insira sua senha" />
+                                    <div class="password-input-wrapper">
+                                        <input nz-input id="password" formControlName="password"
+                                            [type]="passwordVisible ? 'text' : 'password'" class="login-form-input"
+                                            placeholder="Insira sua senha" />
+                                        <span class="toggle-password-btn iconify-1rem"
+                                            (click)="togglePasswordVisibility()"
+                                            [ngClass]="passwordVisible ? 'material-design-eye' : 'material-design-eye-closed'"></span>
+                                    </div>
                                 </nz-input-group>
                             </nz-form-control>
                         </nz-form-item>

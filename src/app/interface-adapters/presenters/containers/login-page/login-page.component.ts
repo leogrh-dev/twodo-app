@@ -61,7 +61,6 @@ export class LoginPageComponent implements OnDestroy {
       const { email, password, rememberMe } = this.loginForm.value;
       this.authService.login(email, password, rememberMe).subscribe({
         next: (token) => {
-          console.log('Login successful. Token:', token);
           this.router.navigate(['/']);
         },
         error: (err) => {
@@ -80,7 +79,6 @@ export class LoginPageComponent implements OnDestroy {
         const idToken = response.credential;
         this.authService.loginWithGoogle(idToken, true).subscribe({
           next: (token) => {
-            console.log('Login com Google bem-sucedido', token);
             this.router.navigate(['/']);
           },
           error: (err) => {
