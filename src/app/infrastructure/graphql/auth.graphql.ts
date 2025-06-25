@@ -32,3 +32,15 @@ export const CONFIRM_EMAIL_MUTATION = gql`
     confirmEmail(token: $token)
   }
 `;
+
+export const FORGOT_PASSWORD_MUTATION = gql`
+  mutation ForgotPassword($input: ForgotPasswordInput!) {
+    forgotPassword(input: $input)
+  }
+`;
+
+export const RESET_PASSWORD_MUTATION = gql`
+  mutation ResetPassword($input: ResetPasswordInput!) {
+    resetPassword(input: $input)
+  }
+`;

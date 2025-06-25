@@ -44,8 +44,10 @@ export class ConfirmEmailPageComponent implements OnInit {
           this.loading = false;
 
           if (success) {
+            this.authService.removeToken();
             this.notification.success('Email confirmado!', 'Agora você pode fazer login.');
           } else {
+            this.authService.removeToken();
             this.notification.error('Erro', 'Não foi possível confirmar seu email.');
           }
         },

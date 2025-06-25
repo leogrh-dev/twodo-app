@@ -84,6 +84,7 @@
                     }}
                   </p>
                   <ul class="password-checklist">
+                    <li>Sua senha deve conter ao menos 3 dos critérios abaixo:</li>
                     <li [ngClass]="{ met: passwordChecks.length }">• Pelo menos 10 caracteres</li>
                     <li [ngClass]="{ met: passwordChecks.letters }">• Contém letras (a-z, A-Z)</li>
                     <li [ngClass]="{ met: passwordChecks.numbers }">• Contém números (0-9)</li>

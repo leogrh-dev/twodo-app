@@ -11,6 +11,7 @@ export class EmailPendingGuard implements CanActivate {
   canActivate(): boolean {
     const token = this.authService.getToken();
     const user = this.authService.getCurrentUser();
+    console.log("🚀 ~ EmailPendingGuard ~ canActivate ~ user:", user)
 
     if (token && user && !user.emailVerified) {
       return true;

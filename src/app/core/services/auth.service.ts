@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
-import { CONFIRM_EMAIL_MUTATION, LOGIN_MUTATION, LOGIN_WITH_GOOGLE_MUTATION, REGISTER_MUTATION } from '../../infrastructure/graphql/auth.graphql';
+import { CONFIRM_EMAIL_MUTATION, FORGOT_PASSWORD_MUTATION, LOGIN_MUTATION, LOGIN_WITH_GOOGLE_MUTATION, REGISTER_MUTATION, RESET_PASSWORD_MUTATION } from '../../infrastructure/graphql/auth.graphql';
 
 interface DecodedToken {
   userId: string;
@@ -107,6 +107,31 @@ export class AuthService {
   removeToken() {
     localStorage.removeItem(this.TOKEN_KEY);
     sessionStorage.removeItem(this.TOKEN_KEY);
+  }
+
+  resetPassword(token: string, newPassword: string): Observable<boolean> {
+    return this.apollo
+      .mutate({
+        mutation: RESET_PASSWORD_MUTATION,
+        variables: {
+          input: {
+            token,
+            newPassword,
+          },
+        },
+      })
+      .pipe(map((result: any) => result?.data?.resetPassword));
+  }
+
+  forgotPassword(email: string): Observable<boolean> {
+    return this.apollo.mutate({
+      mutation: FORGOT_PASSWORD_MUTATION,
+      variables: {
+        input: { email },
+      },
+    }).pipe(
+      map((result: any) => result?.data?.forgotPassword)
+    );
   }
 
   getCurrentUser(): DecodedToken | null {

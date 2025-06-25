@@ -30,6 +30,22 @@
     }
 }
 
+.ant-btn-primary[disabled],
+.ant-btn-primary[disabled]:active,
+.ant-btn-primary[disabled]:focus {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #FFF;
+    opacity: 0.5;
+}
+
+.ant-btn-primary[disabled]:hover {
+    background-color: var(--primary-light);
+    border-color: var(--primary-light);
+    color: #FFF;
+    opacity: 0.5;
+}
+
 .ant-form-item {
     color: var(--primary-text);
     margin: 0;
