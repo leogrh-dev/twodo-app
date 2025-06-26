@@ -7,15 +7,19 @@ import { EmailPendingPageComponent } from './interface-adapters/presenters/conta
 import { ConfirmEmailPageComponent } from './interface-adapters/presenters/containers/confirm-email-page/confirm-email-page.component';
 import { ForgotPasswordPageComponent } from './interface-adapters/presenters/containers/forgot-password-page/forgot-password-page.component';
 import { ResetPasswordPageComponent } from './interface-adapters/presenters/containers/reset-password-page/reset-password-page.component';
+import { GuestGuard } from './shared/guards/guest.guard';
+import { ResetPasswordTokenGuard } from './shared/guards/reset-password-token.guard';
 
 export const routes: Routes = [
   {
     path: 'login',
     component: LoginPageComponent,
+    canActivate: [GuestGuard],
   },
   {
     path: 'register',
     component: RegisterPageComponent,
+    canActivate: [GuestGuard],
   },
   {
     path: 'email-pending',
@@ -25,10 +29,12 @@ export const routes: Routes = [
   {
     path: 'reset-password',
     component: ResetPasswordPageComponent,
+    canActivate: [GuestGuard, ResetPasswordTokenGuard],
   },
   {
     path: 'forgot-password',
     component: ForgotPasswordPageComponent,
+    canActivate: [GuestGuard],
   },
   {
     path: 'confirm-email',

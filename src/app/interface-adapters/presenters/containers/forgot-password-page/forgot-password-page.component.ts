@@ -29,10 +29,11 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
   styleUrls: ['./forgot-password-page.component.scss']
 })
 export class ForgotPasswordPageComponent {
-  
+
   form!: FormGroup;
   logoPath: string = 'assets/images/twodo-logos/twodo-logo.svg';
   themeSubscription: Subscription;
+  isSendingEmail = false;
 
   constructor(
     private fb: FormBuilder,
@@ -60,20 +61,28 @@ export class ForgotPasswordPageComponent {
       return;
     }
 
+    this.isSendingEmail = true;
     const email = this.form.value.email!;
+
     this.authService.forgotPassword(email).subscribe({
       next: (success) => {
+        this.isSendingEmail = false;
         if (success) {
           this.notification.success('Email enviado', 'Verifique sua caixa de entrada.');
-          this.router.navigate(['/login']);
         } else {
           this.notification.error('Erro', 'Não foi possível enviar o email.');
         }
       },
       error: () => {
+        this.isSendingEmail = false;
         this.notification.error('Erro', 'Não foi possível enviar o email.');
       }
     });
   }
-}
 
+  ngOnDestroy() {
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
+    }
+  }
+}

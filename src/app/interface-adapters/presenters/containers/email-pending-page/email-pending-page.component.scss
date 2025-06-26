@@ -1,4 +1,4 @@
-$breakpoint-mobile: 768px;
+$breakpoint-mobile: 1000px;
 
 #email-page {
     display: flex;
@@ -73,6 +73,20 @@ $breakpoint-mobile: 768px;
                     }
                 }
             }
+        }
+    }
+
+    .small-p {
+        color: var(--secondary-text);
+        font-size: var(--font-size-small);
+    }
+
+    .in-link {
+        font-size: var(--font-size-small);
+        color: var(--primary);
+
+        &:hover {
+            color: var(--primary-light);
         }
     }
 }

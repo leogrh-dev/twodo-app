@@ -1,1 +1,13 @@
-<p>main-layout works!</p>
+<nz-layout class="in-main-layout">
+    <nz-sider [nzWidth]="isCollapsed ? 60 : 240" [nzCollapsed]="isCollapsed">
+        <app-sidemenu [isCollapsed]="isCollapsed" (toggleCollapse)="toggleCollapse()"></app-sidemenu>
+        <div class="change-sidemenu-size"></div>
+    </nz-sider>
+    <nz-layout>
+        <nz-content>
+            <div style="margin-left: 10px;">
+                <router-outlet></router-outlet>
+            </div>
+        </nz-content>
+    </nz-layout>
+</nz-layout>

@@ -34,6 +34,7 @@ export class LoginPageComponent implements OnDestroy {
   loginForm!: FormGroup;
   logoPath: string = 'assets/images/twodo-logos/twodo-logo.svg';
   themeSubscription: Subscription;
+  isLogging = false;
 
   constructor(
     private fb: FormBuilder,
@@ -58,12 +59,16 @@ export class LoginPageComponent implements OnDestroy {
 
   onSubmit() {
     if (this.loginForm.valid) {
+      this.isLogging = true;
       const { email, password, rememberMe } = this.loginForm.value;
+
       this.authService.login(email, password, rememberMe).subscribe({
         next: (token) => {
+          this.isLogging = false;
           this.router.navigate(['/']);
         },
         error: (err) => {
+          this.isLogging = false;
           console.error('Login failed:', err);
           alert('Email ou senha inválidos');
         },
@@ -76,12 +81,16 @@ export class LoginPageComponent implements OnDestroy {
     google.accounts.id.initialize({
       client_id: environment.googleClientId,
       callback: (response: any) => {
+        this.isLogging = true;
         const idToken = response.credential;
+
         this.authService.loginWithGoogle(idToken, true).subscribe({
           next: (token) => {
+            this.isLogging = false;
             this.router.navigate(['/']);
           },
           error: (err) => {
+            this.isLogging = false;
             console.error('Erro no login com Google', err);
             alert('Erro no login com Google');
           },

@@ -33,6 +33,12 @@ export const CONFIRM_EMAIL_MUTATION = gql`
   }
 `;
 
+export const RESEND_CONFIRMATION_EMAIL_MUTATION = gql`
+  mutation ResendConfirmationEmail($input: ResendConfirmationEmailInput!) {
+    resendConfirmationEmail(input: $input)
+  }
+`;
+
 export const FORGOT_PASSWORD_MUTATION = gql`
   mutation ForgotPassword($input: ForgotPasswordInput!) {
     forgotPassword(input: $input)

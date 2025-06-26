@@ -38,6 +38,7 @@ export class RegisterPageComponent implements OnDestroy {
   logoPath: string = 'assets/images/twodo-logos/twodo-logo.svg';
   themeSubscription: Subscription;
   passwordStrength = 0;
+  isRegistering = false;
 
   passwordChecks = {
     length: false,
@@ -100,6 +101,15 @@ export class RegisterPageComponent implements OnDestroy {
   }
 
   onSubmit() {
+    if (this.currentStep < 3) {
+      this.nextStep();
+      return;
+    }
+
+    this.handleRegistration();
+  }
+
+  handleRegistration() {
     const isPasswordValid = [
       this.passwordChecks.length,
       this.passwordChecks.letters,
@@ -116,10 +126,12 @@ export class RegisterPageComponent implements OnDestroy {
     }
 
     if (this.registerForm.valid) {
+      this.isRegistering = true;
       const { name, email, phone, password } = this.registerForm.value;
 
       this.authService.register(name, email, phone, password).subscribe({
         next: () => {
+          this.isRegistering = false;
           this.notification.success(
             'Cadastro realizado!',
             'Enviamos um link de confirmação para seu e-mail.'
@@ -127,6 +139,7 @@ export class RegisterPageComponent implements OnDestroy {
           this.router.navigate(['/email-pending']);
         },
         error: (err) => {
+          this.isRegistering = false;
           console.error('Erro no cadastro:', err);
           this.notification.error(
             'Erro no cadastro',

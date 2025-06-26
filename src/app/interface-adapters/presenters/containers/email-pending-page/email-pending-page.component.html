@@ -9,8 +9,11 @@
         <div class="login-form-header">
           <h3>Verifique seu E-mail</h3>
           <p>Acesse sua caixa de entrada e clique no link para ativar sua conta.</p>
-        </div>     
+        </div>
         <button nz-button nzType="primary" (click)="goToLogin()">Ir para Login</button>
+        <p style="text-align: center;" class="small-p">
+          Não recebeu o e-mail? <a class="in-link" (click)="resendEmail()">Reenviar e-mail</a>
+        </p>
       </div>
     </div>
   </div>

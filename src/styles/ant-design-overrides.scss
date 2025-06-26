@@ -23,7 +23,8 @@
     color: #FFF;
 
     &:hover,
-    &:focus {
+    &:focus,
+    &:active {
         color: #FFF;
         background-color: var(--primary-light);
         border-color: var(--primary);
@@ -65,7 +66,7 @@
     background-color: var(--background) !important;
     border-color: var(--border);
     color: var(--primary-text);
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-small);
 
     &:focus {
         border-color: var(--primary-light);

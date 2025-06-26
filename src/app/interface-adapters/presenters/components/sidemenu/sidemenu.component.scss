@@ -1,0 +1,30 @@
+.in-sidemenu {
+    min-height: 100vh;
+    background-color: var(--background-tertiary);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 100%;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+    padding: 0;
+
+    .user-account {
+        user-select: none;
+        transition: all 0.2s ease-in;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        min-width: 0px;
+        height: 32px;
+        width: auto;
+        margin: 6px 8px;
+        border-radius: 6px;
+        padding: 0px;
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+    }
+}

@@ -63,7 +63,7 @@
                   <input nz-input [type]="passwordVisible ? 'text' : 'password'" id="password"
                     formControlName="password" placeholder="Digite sua senha" (input)="checkPasswordStrength()" />
                   <span class="toggle-password-btn iconify-1rem" (click)="togglePasswordVisibility()"
-                    [ngClass]="passwordVisible ? 'material-design-eye' : 'material-design-eye-closed'"></span>
+                    [ngClass]="passwordVisible ? 'eye-icon' : 'eye-closed-icon'"></span>
                 </div>
                 <div class="password-strength-bar">
                   <div class="bar" [ngClass]="{
@@ -95,7 +95,9 @@
             </nz-form-item>
 
             <div class="step-buttons">
-              <button nz-button nzType="primary" type="submit">Criar Conta</button>
+              <button nz-button nzType="primary" type="submit" [nzLoading]="isRegistering" [disabled]="isRegistering">
+                {{ isRegistering ? 'Criando Conta...' : 'Criar Conta' }}
+              </button>
               <button nz-button type="button" (click)="prevStep()">Voltar</button>
             </div>
           </div>
