@@ -32,6 +32,11 @@ $color-info: #1890ff;
   --border-light: #f0f0f0;
   --border-dark: #bfbfbf;
 
+  --sidemenu-hover: rgba(0, 0, 0, 0.07);
+
+  --contrast: #060606;
+  --contrast-text: #ffffff;
+
   --shadow: rgba(0, 0, 0, 0.1);
   --shadow-light: rgba(0, 0, 0, 0.06);
   --shadow-dark: rgba(0, 0, 0, 0.15);
@@ -83,6 +88,11 @@ $color-info: #1890ff;
   --border: #434343;
   --border-light: #303030;
   --border-dark: #595959;
+
+  --sidemenu-hover: rgba(255, 255, 255, 0.05);
+
+  --contrast: #ffffff;
+  --contrast-text: #060606;
 
   --shadow: rgba(0, 0, 0, 0.3);
   --shadow-light: rgba(0, 0, 0, 0.2);

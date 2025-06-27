@@ -1,5 +1,24 @@
 <div class="in-sidemenu">
+    <div style="display: none;"><app-theme-switcher></app-theme-switcher></div>
     <div class="user-account">
-        
+        <div class="user-account-profile"></div>
+        <div class="collapse-sidemenu" nz-tooltip [nzTooltipTitle]="tooltipTemplateCloseSidemenu">
+            <span class="iconify-20px close-sidemenu" (click)="toggleCollapse.emit()"></span>
+        </div>
+        <div class="new-note-button" nz-tooltip [nzTooltipTitle]="tooltipTemplateNewNote">
+            <span class="iconify-20px edit-icon"></span>
+        </div>
     </div>
 </div>
+
+<ng-template #tooltipTemplateNewNote>
+    <span class="tooltip-content">
+        Crie uma nova página <span class="tooltip-action">(Clique)</span>
+    </span>
+</ng-template>
+
+<ng-template #tooltipTemplateCloseSidemenu>
+    <span class="tooltip-content">
+        Fechar menu <span class="tooltip-action">(Clique)</span>
+    </span>
+</ng-template>

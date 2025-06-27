@@ -1,0 +1,31 @@
+.toolbar-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    .expand-sidemenu {
+        user-select: none;
+        transition: all 0.2s ease-in;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 4px;
+        height: 30px;
+        width: 30px;
+        padding: 0px;
+
+        &:hover {
+            background: var(--background-secondary);
+
+            .open-sidemenu {
+                background-color: var(--primary-text);
+            }
+        }
+
+        .open-sidemenu {
+            background-color: var(--secondary-text);
+        }
+    }
+}

@@ -22,9 +22,75 @@
         margin: 6px 8px;
         border-radius: 6px;
         padding: 0px;
+        gap: 0.25rem;
 
         &:hover {
-            background: rgba(0, 0, 0, 0.05);
+            background: var(--sidemenu-hover);
+        }
+
+        .user-account-profile {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            font-size: var(--font-size-small);
+            min-height: 30px;
+            height: 30px;
+            padding: 0.25rem 0.5rem;
+            overflow: hidden;
+            margin: 0px;
+        }
+
+        .collapse-sidemenu {
+            user-select: none;
+            transition: all 0.2s ease-in;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 4px;
+            height: 30px;
+            width: 30px;
+            padding: 0px;
+            transition: all 0.3s ease;
+
+            &:hover {
+                background: var(--sidemenu-hover);
+
+                .close-sidemenu {
+                    background-color: var(--primary-text);
+                }
+            }
+
+            .close-sidemenu {
+                background-color: var(--secondary-text);
+            }
+        }
+
+        .new-note-button {
+            user-select: none;
+            transition: all 0.2s ease-in;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 4px;
+            height: 30px;
+            width: 30px;
+            padding: 0px;
+
+            &:hover {
+                background: var(--sidemenu-hover);
+
+                .edit-icon {
+                    background-color: var(--primary-text);
+                }
+            }
+
+            .edit-icon {
+                background-color: var(--secondary-text);
+            }
         }
     }
 }

@@ -1,0 +1,12 @@
+<div class="toolbar-container">
+    <div *ngIf="isCollapsed" nz-tooltip [nzTooltipTitle]="tooltipTemplateOpenSidemenu" (click)="toggleSidemenu.emit()"
+        class="expand-sidemenu">
+        <span class="iconify-20px open-sidemenu"></span>
+    </div>
+</div>
+
+<ng-template #tooltipTemplateOpenSidemenu>
+    <span class="tooltip-content">
+        Abrir menu <span class="tooltip-action">(Clique)</span>
+    </span>
+</ng-template>

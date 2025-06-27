@@ -169,3 +169,15 @@
         }
     }
 }
+
+.ant-tooltip-inner {
+    border-radius: 5px;
+    font-size: var(--font-size-xsmall);
+    background-color: var(--contrast);
+    color: var(--contrast-text);
+    font-family: "Open Sans", sans-serif;
+}
+
+.ant-tooltip-arrow-content {
+    display: none;
+}

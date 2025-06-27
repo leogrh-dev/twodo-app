@@ -1,11 +1,18 @@
 <nz-layout class="in-main-layout">
-    <nz-sider [nzWidth]="isCollapsed ? 60 : 240" [nzCollapsed]="isCollapsed">
+    <nz-sider [nzWidth]="sidemenuWidth" [nzCollapsedWidth]="0" [nzTrigger]="null" [nzCollapsed]="isCollapsed">
         <app-sidemenu [isCollapsed]="isCollapsed" (toggleCollapse)="toggleCollapse()"></app-sidemenu>
-        <div class="change-sidemenu-size"></div>
     </nz-sider>
     <nz-layout>
         <nz-content>
+            <div class="sidemenu-resizer-overlay">
+                <app-sidemenu-resizer (resize)="onResizeSidemenu($event)"
+                    (clicked)="onClickResizer()"></app-sidemenu-resizer>
+            </div>
             <div style="margin-left: 10px;">
+                <div class="main-toolbar">
+                    <app-main-toolbar [isCollapsed]="isCollapsed"
+                        (toggleSidemenu)="toggleCollapse()"></app-main-toolbar>
+                </div>
                 <router-outlet></router-outlet>
             </div>
         </nz-content>
