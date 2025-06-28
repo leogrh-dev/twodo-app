@@ -1,24 +1,68 @@
 <div class="in-sidemenu">
-    <div style="display: none;"><app-theme-switcher></app-theme-switcher></div>
-    <div class="user-account">
-        <div class="user-account-profile"></div>
-        <div class="collapse-sidemenu" nz-tooltip [nzTooltipTitle]="tooltipTemplateCloseSidemenu">
-            <span class="iconify-20px close-sidemenu" (click)="toggleCollapse.emit()"></span>
+    <div class="sidemenu-item user-account">
+        <div class="user-account-profile" nz-dropdown nzTrigger="click" [nzDropdownMenu]="userMenu">
+            <span class="profile-pic">{{ userInitial }}</span>
+            <span class="profile-name">Anotações de {{ userName }}</span>
+            <button class="profile-menu-button">
+                <span class="iconify-20px down-icon"></span>
+            </button>
         </div>
-        <div class="new-note-button" nz-tooltip [nzTooltipTitle]="tooltipTemplateNewNote">
+
+        <button class="icon-button collapse-sidemenu-button" nz-tooltip [nzTooltipTitle]="tooltipTemplateCloseSidemenu"
+            (click)="toggleCollapse.emit()">
+            <span class="iconify-20px close-sidemenu-icon"></span>
+        </button>
+
+        <button class="icon-button new-note-button" nz-tooltip [nzTooltipTitle]="tooltipTemplateNewNote">
             <span class="iconify-20px edit-icon"></span>
+        </button>
+    </div>
+
+    <div class="sidemenu-item">
+        <div class="menu-entry">
+            <span class="iconify-20px search-icon"></span>
+            <p>Buscar</p>
         </div>
     </div>
+
+    <div class="sidemenu-item">
+        <div class="menu-entry">
+            <span class="iconify-20px home-icon"></span>
+            <p>Página inicial</p>
+        </div>
+    </div>
+
+    <div class="sidemenu-item">
+        <div class="menu-entry">
+            <span class="iconify-20px inbox-icon"></span>
+            <p>Caixa de entrada</p>
+        </div>
+    </div>
+
+    <div class="hidden-accessibility"><app-theme-switcher /></div>
+
+    <ng-template #tooltipTemplateNewNote>
+        <span class="tooltip-content">
+            Crie uma nova página <span class="tooltip-action">(Clique)</span>
+        </span>
+    </ng-template>
+
+    <ng-template #tooltipTemplateCloseSidemenu>
+        <span class="tooltip-content">
+            Fechar menu <span class="tooltip-action">(Clique)</span>
+        </span>
+    </ng-template>
+
+    <nz-dropdown-menu #userMenu="nzDropdownMenu">
+        <div class="user-menu">
+            <div class="user-menu-container">
+                <div class="user-info">
+                    <span class="profile-pic">{{ userInitial }}</span>
+                    <p>{{ userName }}</p>
+                </div>
+            </div>
+            <div class="usermenu-item"><span class="iconify-20px settings-icon"></span><p>Configurações</p></div>
+            <div class="usermenu-item"><span class="iconify-20px logout-icon"></span><p>Sair</p></div>
+        </div>
+    </nz-dropdown-menu>
 </div>
-
-<ng-template #tooltipTemplateNewNote>
-    <span class="tooltip-content">
-        Crie uma nova página <span class="tooltip-action">(Clique)</span>
-    </span>
-</ng-template>
-
-<ng-template #tooltipTemplateCloseSidemenu>
-    <span class="tooltip-content">
-        Fechar menu <span class="tooltip-action">(Clique)</span>
-    </span>
-</ng-template>

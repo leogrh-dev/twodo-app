@@ -13,9 +13,10 @@
 
 //SCSS - Font Import
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
 * {
-  font-family: "Open Sans", sans-serif;
+  font-family: "DM Sans", "Open Sans", sans-serif;
   font-size: 16px;
 }
 

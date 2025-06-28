@@ -15,7 +15,7 @@ $color-info: #1890ff;
 
   --background: #ffffff;
   --background-secondary: #efefef;
-  --background-tertiary: #f5f5f5;
+  --background-terciary: #f5f5f5;
 
   --surface: #ffffff;
   --surface-secondary: #fafafa;
@@ -33,6 +33,7 @@ $color-info: #1890ff;
   --border-dark: #bfbfbf;
 
   --sidemenu-hover: rgba(0, 0, 0, 0.07);
+  --sidemenu-focus: rgba(0, 0, 0, 0.14);
 
   --contrast: #060606;
   --contrast-text: #ffffff;
@@ -70,9 +71,9 @@ $color-info: #1890ff;
   --primary-dark: #{$color-primary-dark};
   --primary-contrast: #ffffff;
 
-  --background: #090909;
-  --background-secondary: #141414;
-  --background-tertiary: #1f1f1f;
+  --background: #141414;
+  --background-secondary: #202020;
+  --background-terciary: #262626;
 
   --surface: #141414;
   --surface-secondary: #1f1f1f;
@@ -90,9 +91,10 @@ $color-info: #1890ff;
   --border-dark: #595959;
 
   --sidemenu-hover: rgba(255, 255, 255, 0.05);
+  --sidemenu-focus: rgba(255, 255, 255, 0.1);
 
-  --contrast: #ffffff;
-  --contrast-text: #060606;
+  --contrast: #060606;
+  --contrast-text: #ffffff;
 
   --shadow: rgba(0, 0, 0, 0.3);
   --shadow-light: rgba(0, 0, 0, 0.2);

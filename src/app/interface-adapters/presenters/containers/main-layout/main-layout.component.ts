@@ -24,7 +24,7 @@ import { MainToolbarComponent } from '../../components/main-toolbar/main-toolbar
 
 export class MainLayoutComponent {
   isCollapsed = false;
-  sidemenuWidth = 240;
+  sidemenuWidth = 280;
   isTemporarilyExpanded = false;
 
   constructor(

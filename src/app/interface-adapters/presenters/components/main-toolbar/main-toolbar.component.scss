@@ -19,12 +19,12 @@
         &:hover {
             background: var(--background-secondary);
 
-            .open-sidemenu {
+            .open-sidemenu-icon {
                 background-color: var(--primary-text);
             }
         }
 
-        .open-sidemenu {
+        .open-sidemenu-icon {
             background-color: var(--secondary-text);
         }
     }
