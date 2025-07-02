@@ -7,9 +7,9 @@ import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { FormsModule } from '@angular/forms';
 import { provideHttpClient } from '@angular/common/http';
-
+import { setContext } from '@apollo/client/link/context';
+import { createHttpLink, InMemoryCache } from '@apollo/client/core';
 import { provideApollo } from 'apollo-angular';
-import { InMemoryCache, createHttpLink } from '@apollo/client/core';
 
 registerLocaleData(en);
 
@@ -21,10 +21,23 @@ export const appConfig: ApplicationConfig = {
     provideNzI18n(en_US),
     importProvidersFrom(FormsModule),
     provideHttpClient(),
+    provideApollo(() => {
+      const httpLink = createHttpLink({ uri: 'http://localhost:3000/graphql' });
 
-    provideApollo(() => ({
-      link: createHttpLink({ uri: 'http://localhost:3000/graphql' }),
-      cache: new InMemoryCache(),
-    })),
+      const authLink = setContext((_, { headers }) => {
+        const token = localStorage.getItem('access_token');
+        return {
+          headers: {
+            ...headers,
+            Authorization: token ? `Bearer ${token}` : '',
+          },
+        };
+      });
+
+      return {
+        link: authLink.concat(httpLink),
+        cache: new InMemoryCache(),
+      };
+    }),
   ],
 };

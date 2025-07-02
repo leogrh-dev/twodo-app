@@ -28,4 +28,48 @@
             background-color: var(--secondary-text);
         }
     }
+
+    .in-note-page-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        overflow: hidden;
+        padding-left: 12px;
+        padding-right: 10px;
+
+        .note-name-btn {
+            background: none;
+            border: none;
+            user-select: none;
+            transition: all 0.2s ease-in;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            height: 24px;
+            padding-right: 6px;
+            padding-left: 6px;
+            border-radius: 6px;
+            white-space: nowrap;
+            flex-shrink: 1;
+            line-height: 1.2;
+            min-width: 0px;
+
+            &:hover {
+                background: var(--background-terciary);
+            }
+
+            &:active {
+                background: var(--background-secondary);
+            }
+
+            .note-title-text {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 240px;
+                font-size: var(--font-size-small);
+                color: var(--primary-text);
+            }
+        }
+    }
 }

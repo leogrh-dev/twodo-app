@@ -1,0 +1,25 @@
+.note-page-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+  width: 100%;
+}
+
+.note-content-wrapper {
+  max-width: 720px;
+  width: 100%;
+}
+
+.note-title {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  color: var(--primary-text);
+  margin: 0;
+  outline: none;
+  border: none;
+  min-height: 1.4em;
+  line-height: 1.2;
+  word-wrap: break-word;
+  cursor: text;
+  position: relative;
+}

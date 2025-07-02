@@ -1,0 +1,7 @@
+<div class="note-page-container">
+    <div class="note-content-wrapper">
+        <h1 class="note-title" [class.is-placeholder]="note?.title?.trim() === 'Nova página' || !note?.title?.trim()">
+            {{ note?.title || 'Nova página' }}
+        </h1>
+    </div>
+</div>

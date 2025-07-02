@@ -3,7 +3,21 @@
         class="expand-sidemenu">
         <span class="iconify-20px open-sidemenu-icon"></span>
     </div>
+    <div *ngIf="isInNotePage" class="in-note-page-container">
+        <button class="note-name-btn" nz-dropdown nzTrigger="click" [nzDropdownMenu]="changeNoteTitle">
+            <span class="note-title-text">
+                {{ noteTitle }}
+            </span>
+        </button>
+    </div>
 </div>
+
+<nz-dropdown-menu #changeNoteTitle="nzDropdownMenu">
+    <div class="note-title-dropdown">
+        <input nz-input [(ngModel)]="draftTitle" (input)="onTitleInputChange(draftTitle)" type="text"
+            placeholder="Título da nota" />
+    </div>
+</nz-dropdown-menu>
 
 <ng-template #tooltipTemplateOpenSidemenu>
     <span class="tooltip-content">

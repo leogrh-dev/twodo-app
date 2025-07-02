@@ -10,10 +10,27 @@ p {
   overflow: hidden;
   position: relative;
   padding: 0;
+  gap: 1rem;
 }
 
 .hidden-accessibility {
   display: none;
+}
+
+.sidemenu-group-1,
+.sidemenu-group-2 {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidemenu-section-title {
+  font-size: var(--font-size-xsmall);
+  font-weight: 600;
+  color: var(--secondary-text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
 }
 
 .sidemenu-item {
@@ -21,7 +38,7 @@ p {
   display: flex;
   align-items: center;
   height: 32px;
-  margin: 4px 8px;
+  margin: 2px 8px;
   padding: 0;
   gap: 0.25rem;
   border-radius: 6px;
@@ -36,10 +53,10 @@ p {
   &:active {
     background: var(--sidemenu-focus);
   }
+}
 
-  &:first-child {
-    margin: 6px 8px;
-  }
+.user-account {
+  margin: 6px 8px;
 }
 
 .user-account-profile {
@@ -121,7 +138,12 @@ p {
   background-color: var(--primary-text);
 }
 
-.menu-entry {
+.menu-section-title {
+  padding: 0.25rem 0 !important;
+  justify-content: space-between;
+}
+
+.menu-entry, .menu-section-title {
   display: flex;
   align-items: center;
   font-size: var(--font-size-small);
@@ -133,13 +155,17 @@ p {
 
   p {
     font-size: var(--font-size-small);
+    font-weight: 500;
     color: var(--secondary-text);
     transition: all 0.3s ease;
   }
 
   .search-icon,
   .home-icon,
-  .inbox-icon {
+  .inbox-icon,
+  .trash-icon,
+  .note-icon,
+  .options-icon {
     background-color: var(--secondary-text);
     margin-right: 8px;
     transition: all 0.3s ease;
@@ -152,7 +178,10 @@ p {
 
     .search-icon,
     .home-icon,
-    .inbox-icon {
+    .inbox-icon,
+    .trash-icon,
+    .note-icon,
+    .options-icon {
       background-color: var(--primary-text);
     }
   }

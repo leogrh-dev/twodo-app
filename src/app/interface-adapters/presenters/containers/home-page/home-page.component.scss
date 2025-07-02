@@ -1,0 +1,23 @@
+.home-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 100%;
+    position: relative;
+
+    .home-page-container {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        gap: 1rem;
+        top: -44px;
+    }
+
+    h1 {
+        font-size: var(--font-size);
+        color: var(--secondary-text);
+        font-weight: 400;
+    }
+}
