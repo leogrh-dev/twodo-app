@@ -3,23 +3,88 @@
   justify-content: center;
   padding: 2rem 1rem;
   width: 100%;
+  max-width: 100%;
+  position: relative;
+  max-height: calc(100% - 44px);
 }
 
 .note-content-wrapper {
-  max-width: 720px;
-  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(96px, 1fr) minmax(auto, 708px) minmax(96px, 1fr);
+  padding-bottom: 30vh;
+}
+
+.top-container,
+.note-content-container {
+  display: flex;
+  flex-direction: column;
+  grid-column: 2;
+  position: relative;
+}
+
+.top-controls-container {
+  display: flex;
+  padding-top: 80px;
+  padding-bottom: 4px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
 }
 
 .note-title {
-  font-size: var(--font-size-3xl);
-  font-weight: 700;
+  font-size: var(--font-size-3xl) !important;
+  font-weight: 600;
   color: var(--primary-text);
   margin: 0;
   outline: none;
   border: none;
-  min-height: 1.4em;
-  line-height: 1.2;
   word-wrap: break-word;
+  word-break: break-word;
   cursor: text;
   position: relative;
+}
+
+.note-title * {
+  font-size: var(--font-size-3xl) !important;
+}
+
+.note-title:empty::before,
+.note-title.empty::before {
+  content: attr(data-placeholder);
+  color: var(--secondary-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.note-content-container {
+  width: 100%;
+  max-width: 708px;
+  margin-top: 2px;
+  margin-bottom: 0;
+}
+
+.note-content-container .note-content {
+  flex-shrink: 0;
+  flex-grow: 1;
+  max-width: 100%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 100%;
+  padding: 8px 0 0;
+  outline: none !important;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.note-content-container .note-content.empty::before {
+  content: 'Sua nota começa aqui...';
+  color: var(--secondary-text);
+  position: absolute;
+  left: 0;
+  top: 8px;
+  pointer-events: none;
+  opacity: 0.3;
 }

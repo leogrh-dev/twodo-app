@@ -1,7 +1,16 @@
 <div class="note-page-container">
     <div class="note-content-wrapper">
-        <h1 class="note-title" [class.is-placeholder]="note?.title?.trim() === 'Nova página' || !note?.title?.trim()">
-            {{ note?.title || 'Nova página' }}
-        </h1>
+        <div class="top-container">
+            <div class="top-controls-container"></div>
+            <h1 class="note-title" [class.empty]="isTitleEmpty" contenteditable="true" spellcheck="false"
+                [attr.data-placeholder]="'Nova página'" (input)="onTitleInput($event)" (paste)="onTitlePaste($event)"
+                (focus)="onTitleFocus()" (keydown)="onTitleKeydown($event)" #titleEl>
+            </h1>
+        </div>
+        <div class="note-content-container">
+            <p class="note-content" contenteditable="true" [class.empty]="isContentEmpty"
+                (input)="onContentInput($event)" #contentEl>
+            </p>
+        </div>
     </div>
 </div>

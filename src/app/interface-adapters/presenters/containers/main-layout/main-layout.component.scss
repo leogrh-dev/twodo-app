@@ -35,12 +35,13 @@
     }
 
     .main {
-        width: calc(100% - 10px);
-        height: calc(100% - 44px);
-        min-width: calc(100% - 10px);
-        min-height: calc(100% - 44px);
-        max-width: calc(100% - 10px);
-        max-height: calc(100% - 44px);
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        height: calc(100vh - 44px);
+        min-height: calc(100vh - 44px);
+        max-height: calc(100vh - 44px);
         position: relative;
+        overflow: auto;
     }
 }

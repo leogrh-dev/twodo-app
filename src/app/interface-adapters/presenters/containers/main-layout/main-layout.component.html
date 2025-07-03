@@ -8,12 +8,12 @@
                 <app-sidemenu-resizer (resize)="onResizeSidemenu($event)"
                     (clicked)="onClickResizer()"></app-sidemenu-resizer>
             </div>
-            <div style="margin-left: 10px;" class="main">
+            <div style="margin-left: 10px;">
                 <div class="main-toolbar">
                     <app-main-toolbar [isCollapsed]="isCollapsed"
                         (toggleSidemenu)="toggleCollapse()"></app-main-toolbar>
                 </div>
-                <div class="full-rlt-container">
+                <div class="main">
                     <router-outlet></router-outlet>
                 </div>
             </div>
