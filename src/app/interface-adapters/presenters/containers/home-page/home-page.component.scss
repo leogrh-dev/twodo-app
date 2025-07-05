@@ -13,10 +13,11 @@
         position: relative;
         gap: 1rem;
         top: -44px;
+        align-items: center;
     }
 
     h1 {
-        font-size: var(--font-size);
+        font-size: var(--font-size-base);
         color: var(--secondary-text);
         font-weight: 400;
     }

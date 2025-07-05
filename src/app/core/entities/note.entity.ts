@@ -10,7 +10,7 @@ export class Note {
   ) {}
 
   updateTitle(newTitle: string): void {
-    this.title = newTitle.trim() || 'Nova página';
+    this.title = newTitle.trim();
     this.updatedAt = new Date();
   }
 

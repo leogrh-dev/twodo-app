@@ -69,18 +69,21 @@
     font-size: var(--font-size-small);
 
     &:focus {
-        border-color: var(--primary-light);
-        box-shadow: 0 0 0 1px var(--shadow);
+        border-color: var(--border);
+        border-width: 1px;
+        box-shadow: none;
     }
 
     &:hover {
-        border-color: var(--primary-light);
+        border-color: var(--border);
+        border-width: 1px;
     }
 }
 
 .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
-    box-shadow: 0 0 0 1px var(--shadow);
-    border-color: var(--primary-light);
+        border-color: var(--border);
+        border-width: 1px;
+        box-shadow: none;
 }
 
 .ant-select-single .ant-select-selector .ant-select-selection-item {
@@ -93,7 +96,7 @@
 
     &:hover,
     &:focus {
-        border-color: var(--primary-light);
+        border-color: var(--border);
     }
 }
 

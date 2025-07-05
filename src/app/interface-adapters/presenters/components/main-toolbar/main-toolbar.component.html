@@ -6,7 +6,7 @@
     <div *ngIf="isInNotePage" class="in-note-page-container">
         <button class="note-name-btn" nz-dropdown nzTrigger="click" [nzDropdownMenu]="changeNoteTitle">
             <span class="note-title-text">
-                {{ noteTitle }}
+                {{ noteTitle || "Nova página" }}
             </span>
         </button>
     </div>

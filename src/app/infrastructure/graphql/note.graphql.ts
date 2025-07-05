@@ -46,3 +46,13 @@ export const UPDATE_NOTE_TITLE_MUTATION = gql`
     }
   }
 `;
+
+export const UPDATE_NOTE_CONTENT_MUTATION = gql`
+  mutation UpdateNoteContent($input: UpdateNoteContentInput!) {
+    updateNoteContent(input: $input) {
+      id
+      content
+      updatedAt
+    }
+  }
+`;

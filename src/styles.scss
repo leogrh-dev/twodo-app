@@ -17,7 +17,6 @@
 
 * {
   font-family: "DM Sans", "Open Sans", sans-serif;
-  font-size: 16px;
 }
 
 html,
@@ -27,6 +26,10 @@ body {
   padding: 0;
   font-family: "Open Sans", sans-serif;
   background-color: var(--background);
+  color: var(--primary-text);
+}
+
+p, h1, h2, h3, h4, h5, h6 {
   color: var(--primary-text);
 }
 

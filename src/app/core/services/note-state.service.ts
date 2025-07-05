@@ -1,23 +1,61 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { Note } from '../entities/note.entity';
 import { NoteService } from './note.service';
 
 @Injectable({ providedIn: 'root' })
 export class NoteStateService {
-  private noteSubject = new BehaviorSubject<Note | null>(null);
+  private readonly noteSubject = new BehaviorSubject<Note | null>(null);
   readonly note$ = this.noteSubject.asObservable();
 
-  private hasPendingChangesSubject = new BehaviorSubject<boolean>(false);
-  hasPendingChanges$ = this.hasPendingChangesSubject.asObservable();
+  private readonly hasPendingChangesSubject = new BehaviorSubject<boolean>(false);
+  readonly hasPendingChanges$ = this.hasPendingChangesSubject.asObservable();
 
-  constructor(
-    private readonly noteService: NoteService
-  ) { }
+  private readonly pendingContent$ = new Subject<string>();
+  private readonly pendingTitle$ = new Subject<string>();
+
+  constructor(private readonly noteService: NoteService) {
+    this.handleDebouncedContentUpdates();
+    this.handleDebouncedTitleUpdates();
+  }
+
+  private handleDebouncedContentUpdates(): void {
+    this.pendingContent$
+      .pipe(debounceTime(2000), distinctUntilChanged())
+      .subscribe(content => {
+        const note = this.getCurrentNote();
+        if (!note) return;
+
+        note.updateContent(content);
+        this.setPendingChanges(true);
+
+        this.noteService.updateNoteContent(note.id, content).subscribe({
+          next: () => this.setPendingChanges(false),
+          error: () => this.setPendingChanges(true),
+        });
+      });
+  }
+
+  private handleDebouncedTitleUpdates(): void {
+    this.pendingTitle$
+      .pipe(debounceTime(1000), distinctUntilChanged())
+      .subscribe(title => {
+        const note = this.getCurrentNote();
+        if (!note) return;
+
+        note.updateTitle(title);
+        this.setPendingChanges(true);
+
+        this.noteService.updateNoteTitle(note.id, title).subscribe({
+          next: () => this.setPendingChanges(false),
+          error: () => this.setPendingChanges(true),
+        });
+      });
+  }
 
   setNote(note: Note): void {
     this.noteSubject.next(note);
-    this.hasPendingChangesSubject.next(false);
+    this.setPendingChanges(false);
   }
 
   getCurrentNote(): Note | null {
@@ -25,31 +63,23 @@ export class NoteStateService {
   }
 
   updateTitle(newTitle: string): void {
-    const currentNote = this.noteSubject.value;
-    if (!currentNote) return;
+    const clean = newTitle.trim();
 
-    const cleanTitle = newTitle.trim();
-    const finalTitle = cleanTitle || 'Nova página';
+    const note = this.getCurrentNote();
+    if (!note) return;
 
-    currentNote.updateTitle(finalTitle);
-    this.noteSubject.next(currentNote);
-    this.hasPendingChangesSubject.next(true);
+    note.updateTitle(clean);
+    this.noteSubject.next(note);
 
-    this.noteService.updateNoteTitle(currentNote.id, finalTitle).subscribe({
-      next: () => {
-        this.hasPendingChangesSubject.next(false);
-      },
-      error: () => {
-        this.hasPendingChangesSubject.next(true);
-      }
-    });
+    this.pendingTitle$.next(clean);
   }
 
   updateContent(newContent: string): void {
-    const note = this.getCurrentNote();
-    if (note) {
-      note.updateContent(newContent);
-      this.noteSubject.next(note);
-    }
+    const clean = newContent.trim();
+    this.pendingContent$.next(clean);
+  }
+
+  private setPendingChanges(status: boolean): void {
+    this.hasPendingChangesSubject.next(status);
   }
 }

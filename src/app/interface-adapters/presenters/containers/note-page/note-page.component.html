@@ -1,16 +1,7 @@
+<link rel="stylesheet" href="/assets/microfrontends/note-page-mfe.css" />
+
 <div class="note-page-container">
-    <div class="note-content-wrapper">
-        <div class="top-container">
-            <div class="top-controls-container"></div>
-            <h1 class="note-title" [class.empty]="isTitleEmpty" contenteditable="true" spellcheck="false"
-                [attr.data-placeholder]="'Nova página'" (input)="onTitleInput($event)" (paste)="onTitlePaste($event)"
-                (focus)="onTitleFocus()" (keydown)="onTitleKeydown($event)" #titleEl>
-            </h1>
-        </div>
-        <div class="note-content-container">
-            <p class="note-content" contenteditable="true" [class.empty]="isContentEmpty"
-                (input)="onContentInput($event)" #contentEl>
-            </p>
-        </div>
-    </div>
+  <div class="note-content-wrapper">
+    <div #reactContainer class="note-content-container"></div>
+  </div>
 </div>
