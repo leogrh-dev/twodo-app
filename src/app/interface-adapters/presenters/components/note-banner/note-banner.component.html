@@ -1,0 +1,62 @@
+<div class="banner-container" [class.with-banner]="hasBanner()"
+  [ngStyle]="currentBanner()?.startsWith('#') ? { background: currentBanner() } : { 'background-image': 'url(' + currentBanner() + ')' }">
+  <div class="banner-controls" [class.floating]="hasBanner()">
+    <div class="banner-controls-container">
+      <button nz-dropdown nzTrigger="click" [nzDropdownMenu]="changeBannerImage" class="add-cover-btn"
+        (nzVisibleChange)="showMenu.set($event)" [nzVisible]="showMenu()">
+        <span class="image-upload-icon iconify-1rem"></span>
+        <p>{{ hasBanner() ? 'Alterar capa' : 'Adicionar capa' }}</p>
+      </button>
+      <button *ngIf="hasBanner()" class="remove-cover-btn" (click)="removeBanner()">
+        <span class="trash-icon iconify-1rem"></span>
+        <p>Remover capa</p>
+      </button>
+    </div>
+  </div>
+</div>
+
+<nz-dropdown-menu #changeBannerImage="nzDropdownMenu">
+  <div class="banner-menu">
+    <div class="custom-tabs">
+      <button class="tab-button" [class.active]="activeTab() === 'gallery'" (click)="selectTab('gallery')">
+        Galeria
+      </button>
+      <button class="tab-button" [class.active]="activeTab() === 'upload'" (click)="selectTab('upload')">
+        Upload
+      </button>
+    </div>
+
+    <div class="tab-content">
+      <div *ngIf="activeTab() === 'gallery'" class="tab-panel">
+        <div class="scrollable-panel">
+          <div class="custom-color-picker">
+            <h4 class="category-title">Escolher cor personalizada</h4>
+            <nz-color-picker [nzShowText]="true" [nzDefaultValue]="customColor()"
+              (nzOnChange)="handleColorPick($event)">
+            </nz-color-picker>
+          </div>
+          <div *ngFor="let category of colorCategories" class="color-category">
+            <h4 class="category-title">{{ category.label }}</h4>
+            <div class="color-grid">
+              <button class="color-option" *ngFor="let color of category.colors" [ngStyle]="{ background: color }"
+                (click)="onSelectColor(color)"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="activeTab() === 'upload'" class="tab-panel">
+        <div class="upload-container">
+          <div class="upload-text">
+            <p>Selecione uma imagem para Upload</p>
+            <p class="subtitle-upload">Imagens com 1500px de largura se encaixam melhores</p>
+          </div>
+          <button nz-button nzType="default" (click)="fileInput.click()">
+            Escolher imagem
+          </button>
+          <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" style="display: none" />
+        </div>
+      </div>
+    </div>
+  </div>
+</nz-dropdown-menu>

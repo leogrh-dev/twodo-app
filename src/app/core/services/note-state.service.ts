@@ -82,4 +82,39 @@ export class NoteStateService {
   private setPendingChanges(status: boolean): void {
     this.hasPendingChangesSubject.next(status);
   }
+
+  updateBanner(newBannerUrl: string): void {
+    const note = this.getCurrentNote();
+    if (!note) return;
+
+    const clean = newBannerUrl.trim();
+
+    note.updateBanner(clean);
+    this.noteSubject.next(note);
+
+    this.setPendingChanges(true);
+    this.noteService.updateNoteBanner(note.id, clean).subscribe({
+      next: () => this.setPendingChanges(false),
+      error: () => this.setPendingChanges(true),
+    });
+  }
+
+  removeBanner(): void {
+    const note = this.noteSubject.getValue();
+    if (!note) return;
+
+    this.noteService.removeBanner(note.id).subscribe(() => {
+      const updatedNote = new Note(
+        note.id,
+        note.title,
+        note.content,
+        note.ownerId,
+        null,
+        note.createdAt,
+        new Date()
+      );
+
+      this.noteSubject.next(updatedNote);
+    });
+  }
 }

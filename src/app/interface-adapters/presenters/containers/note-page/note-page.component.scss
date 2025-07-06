@@ -1,11 +1,17 @@
 .note-page-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  padding: 2rem 1rem;
   width: 100%;
   max-width: 100%;
   position: relative;
   max-height: calc(100% - 44px);
+}
+
+.note-banner-wrapper {
+  width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .note-content-wrapper {

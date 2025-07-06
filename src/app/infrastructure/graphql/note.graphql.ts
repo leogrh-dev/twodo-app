@@ -56,3 +56,23 @@ export const UPDATE_NOTE_CONTENT_MUTATION = gql`
     }
   }
 `;
+
+export const UPDATE_NOTE_BANNER_MUTATION = gql`
+  mutation UpdateNoteBanner($input: UpdateNoteBannerInput!) {
+    updateNoteBanner(input: $input) {
+      id
+      bannerUrl
+      updatedAt
+    }
+  }
+`;
+
+export const REMOVE_NOTE_BANNER_MUTATION = gql`
+  mutation RemoveNoteBanner($input: RemoveNoteBannerInput!) {
+    removeNoteBanner(input: $input) {
+      id
+      bannerUrl
+      updatedAt
+    }
+  }
+`;

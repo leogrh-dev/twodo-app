@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map } from 'rxjs/operators';
-import { CREATE_NOTE_MUTATION, GET_NOTE_BY_ID_QUERY, GET_USER_NOTES_QUERY, UPDATE_NOTE_CONTENT_MUTATION, UPDATE_NOTE_TITLE_MUTATION } from '../../infrastructure/graphql/note.graphql';
+import { CREATE_NOTE_MUTATION, GET_NOTE_BY_ID_QUERY, GET_USER_NOTES_QUERY, REMOVE_NOTE_BANNER_MUTATION, UPDATE_NOTE_BANNER_MUTATION, UPDATE_NOTE_CONTENT_MUTATION, UPDATE_NOTE_TITLE_MUTATION } from '../../infrastructure/graphql/note.graphql';
 import { Observable } from 'rxjs';
 import { Note } from '../entities/note.entity';
 
@@ -69,5 +69,30 @@ export class NoteService {
         fetchPolicy: 'cache-and-network',
       })
       .valueChanges.pipe(map(result => result.data.getUserNotes));
+  }
+
+  updateNoteBanner(id: string, bannerUrl: string): Observable<void> {
+    return this.apollo
+      .mutate({
+        mutation: UPDATE_NOTE_BANNER_MUTATION,
+        variables: {
+          input: {
+            id,
+            bannerUrl,
+          },
+        },
+      })
+      .pipe(map(() => void 0));
+  }
+
+  removeBanner(noteId: string): Observable<void> {
+    return this.apollo
+      .mutate({
+        mutation: REMOVE_NOTE_BANNER_MUTATION,
+        variables: {
+          input: { id: noteId },
+        },
+      })
+      .pipe(map(() => void 0));
   }
 }

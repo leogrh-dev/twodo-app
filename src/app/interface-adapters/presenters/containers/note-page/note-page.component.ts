@@ -4,13 +4,16 @@ import { NoteService } from '../../../../core/services/note.service';
 import { NoteStateService } from '../../../../core/services/note-state.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DestroyRef } from '@angular/core';
+import { NoteBannerComponent } from '../../components/note-banner/note-banner.component';
 
 @Component({
   standalone: true,
   selector: 'app-note-page',
   templateUrl: './note-page.component.html',
   styleUrls: ['./note-page.component.scss'],
-  imports: []
+  imports: [
+    NoteBannerComponent
+  ]
 })
 export class NotePageComponent implements AfterViewInit {
   @ViewChild('reactContainer', { static: true }) reactContainer!: ElementRef<HTMLElement>;
