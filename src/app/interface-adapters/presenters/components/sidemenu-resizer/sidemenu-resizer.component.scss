@@ -1,13 +1,14 @@
 .resizer {
   width: 10px;
   min-height: 100%;
-  border-left: solid 1px var(--border);
+  border-right: solid 1px var(--border);
   position: absolute;
   right: -10px;
   top: 0;
   cursor: col-resize;
+  background-color: var(--background-secondary);
 
   &:hover {
-    border-left: solid 2px var(--border);
+    border-right: solid 2px var(--border);
   }
 }

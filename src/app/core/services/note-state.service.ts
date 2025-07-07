@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { BehaviorSubject, Subject, debounceTime, distinctUntilChanged, firstValueFrom } from 'rxjs';
 import { Note } from '../entities/note.entity';
 import { NoteService } from './note.service';
 
@@ -99,22 +99,33 @@ export class NoteStateService {
     });
   }
 
-  removeBanner(): void {
+  async removeBanner(): Promise<void> {
     const note = this.noteSubject.getValue();
     if (!note) return;
 
-    this.noteService.removeBanner(note.id).subscribe(() => {
-      const updatedNote = new Note(
-        note.id,
-        note.title,
-        note.content,
-        note.ownerId,
-        null,
-        note.createdAt,
-        new Date()
-      );
+    await firstValueFrom(this.noteService.removeBanner(note.id));
 
-      this.noteSubject.next(updatedNote);
-    });
+    const updatedNote = new Note(
+      note.id,
+      note.title,
+      note.content,
+      note.ownerId,
+      null,
+      note.createdAt,
+      new Date()
+    );
+
+    this.noteSubject.next(updatedNote);
+  }
+
+  async replaceBanner(newBannerUrl: string): Promise<void> {
+    const current = this.getCurrentNote()?.bannerUrl;
+    const isS3Image = current?.startsWith('http') && current.includes('amazonaws.com');
+
+    if (isS3Image) {
+      await this.removeBanner();
+    }
+
+    this.updateBanner(newBannerUrl);
   }
 }

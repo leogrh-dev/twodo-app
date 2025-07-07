@@ -50,24 +50,23 @@ export class NoteBannerComponent {
     this.activeTab.set(tab);
   }
 
-  onSelectColor(color: string): void {
-    this.noteState.updateBanner(color);
+  async onSelectColor(color: string): Promise<void> {
+    await this.noteState.replaceBanner(color);
     this.showMenu.set(false);
   }
 
-  onFileSelected(event: Event): void {
+  async onFileSelected(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     const file = input?.files?.[0];
     if (!file) return;
 
-    this.uploadFile(file).then((url) => {
-      this.noteState.updateBanner(url);
-      this.showMenu.set(false);
-    });
+    const url = await this.uploadFile(file);
+    await this.noteState.replaceBanner(url);
+    this.showMenu.set(false);
   }
 
-  removeBanner(): void {
-    this.noteState.removeBanner();
+  async removeBanner(): Promise<void> {
+    await this.noteState.removeBanner();
     this.showMenu.set(false);
   }
 
