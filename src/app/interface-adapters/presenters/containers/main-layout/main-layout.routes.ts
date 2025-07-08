@@ -1,6 +1,7 @@
 
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './main-layout.component';
+import { NoteAccessGuard } from '../../../../shared/guards/note-access.guard';
 
 export const mainLayoutRoutes: Routes = [
   {
@@ -14,6 +15,7 @@ export const mainLayoutRoutes: Routes = [
       },
       {
         path: 'note/:id',
+        canActivate: [NoteAccessGuard],
         loadComponent: () => import('../note-page/note-page.component').then(m => m.NotePageComponent),
       }
     ]

@@ -1,15 +1,18 @@
 .note-page-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   max-width: 100%;
   position: relative;
-  max-height: calc(100% - 44px);
+  min-height: calc(100vh - 44px);
+  height: calc(100vh - 44px);
+  overflow: auto;
 }
 
 .note-banner-wrapper {
-  width: 100%;
+  min-width: 100%;
+  width: max-content;
   position: relative;
   z-index: 1;
 }
@@ -17,7 +20,7 @@
 .note-content-wrapper {
   display: grid;
   grid-template-columns: minmax(96px, 1fr) minmax(auto, 708px) minmax(96px, 1fr);
-  padding-bottom: 30vh;
+  padding-bottom: 10vh;
 }
 
 .note-content-container {

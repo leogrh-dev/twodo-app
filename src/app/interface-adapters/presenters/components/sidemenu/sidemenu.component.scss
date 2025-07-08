@@ -47,11 +47,37 @@ p {
 
   &:hover {
     background: var(--sidemenu-hover);
+
+    .note-options,
+    .options-icon {
+      opacity: 1;
+      background-color: var(--primary-text);
+    }
   }
 
   &:focus,
   &:active {
     background: var(--sidemenu-focus);
+  }
+
+  .note-options,
+  .options-icon {
+    opacity: 0;
+    background-color: var(--secondary-text);
+    margin-right: 8px;
+    transition: all 0.3s ease;
+  }
+}
+
+.move-to-trash {
+  &:hover {
+    p {
+      color: var(--error) !important;
+    }
+
+    .trash-icon {
+      background-color: var(--error) !important;
+    }
   }
 }
 
@@ -96,24 +122,6 @@ p {
   }
 }
 
-.icon-button {
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  border-radius: 4px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: transparent;
-  transition: all 0.3s ease;
-  cursor: pointer;
-
-  &:hover {
-    background: var(--sidemenu-hover);
-  }
-}
-
 .profile-pic {
   width: 22px;
   height: 22px;
@@ -144,7 +152,7 @@ p {
 }
 
 .menu-entry,
-.menu-section-title {
+.menu-section-title, .rename-entry {
   display: flex;
   align-items: center;
   font-size: var(--font-size-small);
@@ -173,7 +181,8 @@ p {
   .inbox-icon,
   .trash-icon,
   .note-icon,
-  .options-icon {
+  .options-icon,
+  .edit-icon {
     background-color: var(--secondary-text);
     margin-right: 8px;
     transition: all 0.3s ease;
@@ -189,7 +198,8 @@ p {
     .inbox-icon,
     .trash-icon,
     .note-icon,
-    .options-icon {
+    .options-icon,
+    .edit-icon {
       background-color: var(--primary-text);
     }
   }
@@ -200,7 +210,7 @@ p {
   flex-direction: column;
   background-color: var(--background-terciary);
   border-radius: 5px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px var(--shadow-elevation);
   color: var(--primary-text);
   min-width: 300px;
   border: solid 1px var(--border);

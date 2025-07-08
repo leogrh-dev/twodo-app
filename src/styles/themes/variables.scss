@@ -4,7 +4,7 @@ $color-primary-dark: #001679;
 
 $color-success: #52c41a;
 $color-warning: #faad14;
-$color-error: #ff4d4f;
+$color-error: #F92945;
 $color-info: #1890ff;
 
 @mixin theme-light {
@@ -41,7 +41,7 @@ $color-info: #1890ff;
   --shadow: rgba(0, 0, 0, 0.1);
   --shadow-light: rgba(0, 0, 0, 0.06);
   --shadow-dark: rgba(0, 0, 0, 0.15);
-  --shadow-elevation: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --shadow-elevation: 0 2px 8px rgba(0, 0, 0, 0.5);
 
   --success: #{$color-success};
   --warning: #{$color-warning};
@@ -73,7 +73,7 @@ $color-info: #1890ff;
   --primary-dark: #{$color-primary-dark};
   --primary-contrast: #ffffff;
 
-  --background: #141414;
+  --background: #161616;
   --background-secondary: #202020;
   --background-terciary: #262626;
 
@@ -101,7 +101,7 @@ $color-info: #1890ff;
   --shadow: rgba(0, 0, 0, 0.3);
   --shadow-light: rgba(0, 0, 0, 0.2);
   --shadow-dark: rgba(0, 0, 0, 0.5);
-  --shadow-elevation: 0 2px 8px rgba(0, 0, 0, 0.45);
+  --shadow-elevation: 0 2px 8px rgba(0, 0, 0);
 
   --success: #{$color-success};
   --warning: #{$color-warning};

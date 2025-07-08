@@ -10,6 +10,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { setContext } from '@apollo/client/link/context';
 import { createHttpLink, InMemoryCache } from '@apollo/client/core';
 import { provideApollo } from 'apollo-angular';
+import { environment } from '../environments/environment';
 
 registerLocaleData(en);
 
@@ -22,10 +23,12 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(FormsModule),
     provideHttpClient(),
     provideApollo(() => {
-      const httpLink = createHttpLink({ uri: 'http://localhost:3000/graphql' });
+      const httpLink = createHttpLink({
+        uri: environment.graphqlUri,
+      });
 
       const authLink = setContext((_, { headers }) => {
-        const token = localStorage.getItem('access_token');
+        const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
         return {
           headers: {
             ...headers,

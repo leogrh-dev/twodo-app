@@ -82,7 +82,9 @@
 }
 
 .banner-menu {
-  background: var(--background-secondary);
+  background: var(--background);
+  border: solid 1px var(--border);
+  box-shadow: 0 4px 16px var(--shadow);
   color: var(--primary-text);
   padding: 0 1rem 1rem 1rem;
   width: 340px;
@@ -175,7 +177,6 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    background: var(--background-secondary);
 
     .upload-text {
       display: flex;

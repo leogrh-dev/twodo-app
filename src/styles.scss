@@ -29,7 +29,13 @@ body {
   color: var(--primary-text);
 }
 
-p, h1, h2, h3, h4, h5, h6 {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--primary-text);
 }
 
@@ -49,5 +55,29 @@ p, h1, h2, h3, h4, h5, h6 {
   .tooltip-action {
     opacity: 0.5;
     font-size: var(--font-size-xsmall);
+  }
+}
+
+.icon-button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--sidemenu-hover);
+  }
+}
+
+.note-title-dropdown {
+  input {
+    min-width: 17rem;
   }
 }

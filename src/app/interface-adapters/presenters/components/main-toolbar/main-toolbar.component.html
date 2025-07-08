@@ -13,10 +13,20 @@
 </div>
 
 <nz-dropdown-menu #changeNoteTitle="nzDropdownMenu">
-    <div class="note-title-dropdown">
-        <input nz-input [(ngModel)]="draftTitle" (input)="onTitleInputChange(draftTitle)" type="text"
-            placeholder="Título da nota" />
-    </div>
+  <div class="note-title-dropdown">
+    <nz-input-group [nzSuffix]="editIcon">
+      <input
+        nz-input
+        [(ngModel)]="draftTitle"
+        (input)="onTitleInputChange(draftTitle)"
+        type="text"
+        placeholder="Alterar título da anotação..." />
+    </nz-input-group>
+
+    <ng-template #editIcon>
+      <span class="iconify-20px edit-icon"></span>
+    </ng-template>
+  </div>
 </nz-dropdown-menu>
 
 <ng-template #tooltipTemplateOpenSidemenu>

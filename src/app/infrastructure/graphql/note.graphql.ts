@@ -1,19 +1,6 @@
 import { gql } from 'apollo-angular';
 
-export const CREATE_NOTE_MUTATION = gql`
-  mutation CreateNote {
-    createNote {
-      id
-      title
-      content
-      ownerId
-      bannerUrl
-      createdAt
-      updatedAt
-    }
-  }
-`;
-
+// Queries
 export const GET_NOTE_BY_ID_QUERY = gql`
   query GetNoteById($id: String!) {
     getNoteById(id: $id) {
@@ -24,6 +11,7 @@ export const GET_NOTE_BY_ID_QUERY = gql`
       createdAt
       updatedAt
       ownerId
+      isDeleted
     }
   }
 `;
@@ -33,6 +21,43 @@ export const GET_USER_NOTES_QUERY = gql`
     getUserNotes {
       id
       title
+      isDeleted
+      content
+      bannerUrl
+      createdAt
+      updatedAt
+      ownerId
+    }
+  }
+`;
+
+export const GET_DELETED_NOTES_QUERY = gql`
+  query GetDeletedNotes {
+    getDeletedNotes {
+      id
+      title
+      content
+      ownerId
+      bannerUrl
+      createdAt
+      updatedAt
+      isDeleted
+    }
+  }
+`;
+
+// Mutations
+export const CREATE_NOTE_MUTATION = gql`
+  mutation CreateNote {
+    createNote {
+      id
+      title
+      content
+      ownerId
+      bannerUrl
+      createdAt
+      updatedAt
+      isDeleted
     }
   }
 `;
@@ -74,5 +99,23 @@ export const REMOVE_NOTE_BANNER_MUTATION = gql`
       bannerUrl
       updatedAt
     }
+  }
+`;
+
+export const RESTORE_NOTE_MUTATION = gql`
+  mutation RestoreNote($id: String!) {
+    restoreNote(id: $id)
+  }
+`;
+
+export const PERMANENTLY_DELETE_NOTE_MUTATION = gql`
+  mutation PermanentlyDeleteNote($id: String!) {
+    permanentlyDeleteNote(id: $id)
+  }
+`;
+
+export const SOFT_DELETE_NOTE_MUTATION = gql`
+  mutation SoftDeleteNote($id: String!) {
+    deleteNote(id: $id)
   }
 `;

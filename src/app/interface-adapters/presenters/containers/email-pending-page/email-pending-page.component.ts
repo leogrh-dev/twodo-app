@@ -18,6 +18,7 @@ export class EmailPendingPageComponent {
   logoPath: string = 'assets/images/twodo-logos/twodo-logo.svg';
   themeSubscription: Subscription;
   email: string = '';
+  user: any;
 
   constructor(
     private router: Router,
@@ -30,6 +31,8 @@ export class EmailPendingPageComponent {
         ? 'assets/images/twodo-logos/twodo-dark-logo.svg'
         : 'assets/images/twodo-logos/twodo-logo.svg';
     });
+    this.user = this.authService.getCurrentUser();
+    this.authService.logout();
   }
 
   goToLogin() {
@@ -38,10 +41,9 @@ export class EmailPendingPageComponent {
 
   resendEmail() {
     this.notification.info('Reenviando e-mail', 'Aguarde enquanto processamos.');
-    const user = this.authService.getCurrentUser();
 
-    if (user?.email) {
-      this.authService.resendConfirmationEmail(user.email).subscribe({
+    if (this.user?.email) {
+      this.authService.resendConfirmationEmail(this.user.email).subscribe({
         next: () => {
           this.notification.success('E-mail reenviado', 'Verifique sua caixa de entrada.');
         },
