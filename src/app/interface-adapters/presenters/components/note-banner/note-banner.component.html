@@ -1,15 +1,40 @@
-<div class="banner-container" [class.with-banner]="hasBanner()"
-  [ngStyle]="currentBanner()?.startsWith('#') ? { background: currentBanner() } : { 'background-image': 'url(' + currentBanner() + ')' }">
-  <div class="banner-controls" [class.floating]="hasBanner()">
+<div class="banner-container" [ngClass]="{
+    'with-banner-and-icon': hasBanner() && hasIcon(),
+    'with-banner': hasBanner() && !hasIcon(),
+    'with-icon': hasIcon() && !hasBanner()
+  }" [ngStyle]="currentBanner()?.startsWith('#')
+    ? { background: currentBanner() }
+    : { 'background-image': 'url(' + currentBanner() + ')' }">
+  <div class="icon-container" *ngIf="hasIcon()">
+    <div class="note-icon" [class.with-banner]="hasBanner()" nz-dropdown nzTrigger="click"
+      [nzDropdownMenu]="changeNoteIcon" (nzVisibleChange)="iconMenuVisible.set($event)" [nzVisible]="iconMenuVisible()">
+      <ng-container *ngIf="currentIcon() as icon">
+        <ng-container *ngIf="isEmoji(icon); else iconImage">
+          <span class="emoji">{{ icon }}</span>
+        </ng-container>
+        <ng-template #iconImage>
+          <img [src]="icon" alt="Ícone da nota" class="icon-img" />
+        </ng-template>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="banner-controls" [ngClass]="{
+      'with-banner-and-icon': hasBanner() && hasIcon(),
+      'with-banner': hasBanner() && !hasIcon(),
+      'floating': hasBanner()
+    }">
     <div class="banner-controls-container">
       <button nz-dropdown nzTrigger="click" [nzDropdownMenu]="changeBannerImage" class="add-cover-btn"
         (nzVisibleChange)="showMenu.set($event)" [nzVisible]="showMenu()">
         <span class="image-upload-icon iconify-1rem"></span>
         <p>{{ hasBanner() ? 'Alterar capa' : 'Adicionar capa' }}</p>
       </button>
-      <button *ngIf="hasBanner()" class="remove-cover-btn" (click)="removeBanner()">
-        <span class="trash-icon iconify-1rem"></span>
-        <p>Remover capa</p>
+
+      <button *ngIf="!hasIcon()" nz-dropdown nzTrigger="click" [nzDropdownMenu]="changeNoteIcon" class="add-cover-btn"
+        (nzVisibleChange)="iconMenuVisible.set($event)" [nzVisible]="iconMenuVisible()">
+        <span class="emoji-icon iconify-1rem"></span>
+        <p>Adicionar ícones</p>
       </button>
     </div>
   </div>
@@ -17,12 +42,17 @@
 
 <nz-dropdown-menu #changeBannerImage="nzDropdownMenu">
   <div class="banner-menu">
-    <div class="custom-tabs">
-      <button class="tab-button" [class.active]="activeTab() === 'gallery'" (click)="selectTab('gallery')">
-        Galeria
-      </button>
-      <button class="tab-button" [class.active]="activeTab() === 'upload'" (click)="selectTab('upload')">
-        Upload
+    <div class="banner-menu-header">
+      <div class="custom-tabs">
+        <button class="tab-button" [class.active]="activeTab() === 'gallery'" (click)="selectTab('gallery')">
+          Galeria
+        </button>
+        <button class="tab-button" [class.active]="activeTab() === 'upload'" (click)="selectTab('upload')">
+          Upload
+        </button>
+      </div>
+      <button class="remove-btn" (click)="removeBanner()">
+        <p>Remover</p>
       </button>
     </div>
 
@@ -32,10 +62,10 @@
           <div class="custom-color-picker">
             <h4 class="category-title">Escolher cor personalizada</h4>
             <nz-color-picker [nzShowText]="true" [nzDefaultValue]="customColor()"
-              (nzOnChange)="handleColorPick($event)">
-            </nz-color-picker>
+              (nzOnChange)="handleColorPick($event)"></nz-color-picker>
           </div>
-          <div *ngFor="let category of colorCategories" class="color-category">
+
+          <div class="color-category" *ngFor="let category of colorCategories">
             <h4 class="category-title">{{ category.label }}</h4>
             <div class="color-grid">
               <button class="color-option" *ngFor="let color of category.colors" [ngStyle]="{ background: color }"
@@ -49,12 +79,60 @@
         <div class="upload-container">
           <div class="upload-text">
             <p>Selecione uma imagem para Upload</p>
-            <p class="subtitle-upload">Imagens com 1500px de largura se encaixam melhores</p>
+            <p class="subtitle-upload">
+              Imagens com 1500px de largura se encaixam melhores
+            </p>
           </div>
           <button nz-button nzType="default" (click)="fileInput.click()">
             Escolher imagem
           </button>
           <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" style="display: none" />
+        </div>
+      </div>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #changeNoteIcon="nzDropdownMenu">
+  <div class="banner-menu">
+    <div class="banner-menu-header">
+      <div class="custom-tabs">
+        <button class="tab-button" [class.active]="iconTab() === 'emoji'" (click)="selectIconTab('emoji')">
+          Emoji
+        </button>
+        <button class="tab-button" [class.active]="iconTab() === 'upload'" (click)="selectIconTab('upload')">
+          Upload
+        </button>
+      </div>
+      <button class="remove-btn" (click)="removeIcon()">
+        <p>Remover</p>
+      </button>
+    </div>
+
+    <div class="tab-content">
+      <div *ngIf="iconTab() === 'emoji'" class="tab-panel emoji-panel">
+        <div class="scrollable-panel">
+          <div class="emoji-category" *ngFor="let category of emojiCategories">
+            <h4 class="category-title">{{ category.label }}</h4>
+            <div class="emoji-grid">
+              <button class="emoji-option" *ngFor="let emoji of category.emojis" (click)="onSelectEmoji(emoji)">
+                {{ emoji }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="iconTab() === 'upload'" class="tab-panel">
+        <div class="upload-container">
+          <div class="upload-text">
+            <p>Selecione uma imagem para o ícone</p>
+            <p class="subtitle-upload">Recomenda-se proporção quadrada</p>
+          </div>
+          <button nz-button nzType="default" (click)="iconInput.click()">
+            Escolher imagem
+          </button>
+          <input #iconInput type="file" accept="image/*" (change)="onIconFileSelected($event)" style="display: none" />
         </div>
       </div>
     </div>

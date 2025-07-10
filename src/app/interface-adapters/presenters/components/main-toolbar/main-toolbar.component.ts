@@ -34,6 +34,7 @@ export class MainToolbarComponent implements OnInit {
   noteTitle = MainToolbarComponent.DEFAULT_PAGE_TITLE;
   isInNotePage = false;
   isEditing = false;
+  isFavorite = false;
   draftTitle = '';
 
   private readonly titleInput$ = new Subject<string>();
@@ -42,7 +43,7 @@ export class MainToolbarComponent implements OnInit {
   constructor(
     private readonly noteStateService: NoteStateService,
     private readonly router: Router,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.updateNotePageStatus();
@@ -72,6 +73,7 @@ export class MainToolbarComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(note => {
         this.updateNoteTitle(note?.title);
+        this.isFavorite = note?.isFavorite ?? false;
       });
   }
 
@@ -105,5 +107,13 @@ export class MainToolbarComponent implements OnInit {
 
   private resetDraftTitle(): void {
     this.draftTitle = '';
+  }
+
+  toggleFavorite(): void {
+    const currentNote = this.noteStateService.noteSnapshot();
+    if (!currentNote?.id) return;
+
+    this.noteStateService.toggleFavoriteNote(currentNote.id);
+    this.isFavorite = !this.isFavorite;
   }
 }

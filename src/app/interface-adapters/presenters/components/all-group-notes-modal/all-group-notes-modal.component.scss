@@ -1,7 +1,7 @@
 /* =============================
    Backdrop e modal
 ============================= */
-.trash-modal-backdrop {
+.all-group-notes-modal-backdrop {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.3);
@@ -14,16 +14,16 @@
   padding-top: 5vh;
 }
 
-.trash-modal {
+.all-group-notes-modal {
   background: var(--background);
   border-radius: 10px;
   padding: 1rem;
   width: 40rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  z-index: 1001;
   box-shadow: 0 4px 24px var(--shadow);
+  z-index: 1001;
+  gap: 0.5rem;
 
   * {
     transition: all 0.3s ease;
@@ -31,64 +31,46 @@
 }
 
 /* =============================
-   Lista e item de nota deletada
+   Lista de anotações
 ============================= */
-.trash-list {
+.notes-list {
   display: flex;
   flex-direction: column;
   max-height: 400px;
   overflow-y: auto;
 }
 
-.trash-note {
+/* Item individual */
+.note-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
   height: 2.5rem;
-  margin-top: 0.5rem;
   padding: 0.5rem 0.75rem;
   border-radius: 5px;
+  cursor: pointer;
 
-  .note-info {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-
-    .note-title {
-      color: var(--secondary-text);
-      font-size: var(--font-size-small);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 220px;
-    }
+  .note-title {
+    color: var(--secondary-text);
+    font-size: var(--font-size-small);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .note-actions {
-    display: flex;
-    gap: 0.25rem;
-
-    .iconify-1rem {
-      cursor: pointer;
-      background-color: var(--secondary-text);
-
-      &:hover {
-        background-color: var(--primary-text);
-      }
-    }
+  .note-icon {
+    background-color: var(--secondary-text);
   }
 
   &:hover {
     background-color: var(--background-secondary);
 
-    .note-info {
-      .iconify-20px {
-        background-color: var(--primary-text);
-      }
+    .note-title {
+      color: var(--primary-text);
+    }
 
-      .note-title {
-        color: var(--primary-text);
-      }
+    .note-icon {
+      background-color: var(--primary-text);
     }
   }
 }

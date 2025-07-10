@@ -7,7 +7,9 @@ export class Note {
     public bannerUrl: string | null = null,
     public createdAt: Date = new Date(),
     public updatedAt: Date = new Date(),
-    public isDeleted: boolean = false
+    public isDeleted: boolean = false,
+    public isFavorite: boolean = false,
+    public iconUrl: string | null = null
   ) { }
 
   updateTitle(newTitle: string): void {

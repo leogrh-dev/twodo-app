@@ -1,8 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  DestroyRef,
+  inject,
+  signal
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -13,6 +23,8 @@ import { NoteService } from '../../../../core/services/note.service';
 import { NoteStateService } from '../../../../core/services/note-state.service';
 import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.component';
 import { TrashModalComponent } from '../trash-modal/trash-modal.component';
+import { AllGroupNotesModalComponent } from '../all-group-notes-modal/all-group-notes-modal.component';
+import { Note } from '../../../../core/entities/note.entity';
 
 interface UserInfo {
   name: string;
@@ -33,54 +45,91 @@ interface UserInfo {
     NzToolTipModule,
     ThemeSwitcherComponent,
     TrashModalComponent,
+    AllGroupNotesModalComponent,
   ],
 })
 export class SidemenuComponent implements OnInit {
-  private static readonly MAX_NOTES_DISPLAY = 10;
   private static readonly DEFAULT_USER_NAME = 'Usuário';
   private static readonly DEFAULT_USER_INITIAL = 'U';
   private static readonly NEW_NOTE_TITLE = 'Nova página';
 
-  @Input() isCollapsed: boolean = false;
+  // Inputs / Outputs
+  @Input() isCollapsed = false;
   @Output() toggleCollapse = new EventEmitter<void>();
 
+  // Injeções
   private readonly authService = inject(AuthService);
   private readonly noteService = inject(NoteService);
   private readonly noteStateService = inject(NoteStateService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
 
-  readonly userNotes$ = this.noteStateService.userNotes$;
-
-  showTrashModal = signal(false);
-
+  // Sinais e estado interno
+  readonly currentUrl = signal(this.router.url);
+  readonly showTrashModal = signal(false);
+  readonly modalState = signal<'user' | 'favorites' | null>(null);
+  readonly allUserNotes = signal<Note[]>([]);
+  readonly allFavoriteNotes = signal<Note[]>([]);
   draftTitle = '';
+
+  // Observables
+  readonly userNotes$ = this.noteStateService.userNotes$;
+  readonly favoriteNotes$ = this.noteStateService.favoriteNotes$;
+  readonly visibleUserNotes$ = this.userNotes$.pipe(map(n => n.slice(0, 10)));
+  readonly visibleFavoriteNotes$ = this.favoriteNotes$.pipe(map(n => n.slice(0, 10)));
+
+  // Usuário logado
   userInfo: UserInfo = {
     name: SidemenuComponent.DEFAULT_USER_NAME,
     email: '',
     initial: SidemenuComponent.DEFAULT_USER_INITIAL,
   };
 
-  constructor() {
-    this.initializeUserInfo();
-  }
-
+  // Ciclo de vida
   ngOnInit(): void {
     this.loadUserNotes();
+    this.initializeUserInfo();
+
+    this.router.events.subscribe(() => {
+      this.currentUrl.set(this.router.url);
+    });
   }
 
+  // Ações principais
   createNewNote(): void {
     this.noteService.createNote()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(note => {
-        if (note?.id) {
-          const noteEntity = this.createNoteEntity(note.id);
-          this.noteStateService.addUserNote(noteEntity);
-          this.navigateToNote(note.id);
+        if (!note?.id) return;
+        const noteEntity = this.createNoteEntity(note.id);
+        this.noteStateService.addUserNote(noteEntity);
+        this.navigateToNote(note.id);
+      });
+  }
+
+  softDeleteNote(noteId: string): void {
+    this.noteService.softDeleteNote(noteId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.noteStateService.moveNoteToTrash(noteId);
+        if (this.router.url === `/note/${noteId}`) {
+          this.router.navigateByUrl('/');
         }
       });
   }
 
+  toggleFavoriteNote(noteId: string): void {
+    this.noteStateService.toggleFavoriteNote(noteId);
+  }
+
+  onTitleInputChange(newTitle: string): void {
+    const trimmed = newTitle.trim();
+    if (trimmed.length > 0) {
+      this.noteStateService.updateTitle(trimmed);
+    }
+  }
+
+  // Navegação
   navigateToNote(noteId: string): void {
     this.router.navigateByUrl(`/note/${noteId}`);
   }
@@ -94,26 +143,35 @@ export class SidemenuComponent implements OnInit {
     this.router.navigateByUrl('/login');
   }
 
+  // Modais
   toggleTrashModal(): void {
-    this.showTrashModal.update(value => !value);
+    this.showTrashModal.update(v => !v);
   }
 
-  softDeleteNote(noteId: string): void {
-    this.noteService.softDeleteNote(noteId)
+  openAllNotes(group: 'user' | 'favorites'): void {
+    this.modalState.set(group);
+
+    this.userNotes$
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.noteStateService.moveNoteToTrash(noteId);
-        this.handleNoteDeletedNavigation(noteId);
+      .subscribe(userNotes => {
+        if (group === 'user') {
+          this.allUserNotes.set(userNotes);
+        } else {
+          this.allFavoriteNotes.set(userNotes.filter(note => note.isFavorite));
+        }
       });
   }
 
-  onTitleInputChange(newTitle: string): void {
-    const cleanTitle = newTitle.trim();
-    if (cleanTitle.length > 0) {
-      this.noteStateService.updateTitle(cleanTitle);
-    }
+  // Utilitários de rota
+  isNoteActive(noteId: string): boolean {
+    return this.currentUrl().startsWith(`/note/${noteId}`);
   }
 
+  isHomepageActive(): boolean {
+    return this.currentUrl() === '/';
+  }
+
+  // View helpers
   deletedNotesCount(): number {
     return this.noteStateService.getDeletedNotesCount();
   }
@@ -126,12 +184,27 @@ export class SidemenuComponent implements OnInit {
     return this.userInfo.initial;
   }
 
+  get selectedGroupType(): 'user' | 'favorites' {
+    return this.modalState() ?? 'user';
+  }
+
+  get groupTitle(): string {
+    switch (this.modalState()) {
+      case 'favorites': return 'Favoritos';
+      case 'user': return 'Anotações';
+      default: return '';
+    }
+  }
+
+  // Inicializações privadas
   private loadUserNotes(): void {
     this.noteService.getUserNotes()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(notes => {
-        const noteEntities = notes.map(note => this.noteService.createNoteEntity(note));
-        this.noteStateService.setUserNotes(noteEntities);
+        const entities = notes.map(n => this.noteService.createNoteEntity(n));
+        this.noteStateService.setUserNotes(entities);
+        this.allUserNotes.set(entities);
+        this.allFavoriteNotes.set(entities.filter(n => n.isFavorite));
       });
   }
 
@@ -144,11 +217,11 @@ export class SidemenuComponent implements OnInit {
     };
   }
 
-  private extractUserInitial(name: string | undefined): string {
+  private extractUserInitial(name?: string): string {
     return name?.charAt(0).toUpperCase() ?? SidemenuComponent.DEFAULT_USER_INITIAL;
   }
 
-  private createNoteEntity(noteId: string) {
+  private createNoteEntity(noteId: string): Note {
     return this.noteService.createNoteEntity({
       id: noteId,
       title: SidemenuComponent.NEW_NOTE_TITLE,
@@ -158,14 +231,5 @@ export class SidemenuComponent implements OnInit {
       createdAt: new Date(),
       updatedAt: new Date(),
     });
-  }
-
-  private handleNoteDeletedNavigation(noteId: string): void {
-    const currentUrl = this.router.url;
-    const isViewingDeletedNote = currentUrl === `/note/${noteId}`;
-
-    if (isViewingDeletedNote) {
-      this.router.navigateByUrl('/');
-    }
   }
 }

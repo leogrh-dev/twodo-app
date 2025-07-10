@@ -173,6 +173,10 @@
     }
 }
 
+.ant-tooltip {
+    z-index: 9999;
+}
+
 .ant-tooltip-inner {
     border-radius: 5px;
     font-size: var(--font-size-xsmall);

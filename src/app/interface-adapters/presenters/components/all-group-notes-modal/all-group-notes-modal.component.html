@@ -1,0 +1,28 @@
+<div class="all-group-notes-modal-backdrop" (click)="handleBackdropClick($event)">
+  <div class="all-group-notes-modal" (click)="$event.stopPropagation()">
+    <nz-input-group [nzSuffix]="searchIcon">
+      <input
+        nz-input
+        placeholder="Pesquisar {{ title }}"
+        [value]="search()"
+        (input)="updateSearch($any($event.target).value)"
+        nzAllowClear
+      />
+    </nz-input-group>
+
+    <ng-template #searchIcon>
+      <span class="iconify-20px search-icon"></span>
+    </ng-template>
+
+    <div class="notes-list" *ngIf="filteredNotes().length">
+      <div
+        *ngFor="let note of filteredNotes()"
+        class="note-item"
+        (click)="onNoteClick(note.id)"
+      >
+        <span class="iconify-20px note-icon"></span>
+        <p class="note-title">{{ note.title || 'Nova página' }}</p>
+      </div>
+    </div>
+  </div>
+</div>

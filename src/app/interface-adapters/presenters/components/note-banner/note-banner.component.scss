@@ -1,196 +1,297 @@
+/* =============================
+   Banner Container
+============================= */
 .banner-container {
   width: 100%;
   max-height: 280px;
-  height: 5rem;
-  margin-bottom: 0.5rem;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  min-height: 5vh;
+  margin: 10vh 0 0.5rem;
+  background: center / cover no-repeat;
   position: relative;
-  transition: all 0.3s ease;
   display: grid;
+  transition: all 0.3s ease;
+
+  &.with-banner-and-icon {
+    margin: 0 0 3rem !important;
+    height: 25vh !important;
+    min-height: 25vh !important;
+    max-height: 25vh !important;
+  }
 
   &.with-banner {
-    height: 25vh;
-    margin-bottom: 1rem;
+    margin: 0 0 1rem !important;
+    min-height: 25vh;
+    max-height: 25vh;
+  }
+
+  &.with-icon {
+    gap: 1rem;
+  }
+
+  &:hover .add-cover-btn {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* =============================
+   Icon Container
+============================= */
+.icon-container {
+  display: grid;
+  align-items: end;
+  grid-template-columns: minmax(96px, 1fr) minmax(auto, 708px) minmax(96px, 1fr);
+}
+
+.note-icon {
+  grid-column: 2;
+  width: 5rem;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &.with-banner {
+    top: 100%;
   }
 
   &:hover {
+    border-radius: 5px;
+    opacity: 0.8;
+  }
 
-    .add-cover-btn,
-    .remove-cover-btn {
-      opacity: 1;
-      visibility: visible;
-    }
+  .emoji {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
+
+  .icon-img {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 5px;
+    object-fit: cover;
   }
 }
 
+/* =============================
+   Banner Controls
+============================= */
 .banner-controls {
   display: grid;
-  grid-template-columns: minmax(96px, 1fr) minmax(auto, 708px) minmax(96px, 1fr);
   width: 100%;
-  height: 100%;
+  height: min-content;
+  grid-template-columns: minmax(96px, 1fr) minmax(auto, 708px) minmax(96px, 1fr);
 
-  .banner-controls-container {
-    grid-column: 2;
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-  }
+  &.floating .banner-controls-container {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
 
-  .add-cover-btn,
-  .remove-cover-btn {
-    background: transparent;
-    border: none;
-    border-radius: 4px;
-    padding: 6px 8px;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    color: var(--secondary-text);
-
-    p {
-      font-size: var(--font-size-small);
-      line-height: 1rem;
-      color: var(--secondary-text);
-      white-space: nowrap;
-    }
-
-    &:hover {
+    .add-cover-btn {
       background: var(--background-secondary);
-    }
-  }
-
-  &.floating {
-    .banner-controls-container {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-
-      .add-cover-btn,
-      .remove-cover-btn {
-        background: var(--background-secondary);
-        display: flex;
-      }
+      display: flex;
     }
   }
 }
 
+.banner-controls-container {
+  grid-column: 2;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.add-cover-btn {
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  color: var(--secondary-text);
+
+  p {
+    font-size: var(--font-size-small);
+    line-height: 1rem;
+    color: var(--secondary-text);
+    white-space: nowrap;
+  }
+
+  &:hover {
+    background: var(--background-secondary);
+  }
+}
+
+/* =============================
+   Remove Button
+============================= */
+.remove-btn {
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  p {
+    transition: all 0.3s ease;
+    color: var(--secondary-text);
+  }
+
+  &:hover p {
+    color: var(--primary-text);
+  }
+}
+
+/* =============================
+   Banner Menu
+============================= */
 .banner-menu {
   background: var(--background);
-  border: solid 1px var(--border);
+  border: 1px solid var(--border);
   box-shadow: 0 4px 16px var(--shadow);
   color: var(--primary-text);
-  padding: 0 1rem 1rem 1rem;
+  padding: 0 1rem 1rem;
   width: 340px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
 
-  .custom-tabs {
-    display: flex;
-    border-bottom: 1px solid var(--border-color);
+/* Header */
+.banner-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Tabs */
+.custom-tabs {
+  display: flex;
+}
+
+.tab-button {
+  padding: 1rem 12px 8px;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  color: var(--secondary-text);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+
+  &.active {
+    color: var(--primary-text);
+    border-bottom-color: var(--primary-text);
+  }
+}
+
+/* Scroll Panel */
+.scrollable-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Custom Color Picker */
+.custom-color-picker .category-title,
+.color-category .category-title {
+  font-size: var(--font-size-small);
+  color: var(--secondary-text);
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Color Grid */
+.color-category {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.color-option {
+  width: 100%;
+  height: 4rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+
+  &:hover {
+    border: 1px solid var(--background-secondary);
+  }
+}
+
+/* Upload Container */
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.upload-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  p {
+    color: var(--primary-text);
   }
 
-  .tab-button {
-    padding: 1rem 12px 8px 12px;
-    background: transparent;
-    border: none;
-    font-size: 14px;
+  .subtitle-upload {
     color: var(--secondary-text);
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s ease;
-    position: relative;
-
-    &:hover {
-      background: var(--background-secondary);
-    }
-
-    &.active {
-      color: var(--primary-text);
-      border-bottom-color: var(--primary-text);
-    }
+    font-size: var(--font-size-xsmall);
   }
+}
 
-  .scrollable-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    max-height: 400px;
-    overflow-y: auto;
+/* =============================
+   Emoji Panel
+============================= */
+.emoji-panel {
+  .category-title {
+    font-size: var(--font-size-small);
+    font-weight: 500;
+    color: var(--secondary-text);
+    margin: 0;
   }
+}
 
-  .custom-color-picker {
-    .category-title {
-      font-size: var(--font-size-small);
-      color: var(--secondary-text);
-    }
-  }
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
 
-  .color-category {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+.emoji-option {
+  font-size: var(--font-size-base);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
 
-    .category-title {
-      font-size: var(--font-size-small);
-      font-weight: 500;
-      color: var(--secondary-text);
-      margin: 0;
-    }
-
-    .color-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-  }
-
-  .color-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-  }
-
-  .color-option {
-    width: 100%;
-    height: 4rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: solid 1px transparent;
-
-    &:hover {
-      border: solid 1px var(--background-secondary);
-    }
-  }
-
-  .upload-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
-    .upload-text {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-
-      p {
-        color: var(--primary-text);
-      }
-
-      .subtitle-upload {
-        color: var(--secondary-text);
-        font-size: var(--font-size-xsmall);
-      }
-    }
-  }
+.emoji-category {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }

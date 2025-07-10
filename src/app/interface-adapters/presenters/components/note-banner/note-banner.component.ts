@@ -9,6 +9,7 @@ import { NzColor, NzColorPickerModule } from 'ng-zorro-antd/color-picker';
 
 import { NoteStateService } from '../../../../core/services/note-state.service';
 import { COLOR_CATEGORIES, BannerColorCategory } from './banner-options';
+import { ICON_CATEGORIES, EmojiCategory } from './note-icon-options';
 import { environment } from '../../../../../environments/environment';
 
 @Component({
@@ -21,58 +22,105 @@ import { environment } from '../../../../../environments/environment';
     NzTabsModule,
     NzDropDownModule,
     NzButtonModule,
-    NzColorPickerModule
+    NzColorPickerModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NoteBannerComponent {
-  private readonly noteState = inject(NoteStateService);
+  private readonly noteStateService = inject(NoteStateService);
+  private readonly noteSignal = toSignal(this.noteStateService.note$, { initialValue: null });
 
-  colorCategories: BannerColorCategory[] = COLOR_CATEGORIES;
-  showMenu = signal(false);
-  activeTab = signal<'gallery' | 'upload'>('gallery');
+  // Signals de UI
+  readonly showMenu = signal(false);
+  readonly activeTab = signal<'gallery' | 'upload'>('gallery');
 
-  private readonly noteSignal = toSignal(this.noteState.note$, { initialValue: null });
+  readonly iconMenuVisible = signal(false);
+  readonly iconTab = signal<'emoji' | 'upload'>('emoji');
 
-  readonly currentBanner = computed(() => this.noteSignal()?.bannerUrl ?? null);
+  // Dados estáticos
+  readonly colorCategories: BannerColorCategory[] = COLOR_CATEGORIES;
+  readonly emojiCategories: EmojiCategory[] = ICON_CATEGORIES;
+
+  // Computed: estado atual da nota
+  readonly currentBanner = computed(() => this.noteSignal()?.bannerUrl?.trim() || null);
   readonly hasBanner = computed(() => !!this.currentBanner());
 
-  readonly customColor = computed(() => {
-    const banner = this.currentBanner();
-    return banner?.startsWith('#') ? banner : '#000000';
+  readonly currentIcon = computed(() => {
+    const icon = this.noteSignal()?.iconUrl?.trim();
+    return icon?.length ? icon : null;
   });
+  readonly hasIcon = computed(() => !!this.currentIcon());
 
-  toggleMenu(): void {
-    this.showMenu.set(!this.showMenu());
-  }
+  readonly customColor = computed(() =>
+    this.currentBanner()?.startsWith('#') ? this.currentBanner()! : '#000000'
+  );
 
-  selectTab(tab: 'gallery' | 'upload'): void {
+  // Métodos de Tabs
+  selectTab(tab: 'gallery' | 'upload') {
     this.activeTab.set(tab);
   }
 
-  async onSelectColor(color: string): Promise<void> {
-    await this.noteState.replaceBanner(color);
+  selectIconTab(tab: 'emoji' | 'upload') {
+    this.iconTab.set(tab);
+  }
+
+  // Handlers de Banner
+  toggleMenu() {
+    this.showMenu.set(!this.showMenu());
+  }
+
+  async onSelectColor(color: string) {
+    await this.noteStateService.replaceBanner(color);
     this.showMenu.set(false);
   }
 
-  async onFileSelected(event: Event): Promise<void> {
+  handleColorPick(event: { color: NzColor; format: string }) {
+    this.onSelectColor(event.color.toHexString());
+  }
+
+  async onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     const file = input?.files?.[0];
     if (!file) return;
 
     const url = await this.uploadFile(file);
-    await this.noteState.replaceBanner(url);
+    await this.noteStateService.replaceBanner(url);
     this.showMenu.set(false);
   }
 
-  async removeBanner(): Promise<void> {
-    await this.noteState.removeBanner();
+  async removeBanner() {
+    await this.noteStateService.removeBanner();
     this.showMenu.set(false);
   }
 
-  handleColorPick(event: { color: NzColor; format: string }): void {
-    const hex = event.color.toHexString();
-    this.onSelectColor(hex);
+  // Handlers de Ícone
+  toggleIconMenu() {
+    this.iconMenuVisible.set(!this.iconMenuVisible());
+  }
+
+  async onSelectEmoji(emoji: string) {
+    await this.noteStateService.replaceIcon(emoji);
+    this.iconMenuVisible.set(false);
+  }
+
+  async onIconFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input?.files?.[0];
+    if (!file) return;
+
+    const url = await this.uploadFile(file);
+    await this.noteStateService.replaceIcon(url);
+    this.iconMenuVisible.set(false);
+  }
+
+  async removeIcon() {
+    await this.noteStateService.removeIcon();
+    this.iconMenuVisible.set(false);
+  }
+
+  // Utilitários
+  isEmoji(value: string): boolean {
+    return !value.startsWith('http');
   }
 
   private async uploadFile(file: File): Promise<string> {

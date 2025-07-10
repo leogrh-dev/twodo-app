@@ -8,10 +8,12 @@ export const GET_NOTE_BY_ID_QUERY = gql`
       title
       content
       bannerUrl
+      iconUrl
       createdAt
       updatedAt
       ownerId
       isDeleted
+      isFavorite
     }
   }
 `;
@@ -21,12 +23,14 @@ export const GET_USER_NOTES_QUERY = gql`
     getUserNotes {
       id
       title
-      isDeleted
       content
+      ownerId
       bannerUrl
+      iconUrl
       createdAt
       updatedAt
-      ownerId
+      isDeleted
+      isFavorite
     }
   }
 `;
@@ -39,9 +43,11 @@ export const GET_DELETED_NOTES_QUERY = gql`
       content
       ownerId
       bannerUrl
+      iconUrl
       createdAt
       updatedAt
       isDeleted
+      isFavorite
     }
   }
 `;
@@ -55,9 +61,11 @@ export const CREATE_NOTE_MUTATION = gql`
       content
       ownerId
       bannerUrl
+      iconUrl
       createdAt
       updatedAt
       isDeleted
+      isFavorite
     }
   }
 `;
@@ -117,5 +125,31 @@ export const PERMANENTLY_DELETE_NOTE_MUTATION = gql`
 export const SOFT_DELETE_NOTE_MUTATION = gql`
   mutation SoftDeleteNote($id: String!) {
     deleteNote(id: $id)
+  }
+`;
+
+export const TOGGLE_FAVORITE_NOTE_MUTATION = gql`
+  mutation ToggleFavoriteNote($id: String!) {
+    toggleFavoriteNote(id: $id)
+  }
+`;
+
+export const UPDATE_NOTE_ICON_MUTATION = gql`
+  mutation UpdateNoteIcon($input: UpdateNoteIconInput!) {
+    updateNoteIcon(input: $input) {
+      id
+      iconUrl
+      updatedAt
+    }
+  }
+`;
+
+export const REMOVE_NOTE_ICON_MUTATION = gql`
+  mutation RemoveNoteIcon($input: RemoveNoteIconInput!) {
+    removeNoteIcon(input: $input) {
+      id
+      iconUrl
+      updatedAt
+    }
   }
 `;

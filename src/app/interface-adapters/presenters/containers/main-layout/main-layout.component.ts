@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { SidemenuComponent } from '../../components/sidemenu/sidemenu.component';
-import { SidemenuResizerComponent } from '../../components/sidemenu-resizer/sidemenu-resizer.component';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { CommonModule } from '@angular/common';
+
+import { SidemenuComponent } from '../../components/sidemenu/sidemenu.component';
+import { SidemenuResizerComponent } from '../../components/sidemenu-resizer/sidemenu-resizer.component';
 import { MainToolbarComponent } from '../../components/main-toolbar/main-toolbar.component';
 
 @Component({
   selector: 'app-main-layout',
+  standalone: true,
   imports: [
     CommonModule,
     RouterOutlet,
@@ -16,54 +18,50 @@ import { MainToolbarComponent } from '../../components/main-toolbar/main-toolbar
     NzMenuModule,
     SidemenuComponent,
     SidemenuResizerComponent,
-    MainToolbarComponent
+    MainToolbarComponent,
   ],
   templateUrl: './main-layout.component.html',
-  styleUrl: './main-layout.component.scss'
+  styleUrl: './main-layout.component.scss',
 })
-
 export class MainLayoutComponent {
   isCollapsed = false;
   sidemenuWidth = 280;
-  isTemporarilyExpanded = false;
 
-  constructor(
-  ) {
-
-  }
-
-  ngOnInit() {
+  ngOnInit(): void {
     this.restoreSidemenuCollapseState();
     this.restoreSidemenuWidth();
   }
 
-  toggleCollapse() {
+  toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed;
-    localStorage.setItem('sidemenuCollapsed', this.isCollapsed.toString());
+    localStorage.setItem('sidemenuCollapsed', String(this.isCollapsed));
   }
 
-  onResizeSidemenu(newWidth: number) {
+  onResizeSidemenu(newWidth: number): void {
     this.sidemenuWidth = newWidth;
-    localStorage.setItem('sidemenuWidth', newWidth.toString());
+    localStorage.setItem('sidemenuWidth', String(newWidth));
   }
 
-  onClickResizer() {
-    this.isCollapsed = !this.isCollapsed;
-    localStorage.setItem('sidemenuCollapsed', this.isCollapsed.toString());
+  onClickResizer(): void {
+    this.toggleCollapse();
   }
 
-  private restoreSidemenuCollapseState() {
-    const savedState = localStorage.getItem('sidemenuCollapsed');
-    if (savedState !== null) {
-      this.isCollapsed = savedState === 'true';
+  private restoreSidemenuCollapseState(): void {
+    const saved = localStorage.getItem('sidemenuCollapsed');
+    if (saved !== null) {
+      this.isCollapsed = saved === 'true';
     }
   }
 
-  private restoreSidemenuWidth() {
-    const savedWidth = localStorage.getItem('sidemenuWidth');
-    if (savedWidth !== null) {
-      const width = parseInt(savedWidth, 10);
-      this.sidemenuWidth = Math.min(Math.max(width, 240), 480);
+  private restoreSidemenuWidth(): void {
+    const saved = localStorage.getItem('sidemenuWidth');
+    if (saved !== null) {
+      const width = parseInt(saved, 10);
+      this.sidemenuWidth = this.clamp(width, 240, 480);
     }
+  }
+
+  private clamp(value: number, min: number, max: number): number {
+    return Math.min(Math.max(value, min), max);
   }
 }

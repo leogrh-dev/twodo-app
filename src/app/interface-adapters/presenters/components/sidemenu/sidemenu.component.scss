@@ -1,28 +1,52 @@
+/* =============================
+   Tipografia base
+============================= */
 p {
   font-size: var(--font-size-small);
 }
 
+/* =============================
+   Estrutura principal do sidemenu
+============================= */
 .in-sidemenu {
   min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
   background-color: var(--background-secondary);
   display: flex;
   flex-direction: column;
+  gap: 1rem;
   overflow: hidden;
   position: relative;
   padding: 0;
+}
+
+/* Container scrollável dos grupos */
+.sidemenu-group-container {
+  flex-shrink: 1;
+  flex-grow: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
 }
 
+/* Esconde elementos de acessibilidade fora do fluxo visual */
 .hidden-accessibility {
   display: none;
 }
 
-.sidemenu-group-1,
-.sidemenu-group-2 {
+/* =============================
+   Grupos de itens (main, notes, favorites)
+============================= */
+.sidemenu-group-main,
+.sidemenu-group-notes,
+.sidemenu-group-favorites {
   display: flex;
   flex-direction: column;
 }
 
+/* Título das seções (Favoritos, Anotações, etc) */
 .sidemenu-section-title {
   font-size: var(--font-size-xsmall);
   font-weight: 600;
@@ -33,6 +57,9 @@ p {
   padding: 0 8px;
 }
 
+/* =============================
+   Itens do menu (linha clicável)
+============================= */
 .sidemenu-item {
   user-select: none;
   display: flex;
@@ -69,6 +96,54 @@ p {
   }
 }
 
+/* Ícones personalizados (imagem ou emoji) */
+.custom-note-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  object-fit: cover;
+  margin-right: 8px;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.emoji-note-icon {
+  font-size: var(--font-size-small);
+  line-height: 1;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+/* =============================
+   Estado ativo do item
+============================= */
+.sidemenu-item.active {
+  background: var(--sidemenu-hover);
+
+  .note-options,
+  .options-icon {
+    opacity: 1;
+    background-color: var(--primary-text);
+  }
+
+  .menu-entry p {
+    color: var(--primary-text);
+  }
+
+  .menu-entry .search-icon,
+  .menu-entry .home-icon,
+  .menu-entry .inbox-icon,
+  .menu-entry .trash-icon,
+  .menu-entry .note-icon,
+  .menu-entry .options-icon,
+  .menu-entry .edit-icon,
+  .menu-entry .star-no-fill-icon,
+  .menu-entry .star-fill-icon {
+    background-color: var(--primary-text);
+  }
+}
+
+/* Estilo especial para botão de mover para lixeira */
 .move-to-trash {
   &:hover {
     p {
@@ -81,6 +156,9 @@ p {
   }
 }
 
+/* =============================
+   Bloco do usuário (avatar, menu)
+============================= */
 .user-account {
   margin: 6px 8px;
 }
@@ -136,6 +214,7 @@ p {
   flex-shrink: 0;
 }
 
+/* Botões do topo (nova nota, colapsar menu) */
 .collapse-sidemenu-button .close-sidemenu-icon,
 .new-note-button .edit-icon {
   background-color: var(--secondary-text);
@@ -146,13 +225,17 @@ p {
   background-color: var(--primary-text);
 }
 
+/* =============================
+   Layout interno dos botões/entradas
+============================= */
 .menu-section-title {
   padding: 0.25rem 0 !important;
   justify-content: space-between;
 }
 
 .menu-entry,
-.menu-section-title, .rename-entry {
+.menu-section-title,
+.rename-entry {
   display: flex;
   align-items: center;
   font-size: var(--font-size-small);
@@ -171,9 +254,7 @@ p {
     overflow: hidden;
     text-overflow: ellipsis;
     flex: 1 1 auto;
-    white-space: nowrap;
     min-width: 0px;
-    overflow: hidden;
   }
 
   .search-icon,
@@ -182,7 +263,9 @@ p {
   .trash-icon,
   .note-icon,
   .options-icon,
-  .edit-icon {
+  .edit-icon,
+  .star-no-fill-icon,
+  .star-fill-icon {
     background-color: var(--secondary-text);
     margin-right: 8px;
     transition: all 0.3s ease;
@@ -199,12 +282,17 @@ p {
     .trash-icon,
     .note-icon,
     .options-icon,
-    .edit-icon {
+    .edit-icon,
+    .star-no-fill-icon,
+    .star-fill-icon {
       background-color: var(--primary-text);
     }
   }
 }
 
+/* =============================
+   Dropdown do menu do usuário
+============================= */
 .user-menu {
   display: flex;
   flex-direction: column;

@@ -1,22 +1,36 @@
 <nz-layout class="in-main-layout">
-    <nz-sider [nzWidth]="sidemenuWidth" [nzCollapsedWidth]="0" [nzTrigger]="null" [nzCollapsed]="isCollapsed">
-        <app-sidemenu [isCollapsed]="isCollapsed" (toggleCollapse)="toggleCollapse()"></app-sidemenu>
-    </nz-sider>
-    <nz-layout>
-        <nz-content>
-            <div class="sidemenu-resizer-overlay">
-                <app-sidemenu-resizer (resize)="onResizeSidemenu($event)"
-                    (clicked)="onClickResizer()"></app-sidemenu-resizer>
-            </div>
-            <div style="margin-left: 10px;">
-                <div class="main-toolbar">
-                    <app-main-toolbar [isCollapsed]="isCollapsed"
-                        (toggleSidemenu)="toggleCollapse()"></app-main-toolbar>
-                </div>
-                <div class="main">
-                    <router-outlet></router-outlet>
-                </div>
-            </div>
-        </nz-content>
-    </nz-layout>
+  <nz-sider
+    [nzWidth]="sidemenuWidth"
+    [nzCollapsedWidth]="0"
+    [nzTrigger]="null"
+    [nzCollapsed]="isCollapsed"
+  >
+    <app-sidemenu
+      [isCollapsed]="isCollapsed"
+      (toggleCollapse)="toggleCollapse()"
+    ></app-sidemenu>
+  </nz-sider>
+
+  <nz-layout>
+    <nz-content>
+      <div class="sidemenu-resizer-overlay">
+        <app-sidemenu-resizer
+          (resize)="onResizeSidemenu($event)"
+          (clicked)="onClickResizer()"
+        ></app-sidemenu-resizer>
+      </div>
+
+      <div style="margin-left: 10px;">
+        <app-main-toolbar
+          class="main-toolbar"
+          [isCollapsed]="isCollapsed"
+          (toggleSidemenu)="toggleCollapse()"
+        ></app-main-toolbar>
+
+        <div class="main">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </nz-content>
+  </nz-layout>
 </nz-layout>

@@ -10,10 +10,13 @@ import {
   GET_USER_NOTES_QUERY,
   PERMANENTLY_DELETE_NOTE_MUTATION,
   REMOVE_NOTE_BANNER_MUTATION,
+  REMOVE_NOTE_ICON_MUTATION,
   RESTORE_NOTE_MUTATION,
   SOFT_DELETE_NOTE_MUTATION,
+  TOGGLE_FAVORITE_NOTE_MUTATION,
   UPDATE_NOTE_BANNER_MUTATION,
   UPDATE_NOTE_CONTENT_MUTATION,
+  UPDATE_NOTE_ICON_MUTATION,
   UPDATE_NOTE_TITLE_MUTATION
 } from '../../infrastructure/graphql/note.graphql';
 
@@ -32,7 +35,9 @@ export class NoteService {
       data.bannerUrl,
       new Date(data.createdAt),
       new Date(data.updatedAt),
-      data.isDeleted
+      data.isDeleted,
+      data.isFavorite ?? false,
+      data.iconUrl ?? null
     );
   }
 
@@ -117,6 +122,15 @@ export class NoteService {
       .pipe(map(() => void 0));
   }
 
+  toggleFavoriteNote(id: string): Observable<void> {
+    return this.apollo
+      .mutate({
+        mutation: TOGGLE_FAVORITE_NOTE_MUTATION,
+        variables: { id },
+      })
+      .pipe(map(() => void 0));
+  }
+
   permanentlyDeleteNote(id: string): Observable<void> {
     return this.apollo
       .mutate({
@@ -134,5 +148,19 @@ export class NoteService {
         refetchQueries: ['GetNoteById', 'GetUserNotes'],
       })
       .pipe(map(() => void 0));
+  }
+
+  updateNoteIcon(id: string, iconUrl: string): Observable<void> {
+    return this.apollo.mutate({
+      mutation: UPDATE_NOTE_ICON_MUTATION,
+      variables: { input: { id, iconUrl } },
+    }).pipe(map(() => { }));
+  }
+
+  removeNoteIcon(id: string): Observable<void> {
+    return this.apollo.mutate({
+      mutation: REMOVE_NOTE_ICON_MUTATION,
+      variables: { input: { id } },
+    }).pipe(map(() => { }));
   }
 }

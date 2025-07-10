@@ -19,21 +19,19 @@
         </button>
     </div>
 
-    <div class="sidemenu-group-1 full-rlt-container">
-        <div class="sidemenu-item" (click)="goToHomepage()">
+    <div class="sidemenu-group-main">
+        <div class="sidemenu-item" [class.active]="isHomepageActive()" (click)="goToHomepage()">
             <div class="menu-entry">
                 <span class="iconify-20px home-icon"></span>
                 <p>Página inicial</p>
             </div>
         </div>
-
         <div class="sidemenu-item">
             <div class="menu-entry">
                 <span class="iconify-20px search-icon"></span>
                 <p>Buscar</p>
             </div>
         </div>
-
         <div class="sidemenu-item">
             <div class="menu-entry">
                 <span class="iconify-20px inbox-icon"></span>
@@ -42,43 +40,59 @@
         </div>
     </div>
 
-    <div class="sidemenu-group-2">
-        <div class="sidemenu-item">
-            <div class="menu-section-title">
-                <span class="sidemenu-section-title">Anotações</span>
-                <span class="iconify-20px options-icon"></span>
-            </div>
-        </div>
-
-        <ng-container *ngIf="userNotes$ | async as userNotes">
-            <div *ngFor="let note of userNotes" class="sidemenu-item">
-                <div class="menu-entry" (click)="navigateToNote(note.id)">
-                    <span class="iconify-20px note-icon"></span>
-                    <p>{{ note.title || 'Nova página' }}</p>
+    <div class="sidemenu-group-container">
+        <ng-container *ngIf="favoriteNotes$ | async as favorites">
+            <div class="sidemenu-group-favorites" *ngIf="favorites.length > 0">
+                <div class="sidemenu-item">
+                    <div class="menu-section-title">
+                        <span class="sidemenu-section-title">Favoritos</span>
+                        <span class="iconify-20px options-icon"></span>
+                    </div>
                 </div>
 
-                <span class="iconify-20px options-icon note-options" nz-dropdown nzTrigger="click"
-                    [nzDropdownMenu]="noteMenu"></span>
+                <ng-container *ngFor="let note of favorites.slice(0, 10)">
+                    <ng-container *ngTemplateOutlet="noteItemTemplate; context: { note: note }"></ng-container>
+                </ng-container>
 
-                <nz-dropdown-menu #noteMenu="nzDropdownMenu">
-                    <ul nz-menu>
-                        <li nz-menu-item>
-                            <div nz-dropdown [nzDropdownMenu]="sidemenuChangeNoteTitle" nzTrigger="click"
-                                class="menu-entry rename-entry">
-                                <span class="iconify-20px edit-icon"></span>
-                                <p>Renomear</p>
-                            </div>
-                        </li>
-                        <li style="margin-top: 0.5rem;" nz-menu-item (click)="softDeleteNote(note.id)">
-                            <div class="menu-entry move-to-trash">
-                                <span class="iconify-20px trash-icon"></span>
-                                <p>Mover para a lixeira</p>
-                            </div>
-                        </li>
-                    </ul>
-                </nz-dropdown-menu>
+                <div class="sidemenu-item" *ngIf="favorites.length > 10" (click)="openAllNotes('favorites')">
+                    <div class="menu-entry">
+                        <span class="iconify-20px options-icon" style="opacity: 1;"></span>
+                        <p>Mais</p>
+                    </div>
+                </div>
             </div>
         </ng-container>
+
+        <div class="sidemenu-group-notes">
+            <div class="sidemenu-item">
+                <div class="menu-section-title">
+                    <span class="sidemenu-section-title">Anotações</span>
+                    <span class="iconify-20px options-icon"></span>
+                </div>
+            </div>
+
+            <ng-container *ngIf="userNotes$ | async as allNotes">
+                <ng-container *ngIf="allNotes.length === 0">
+                    <div class="sidemenu-item" (click)="createNewNote()">
+                        <div class="menu-entry">
+                            <span class="iconify-20px edit-icon"></span>
+                            <p>Adicionar anotação</p>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngFor="let note of allNotes.slice(0, 10)">
+                    <ng-container *ngTemplateOutlet="noteItemTemplate; context: { note: note }"></ng-container>
+                </ng-container>
+
+                <div class="sidemenu-item" *ngIf="allNotes.length > 10" (click)="openAllNotes('user')">
+                    <div class="menu-entry">
+                        <span class="iconify-20px options-icon" style="opacity: 1;"></span>
+                        <p>Mais</p>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
     </div>
 
     <div class="sidemenu-item" (click)="toggleTrashModal()">
@@ -88,15 +102,13 @@
         </div>
     </div>
 
-    <app-trash-modal *ngIf="showTrashModal()" (close)="showTrashModal.set(false)" />
-
     <div class="hidden-accessibility">
         <app-theme-switcher />
     </div>
 
     <ng-template #tooltipTemplateNewNote>
         <span class="tooltip-content">
-            Crie uma nova página <span class="tooltip-action">(Clique)</span>
+            Crie uma nova anotação <span class="tooltip-action">(Clique)</span>
         </span>
     </ng-template>
 
@@ -131,10 +143,70 @@
                 <input nz-input [(ngModel)]="draftTitle" (input)="onTitleInputChange(draftTitle)" type="text"
                     placeholder="Alterar título da anotação..." />
             </nz-input-group>
-
             <ng-template #editIcon>
                 <span class="iconify-20px edit-icon"></span>
             </ng-template>
         </div>
     </nz-dropdown-menu>
+
+    <ng-template #noteItemTemplate let-note="note">
+        <div class="sidemenu-item" [class.active]="isNoteActive(note.id)">
+            <div class="menu-entry" (click)="navigateToNote(note.id)">
+                <ng-container *ngIf="note.iconUrl as icon; else defaultIcon">
+                    <ng-container *ngIf="!icon.startsWith('http'); else iconImage">
+                        <span class="emoji-note-icon">{{ icon }}</span>
+                    </ng-container>
+                    <ng-template #iconImage>
+                        <img [src]="icon" class="custom-note-icon" alt="Ícone da nota" />
+                    </ng-template>
+                </ng-container>
+
+                <ng-template #defaultIcon>
+                    <span class="iconify-20px note-icon"></span>
+                </ng-template>
+
+                <p>{{ note.title || 'Nova página' }}</p>
+
+                <span class="iconify-20px options-icon note-options" nz-dropdown nzTrigger="click"
+                    [nzDropdownMenu]="noteMenu" style="margin-right: 0;"></span>
+            </div>
+
+            <nz-dropdown-menu #noteMenu="nzDropdownMenu">
+                <ul nz-menu>
+                    <li nz-menu-item (click)="toggleFavoriteNote(note.id)">
+                        <div class="menu-entry">
+                            <span class="iconify-20px"
+                                [ngClass]="note.isFavorite ? 'star-fill-icon' : 'star-no-fill-icon'"></span>
+                            <p>
+                                {{
+                                note.isFavorite
+                                ? 'Remover dos favoritos'
+                                : 'Adicionar aos favoritos'
+                                }}
+                            </p>
+                        </div>
+                    </li>
+                    <li nz-menu-item style="margin-top: 0.5rem;">
+                        <div nz-dropdown [nzDropdownMenu]="sidemenuChangeNoteTitle" nzTrigger="click"
+                            class="menu-entry rename-entry">
+                            <span class="iconify-20px edit-icon"></span>
+                            <p>Renomear</p>
+                        </div>
+                    </li>
+                    <li nz-menu-item style="margin-top: 0.5rem;" (click)="softDeleteNote(note.id)">
+                        <div class="menu-entry move-to-trash">
+                            <span class="iconify-20px trash-icon"></span>
+                            <p>Mover para a lixeira</p>
+                        </div>
+                    </li>
+                </ul>
+            </nz-dropdown-menu>
+        </div>
+    </ng-template>
 </div>
+
+<app-all-group-notes-modal *ngIf="modalState() !== null" [group]="selectedGroupType" [title]="groupTitle"
+    [notes]="modalState() === 'user' ? allUserNotes() : allFavoriteNotes()" (close)="modalState.set(null)"
+    (openNote)="navigateToNote($event)"></app-all-group-notes-modal>
+
+<app-trash-modal *ngIf="showTrashModal()" (close)="showTrashModal.set(false)" />
