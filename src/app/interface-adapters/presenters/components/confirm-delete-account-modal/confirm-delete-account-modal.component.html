@@ -1,0 +1,20 @@
+<div class="delete-modal-backdrop" (click)="close.emit()">
+  <div class="delete-modal" (click)="$event.stopPropagation()">
+    <h3>Quer mesmo excluir sua conta permanentemente?</h3>
+    <p>Essa ação não pode ser desfeita. Todos os seus dados serão removidos.</p>
+
+    <input
+      placeholder="Digite seu e-mail para confirmar"
+    />
+
+    <button
+      class="danger"
+      [disabled]="confirmationText !== userEmail"
+      (click)="confirm.emit()"
+    >
+      Excluir permanentemente minha conta
+    </button>
+
+    <button (click)="close.emit()">Cancelar</button>
+  </div>
+</div>

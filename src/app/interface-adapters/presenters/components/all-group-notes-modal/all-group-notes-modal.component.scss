@@ -23,7 +23,7 @@
   flex-direction: column;
   box-shadow: 0 4px 24px var(--shadow);
   z-index: 1001;
-  gap: 0.5rem;
+  gap: 1rem;
 
   * {
     transition: all 0.3s ease;
@@ -38,39 +38,162 @@
   flex-direction: column;
   max-height: 400px;
   overflow-y: auto;
+  gap: 0.5rem;
+
+  .menu-entry:hover {
+    background-color: var(--background-secondary);
+  }
 }
 
-/* Item individual */
+/* Item individual com dropdown e estilo de ícone */
 .note-item {
+  user-select: none;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  height: 2.5rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 5px;
+  height: 32px;
+  margin: 2px 8px;
+  padding: 0;
+  gap: 0.25rem;
+  border-radius: 6px;
   cursor: pointer;
-
-  .note-title {
-    color: var(--secondary-text);
-    font-size: var(--font-size-small);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .note-icon {
-    background-color: var(--secondary-text);
-  }
+  transition: all 0.2s ease-in;
 
   &:hover {
-    background-color: var(--background-secondary);
 
     .note-title {
       color: var(--primary-text);
     }
 
-    .note-icon {
+    .note-icon,
+    .options-icon {
       background-color: var(--primary-text);
+    }
+  }
+
+  .menu-entry {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 0;
+    background-color: var(--background);
+
+    &:hover {
+      background-color: var(--background-secondary);
+    }
+
+    .note-title {
+      font-size: var(--font-size-small);
+      font-weight: 500;
+      color: var(--secondary-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .emoji-note-icon {
+      font-size: var(--font-size-small);
+      line-height: 1;
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+
+    .custom-note-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      object-fit: cover;
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+
+    .note-icon {
+      background-color: var(--secondary-text);
+      margin-right: 8px;
+      transition: all 0.3s ease;
+    }
+  }
+
+  .options-icon {
+    background-color: var(--secondary-text);
+    opacity: 0;
+    margin-left: 0.5rem;
+    transition: all 0.3s ease;
+  }
+
+  &:hover .options-icon {
+    opacity: 1;
+  }
+}
+
+/* Dropdown interno */
+.rename-entry,
+.menu-entry {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-size-small);
+  height: 2rem;
+  padding: 0.25rem 0.5rem;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  p {
+    font-size: var(--font-size-small);
+    font-weight: 500;
+    color: var(--secondary-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1 1 auto;
+    min-width: 0px;
+  }
+
+  .iconify-20px {
+    background-color: var(--secondary-text);
+    margin-right: 8px;
+    transition: all 0.3s ease;
+  }
+
+  &:hover {
+    p {
+      color: var(--primary-text);
+    }
+
+    .iconify-20px {
+      background-color: var(--primary-text);
+    }
+  }
+}
+
+/* Estilo especial para botão de mover para lixeira */
+.move-to-trash:hover {
+  p {
+    color: var(--error) !important;
+  }
+
+  .trash-icon {
+    background-color: var(--error) !important;
+  }
+}
+
+.notes-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 0.25rem;
+  border-top: solid 1px var(--border);
+  padding: 0.5rem 0 0 0;
+
+  .notes-count {
+    font-size: var(--font-size-small);
+    color: var(--secondary-text);
+    margin: 0;
+    padding: 0 12px;
+
+    span {
+      color: var(--primary-text);
+      font-weight: 500;
     }
   }
 }

@@ -1,5 +1,5 @@
 /* =============================
-   Backdrop e modal
+   Backdrop e modal principal
 ============================= */
 .trash-modal-backdrop {
   position: fixed;
@@ -31,7 +31,41 @@
 }
 
 /* =============================
-   Lista e item de nota deletada
+   Footer da lixeira
+============================= */
+.trash-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0 0 0;
+  border-top: solid 1px var(--border);
+
+  .notes-count {
+    font-size: var(--font-size-small);
+    color: var(--secondary-text);
+    margin: 0;
+
+    span {
+      font-weight: 500;
+      color: var(--primary-text);
+    }
+  }
+
+  .delete-all-action {
+    font-size: var(--font-size-small);
+    font-weight: 500;
+    color: var(--error);
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+/* =============================
+   Lista de notas deletadas
 ============================= */
 .trash-list {
   display: flex;
@@ -40,6 +74,9 @@
   overflow-y: auto;
 }
 
+/* =============================
+   Item individual da nota
+============================= */
 .trash-note {
   display: flex;
   justify-content: space-between;
@@ -48,6 +85,18 @@
   margin-top: 0.5rem;
   padding: 0.5rem 0.75rem;
   border-radius: 5px;
+
+  &:hover {
+    background-color: var(--background-secondary);
+
+    .note-info .note-title {
+      color: var(--primary-text);
+    }
+
+    .note-info .iconify-20px {
+      background-color: var(--primary-text);
+    }
+  }
 
   .note-info {
     display: flex;
@@ -77,18 +126,24 @@
       }
     }
   }
+}
 
-  &:hover {
-    background-color: var(--background-secondary);
+/* =============================
+   Estilos de ícones personalizados
+============================= */
+.custom-note-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  object-fit: cover;
+  margin-right: 8px;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
 
-    .note-info {
-      .iconify-20px {
-        background-color: var(--primary-text);
-      }
-
-      .note-title {
-        color: var(--primary-text);
-      }
-    }
-  }
+.emoji-note-icon {
+  font-size: var(--font-size-small);
+  line-height: 1;
+  margin-right: 8px;
+  flex-shrink: 0;
 }

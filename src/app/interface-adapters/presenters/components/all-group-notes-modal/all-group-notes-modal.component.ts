@@ -7,12 +7,14 @@ import {
   signal,
   computed,
   OnInit,
-  OnDestroy
+  OnDestroy,
+  inject
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzInputModule } from 'ng-zorro-antd/input';
-
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { Note } from '../../../../core/entities/note.entity';
+import { NoteStateService } from '../../../../core/services/note-state.service';
 
 @Component({
   selector: 'app-all-group-notes-modal',
@@ -22,10 +24,13 @@ import { Note } from '../../../../core/entities/note.entity';
   imports: [
     CommonModule,
     FormsModule,
-    NzInputModule
-  ],
+    NzInputModule,
+    NzDropDownModule
+  ]
 })
 export class AllGroupNotesModalComponent implements OnInit, OnDestroy {
+  private readonly noteStateService = inject(NoteStateService);
+
   @Input({ required: true }) notes: Note[] = [];
   @Input({ required: true }) group: 'user' | 'favorites' = 'user';
   @Input({ required: true }) title: string = '';
@@ -34,6 +39,7 @@ export class AllGroupNotesModalComponent implements OnInit, OnDestroy {
   @Output() openNote = new EventEmitter<string>();
 
   readonly search = signal('');
+  draftTitle = '';
 
   readonly filteredNotes = computed(() => {
     const query = this.search().toLowerCase();
@@ -62,6 +68,22 @@ export class AllGroupNotesModalComponent implements OnInit, OnDestroy {
   onNoteClick(noteId: string): void {
     this.openNote.emit(noteId);
     this.close.emit();
+  }
+
+  toggleFavoriteNote(noteId: string): void {
+    this.noteStateService.toggleFavoriteNote(noteId);
+  }
+
+  softDeleteNote(noteId: string): void {
+    this.noteStateService.moveNoteToTrash(noteId);
+    this.notes = this.notes.filter(note => note.id !== noteId);
+  }
+
+  onTitleInputChange(newTitle: string): void {
+    const trimmed = newTitle.trim();
+    if (trimmed.length > 0) {
+      this.noteStateService.updateTitle(trimmed);
+    }
   }
 
   private readonly handleEscapeKey = (event: KeyboardEvent): void => {

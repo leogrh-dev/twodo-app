@@ -1,0 +1,53 @@
+<div class="account">
+  <!-- Painel de Conta Pessoal -->
+  <div class="account-panel">
+    <h2 class="section-title">Conta Pessoal</h2>
+
+    <div class="user-info">
+      <span class="profile-pic">{{ userName.charAt(0) }}</span>
+
+      <div class="profile-form">
+        <label for="userNameInput" class="input-label">Nome</label>
+        <input nz-input id="userNameInput" name="userName" [(ngModel)]="userName" placeholder="Digite seu nome" />
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible-div"></div>
+
+  <!-- Painel de Segurança da Conta -->
+  <div class="security-panel">
+    <h2 class="section-title">Segurança da conta</h2>
+
+    <div class="security-item-container">
+      <div class="security-item">
+        <div class="security-info">
+          <label class="info-title">E-mail</label>
+          <p class="info-value">{{ userEmail }}</p>
+        </div>
+      </div>
+
+      <div class="security-item">
+        <div class="security-info">
+          <label class="info-title">Senha</label>
+          <p class="info-value">Altere sua senha</p>
+        </div>
+        <button nz-button nzType="default" class="security-action">Alterar senha</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible-div"></div>
+
+  <div class="suport-panel">
+    <h2 class="section-title">Suporte</h2>
+
+    <div class="suport-item">
+      <div class="suport-info">
+        <label class="info-title">Excluir minha conta</label>
+        <p class="info-value">Exclua permanentemente a conta e remova o acesso de todos os espaços de trabalho.</p>
+      </div>
+      <button nz-button nzType="default" nzDanger class="suport-action">Excluir conta</button>
+    </div>
+  </div>
+</div>

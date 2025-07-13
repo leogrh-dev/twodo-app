@@ -268,6 +268,17 @@
     }
 }
 
+.ant-btn-dangerous {
+    border-color: var(--error);
+    color: var(--error);
+
+    &:hover, &:focus {
+        border-color: var(--error);
+        opacity: var(--hover-opacity);
+        color: var(--error);
+    }
+}
+
 .ant-dropdown-menu {
     background-color: var(--background-secondary);
     border: solid 1px var(--border);

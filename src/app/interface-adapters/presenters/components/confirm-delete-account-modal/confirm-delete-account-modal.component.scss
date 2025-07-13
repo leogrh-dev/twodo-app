@@ -1,0 +1,46 @@
+.delete-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.delete-modal {
+  background: var(--background);
+  border-radius: 8px;
+  padding: 2rem;
+  width: 28rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  h3 {
+    margin: 0;
+  }
+
+  p {
+    font-size: var(--font-size-small);
+    color: var(--secondary-text);
+  }
+
+  input {
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .danger {
+    background: var(--error);
+    color: #fff;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}

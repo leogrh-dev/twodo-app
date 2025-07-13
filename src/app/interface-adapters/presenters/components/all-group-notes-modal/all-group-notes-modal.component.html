@@ -1,13 +1,8 @@
 <div class="all-group-notes-modal-backdrop" (click)="handleBackdropClick($event)">
   <div class="all-group-notes-modal" (click)="$event.stopPropagation()">
     <nz-input-group [nzSuffix]="searchIcon">
-      <input
-        nz-input
-        placeholder="Pesquisar {{ title }}"
-        [value]="search()"
-        (input)="updateSearch($any($event.target).value)"
-        nzAllowClear
-      />
+      <input nz-input placeholder="Pesquisar {{ title }}" [value]="search()"
+        (input)="updateSearch($any($event.target).value)" nzAllowClear />
     </nz-input-group>
 
     <ng-template #searchIcon>
@@ -15,14 +10,68 @@
     </ng-template>
 
     <div class="notes-list" *ngIf="filteredNotes().length">
-      <div
-        *ngFor="let note of filteredNotes()"
-        class="note-item"
-        (click)="onNoteClick(note.id)"
-      >
-        <span class="iconify-20px note-icon"></span>
-        <p class="note-title">{{ note.title || 'Nova página' }}</p>
+      <div *ngFor="let note of filteredNotes()" class="sidemenu-item">
+        <div class="menu-entry" (click)="onNoteClick(note.id)">
+          <ng-container *ngIf="note.iconUrl as icon; else defaultIcon">
+            <ng-container *ngIf="!icon.startsWith('http'); else iconImage">
+              <span class="emoji-note-icon">{{ icon }}</span>
+            </ng-container>
+            <ng-template #iconImage>
+              <img [src]="icon" class="custom-note-icon" alt="Ícone da nota" />
+            </ng-template>
+          </ng-container>
+          <ng-template #defaultIcon>
+            <span class="iconify-20px note-icon"></span>
+          </ng-template>
+
+          <p class="note-title">{{ note.title || 'Nova página' }}</p>
+
+          <span class="iconify-20px options-icon note-options" nz-dropdown nzTrigger="click" [nzDropdownMenu]="noteMenu"
+            (click)="$event.stopPropagation()"></span>
+        </div>
+
+        <nz-dropdown-menu #noteMenu="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item (click)="$event.stopPropagation(); toggleFavoriteNote(note.id)">
+              <div class="menu-entry">
+                <span class="iconify-20px" [ngClass]="note.isFavorite ? 'star-fill-icon' : 'star-no-fill-icon'"></span>
+                <p>
+                  {{ note.isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos' }}
+                </p>
+              </div>
+            </li>
+            <li nz-menu-item style="margin-top: 0.5rem;">
+              <div nz-dropdown [nzDropdownMenu]="sidemenuChangeNoteTitle" nzTrigger="click"
+                class="menu-entry rename-entry" (click)="$event.stopPropagation()">
+                <span class="iconify-20px edit-icon"></span>
+                <p>Renomear</p>
+              </div>
+            </li>
+            <li nz-menu-item style="margin-top: 0.5rem;" (click)="$event.stopPropagation(); softDeleteNote(note.id)">
+              <div class="menu-entry move-to-trash">
+                <span class="iconify-20px trash-icon"></span>
+                <p>Mover para a lixeira</p>
+              </div>
+            </li>
+          </ul>
+        </nz-dropdown-menu>
       </div>
     </div>
+
+    <div class="notes-footer">
+      <p class="notes-count">Exibindo <span>{{ filteredNotes().length }}</span> anotações em <span>{{ title }}</span></p>
+    </div>
+
+    <nz-dropdown-menu #sidemenuChangeNoteTitle="nzDropdownMenu">
+      <div class="note-title-dropdown">
+        <nz-input-group [nzSuffix]="editIcon">
+          <input nz-input [(ngModel)]="draftTitle" (input)="onTitleInputChange(draftTitle)" type="text"
+            placeholder="Alterar título da anotação..." />
+        </nz-input-group>
+        <ng-template #editIcon>
+          <span class="iconify-20px edit-icon"></span>
+        </ng-template>
+      </div>
+    </nz-dropdown-menu>
   </div>
 </div>

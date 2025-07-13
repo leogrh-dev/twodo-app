@@ -1,0 +1,108 @@
+/* =============================
+   Backdrop do modal
+============================= */
+.settings-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 1001;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+
+/* =============================
+   Estrutura geral do modal
+============================= */
+.settings-modal {
+  background: var(--background);
+  display: flex;
+  flex-direction: row;
+  width: 1150px;
+  max-width: calc(-100px + 100vw);
+  height: calc(-100px + 100vh);
+  min-height: 500px;
+  max-height: 715px;
+  border-radius: 10px;
+  box-shadow: 0 4px 24px var(--shadow);
+  overflow: hidden;
+  z-index: 1001;
+}
+
+/* =============================
+   Barra lateral esquerda (fixa)
+============================= */
+.settings-sidebar {
+  width: 200px;
+  background: var(--background-secondary);
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0.5rem;
+  border-right: solid 1px var(--border);
+  gap: 0.5rem;
+}
+
+/* Entradas do menu lateral */
+.sidebar-entry {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-size-small);
+  height: 30px;
+  padding: 0.25rem 0.5rem;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+
+  .settings-icon, .mixer-icon {
+    background-color: var(--secondary-text);
+    transition: all 0.3s ease;
+    margin-right: 8px;
+  }
+
+  p {
+    margin: 0;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--secondary-text);
+  }
+
+  &:hover {
+    background-color: var(--sidemenu-hover);
+
+    .settings-icon, .mixer-icon {
+      background-color: var(--primary-text);
+    }
+
+    p {
+      color: var(--primary-text);
+    }
+  }
+
+  &.active {
+    background-color: var(--sidemenu-hover);
+
+    .settings-icon, .mixer-icon {
+      background-color: var(--primary-text);
+    }
+
+    p {
+      color: var(--primary-text);
+    }
+  }
+}
+
+/* =============================
+   Conteúdo da aba selecionada
+============================= */
+.settings-content {
+  flex: 1;
+  padding: 1rem 3rem;
+  overflow-y: auto;
+  background-color: var(--background);
+}

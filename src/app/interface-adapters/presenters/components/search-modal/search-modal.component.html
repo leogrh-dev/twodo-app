@@ -1,0 +1,30 @@
+<div class="search-modal-backdrop" (click)="handleBackdropClick($event)">
+    <div class="search-modal" (click)="$event.stopPropagation()">
+        <nz-input-group [nzSuffix]="searchIcon">
+            <input nz-input placeholder="Pesquisar anotações por toda plataforma..." [value]="search()"
+                (input)="updateSearch($any($event.target).value)" nzAllowClear />
+        </nz-input-group>
+
+        <ng-template #searchIcon>
+            <span class="iconify-20px search-icon"></span>
+        </ng-template>
+
+        <div class="notes-list" *ngIf="filteredNotes().length">
+            <div *ngFor="let note of filteredNotes()" class="note-item" (click)="onNoteClick(note.id)">
+                <ng-container *ngIf="note.iconUrl as icon; else defaultIcon">
+                    <ng-container *ngIf="!icon.startsWith('http'); else iconImage">
+                        <span class="emoji-note-icon">{{ icon }}</span>
+                    </ng-container>
+                    <ng-template #iconImage>
+                        <img [src]="icon" class="custom-note-icon" alt="Ícone da nota" />
+                    </ng-template>
+                </ng-container>
+                <ng-template #defaultIcon>
+                    <span class="iconify-20px note-icon"></span>
+                </ng-template>
+
+                <p class="note-title">{{ note.title || 'Nova página' }}</p>
+            </div>
+        </div>
+    </div>
+</div>

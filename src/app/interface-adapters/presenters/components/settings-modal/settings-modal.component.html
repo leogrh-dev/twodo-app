@@ -1,0 +1,19 @@
+<div class="settings-modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="settings-modal" (click)="$event.stopPropagation()">
+    <div class="settings-sidebar">
+      <div class="sidebar-entry" [class.active]="isAccountSelected()" (click)="select('account')">
+        <span class="iconify-20px settings-icon"></span>
+        <p>Conta Pessoal</p>
+      </div>
+      <div class="sidebar-entry" [class.active]="!isAccountSelected()" (click)="select('preferences')">
+        <span class="iconify-20px mixer-icon"></span>
+        <p>Preferências</p>
+      </div>
+    </div>
+
+    <div class="settings-content">
+      <app-settings-account-panel *ngIf="isAccountSelected()" />
+      <!-- Futuro: <app-settings-preferences-panel *ngIf="!isAccountSelected()" /> -->
+    </div>
+  </div>
+</div>

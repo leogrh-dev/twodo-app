@@ -25,6 +25,8 @@ import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.compone
 import { TrashModalComponent } from '../trash-modal/trash-modal.component';
 import { AllGroupNotesModalComponent } from '../all-group-notes-modal/all-group-notes-modal.component';
 import { Note } from '../../../../core/entities/note.entity';
+import { SearchModalComponent } from '../search-modal/search-modal.component';
+import { SettingsModalComponent } from '../settings-modal/settings-modal.component';
 
 interface UserInfo {
   name: string;
@@ -46,6 +48,8 @@ interface UserInfo {
     ThemeSwitcherComponent,
     TrashModalComponent,
     AllGroupNotesModalComponent,
+    SearchModalComponent,
+    SettingsModalComponent
   ],
 })
 export class SidemenuComponent implements OnInit {
@@ -67,6 +71,8 @@ export class SidemenuComponent implements OnInit {
   // Sinais e estado interno
   readonly currentUrl = signal(this.router.url);
   readonly showTrashModal = signal(false);
+  readonly showSearchModal = signal(false);
+  readonly showSettingsModal = signal(false);
   readonly modalState = signal<'user' | 'favorites' | null>(null);
   readonly allUserNotes = signal<Note[]>([]);
   readonly allFavoriteNotes = signal<Note[]>([]);
@@ -101,8 +107,17 @@ export class SidemenuComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(note => {
         if (!note?.id) return;
+
         const noteEntity = this.createNoteEntity(note.id);
         this.noteStateService.addUserNote(noteEntity);
+
+        const updatedNotes = [noteEntity, ...this.allUserNotes()];
+        this.allUserNotes.set(updatedNotes);
+
+        if (noteEntity.isFavorite) {
+          this.allFavoriteNotes.set([noteEntity, ...this.allFavoriteNotes()]);
+        }
+
         this.navigateToNote(note.id);
       });
   }
@@ -146,6 +161,14 @@ export class SidemenuComponent implements OnInit {
   // Modais
   toggleTrashModal(): void {
     this.showTrashModal.update(v => !v);
+  }
+
+  toggleSearchModal(): void {
+    this.showSearchModal.update(v => !v);
+  }
+
+  toggleSettingsModal(): void {
+    this.showSettingsModal.update(v => !v);
   }
 
   openAllNotes(group: 'user' | 'favorites'): void {
