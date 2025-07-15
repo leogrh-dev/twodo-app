@@ -50,3 +50,39 @@ export const RESET_PASSWORD_MUTATION = gql`
     resetPassword(input: $input)
   }
 `;
+
+export const UPDATE_USER_ICON_MUTATION = gql`
+  mutation UpdateUserIcon($input: UpdateUserIconInput!) {
+    updateUserIcon(input: $input)
+  }
+`;
+
+export const REMOVE_USER_ICON_MUTATION = gql`
+  mutation RemoveUserIcon($currentUrl: String!) {
+    removeUserIcon(currentUrl: $currentUrl)
+  }
+`;
+
+export const GET_CURRENT_USER_QUERY = gql`
+  query GetCurrentUser {
+    getCurrentUser {
+      id
+      name
+      email
+      phone
+      iconUrl
+    }
+  }
+`;
+
+export const VERIFY_PASSWORD_MUTATION = gql`
+  mutation VerifyPassword($input: VerifyPasswordInput!) {
+    verifyPassword(input: $input)
+  }
+`;
+
+export const UPDATE_PASSWORD_MUTATION = gql`
+  mutation UpdatePassword($input: UpdatePasswordInput!) {
+    updatePassword(input: $input)
+  }
+`;

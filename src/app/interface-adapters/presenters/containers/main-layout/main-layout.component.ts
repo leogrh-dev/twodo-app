@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
@@ -7,6 +7,10 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { SidemenuComponent } from '../../components/sidemenu/sidemenu.component';
 import { SidemenuResizerComponent } from '../../components/sidemenu-resizer/sidemenu-resizer.component';
 import { MainToolbarComponent } from '../../components/main-toolbar/main-toolbar.component';
+
+import { AuthService } from '../../../../core/services/auth.service';
+import { UserStateService } from '../../../../core/services/user-state.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-main-layout',
@@ -27,9 +31,15 @@ export class MainLayoutComponent {
   isCollapsed = false;
   sidemenuWidth = 280;
 
+
+  private readonly authService = inject(AuthService);
+  private readonly userState = inject(UserStateService);
+  private readonly destroyRef = inject(DestroyRef);
+
   ngOnInit(): void {
     this.restoreSidemenuCollapseState();
     this.restoreSidemenuWidth();
+    this.initializeCurrentUser();
   }
 
   toggleCollapse(): void {
@@ -59,6 +69,14 @@ export class MainLayoutComponent {
       const width = parseInt(saved, 10);
       this.sidemenuWidth = this.clamp(width, 240, 480);
     }
+  }
+
+  private initializeCurrentUser(): void {
+    this.authService.getCurrentUser()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(user => {
+        this.userState.setUser(user);
+      });
   }
 
   private clamp(value: number, min: number, max: number): number {

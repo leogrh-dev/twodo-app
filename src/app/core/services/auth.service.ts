@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
-import { CONFIRM_EMAIL_MUTATION, FORGOT_PASSWORD_MUTATION, LOGIN_MUTATION, LOGIN_WITH_GOOGLE_MUTATION, REGISTER_MUTATION, RESEND_CONFIRMATION_EMAIL_MUTATION, RESET_PASSWORD_MUTATION } from '../../infrastructure/graphql/auth.graphql';
+import { CONFIRM_EMAIL_MUTATION, FORGOT_PASSWORD_MUTATION, GET_CURRENT_USER_QUERY, LOGIN_MUTATION, LOGIN_WITH_GOOGLE_MUTATION, REGISTER_MUTATION, RESEND_CONFIRMATION_EMAIL_MUTATION, RESET_PASSWORD_MUTATION, UPDATE_PASSWORD_MUTATION, VERIFY_PASSWORD_MUTATION } from '../../infrastructure/graphql/auth.graphql';
+import { User } from '../entities/user.entity';
 
 interface DecodedToken {
   userId: string;
@@ -10,6 +11,7 @@ interface DecodedToken {
   email: string;
   phone: string;
   emailVerified: boolean;
+  iconUrl?: string | null;
   iat: number;
   exp: number;
 }
@@ -145,18 +147,40 @@ export class AuthService {
       .pipe(map((result: any) => result?.data?.resendConfirmationEmail));
   }
 
-  getCurrentUser(): DecodedToken | null {
-    const token = this.getToken();
-    if (!token) {
-      return null;
-    }
-
-    try {
-      const decoded = jwtDecode<DecodedToken>(token);
-      return decoded;
-    } catch (error) {
-      console.error('Erro ao decodificar o token:', error);
-      return null;
-    }
+  getCurrentUser(): Observable<User> {
+    return this.apollo
+      .query({
+        query: GET_CURRENT_USER_QUERY,
+        fetchPolicy: 'no-cache',
+      })
+      .pipe(
+        map((result: any) => {
+          const user = result?.data?.getCurrentUser;
+          if (!user) throw new Error('Usuário não encontrado');
+          return new User(
+            user.id,
+            user.name,
+            user.email,
+            user.phone,
+            true,
+            user.iconUrl ?? null
+          );
+        })
+      );
   }
+
+  updatePassword(newPassword: string): Observable<boolean> {
+    return this.apollo.mutate({
+      mutation: UPDATE_PASSWORD_MUTATION,
+      variables: { input: { newPassword } },
+    }).pipe(map((result: any) => result?.data?.updatePassword));
+  }
+
+  verifyPassword(password: string): Observable<boolean> {
+    return this.apollo.mutate({
+      mutation: VERIFY_PASSWORD_MUTATION,
+      variables: { input: { password } }
+    }).pipe(map((result: any) => result?.data?.verifyPassword));
+  }
+
 }

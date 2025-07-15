@@ -179,7 +179,6 @@ p {
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 20px;
-    flex-grow: 1;
   }
 
   .profile-menu-button {
@@ -213,6 +212,10 @@ p {
   justify-content: center;
   margin-right: 8px;
   flex-shrink: 0;
+}
+
+img.profile-pic {
+  display: block;
 }
 
 /* Botões do topo (nova nota, colapsar menu) */

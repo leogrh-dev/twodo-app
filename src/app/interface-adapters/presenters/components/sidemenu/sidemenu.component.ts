@@ -27,6 +27,7 @@ import { AllGroupNotesModalComponent } from '../all-group-notes-modal/all-group-
 import { Note } from '../../../../core/entities/note.entity';
 import { SearchModalComponent } from '../search-modal/search-modal.component';
 import { SettingsModalComponent } from '../settings-modal/settings-modal.component';
+import { UserStateService } from '../../../../core/services/user-state.service';
 
 interface UserInfo {
   name: string;
@@ -85,16 +86,11 @@ export class SidemenuComponent implements OnInit {
   readonly visibleFavoriteNotes$ = this.favoriteNotes$.pipe(map(n => n.slice(0, 10)));
 
   // Usuário logado
-  userInfo: UserInfo = {
-    name: SidemenuComponent.DEFAULT_USER_NAME,
-    email: '',
-    initial: SidemenuComponent.DEFAULT_USER_INITIAL,
-  };
+  private readonly userState = inject(UserStateService);
 
   // Ciclo de vida
   ngOnInit(): void {
     this.loadUserNotes();
-    this.initializeUserInfo();
 
     this.router.events.subscribe(() => {
       this.currentUrl.set(this.router.url);
@@ -200,11 +196,15 @@ export class SidemenuComponent implements OnInit {
   }
 
   get userName(): string {
-    return this.userInfo.name;
+    return this.userState.userName();
   }
 
   get userInitial(): string {
-    return this.userInfo.initial;
+    return this.userState.userInitial();
+  }
+
+  get iconUrl(): string | null {
+    return this.userState.iconUrl();
   }
 
   get selectedGroupType(): 'user' | 'favorites' {
@@ -231,26 +231,20 @@ export class SidemenuComponent implements OnInit {
       });
   }
 
-  private initializeUserInfo(): void {
-    const user = this.authService.getCurrentUser();
-    this.userInfo = {
-      name: user?.name ?? SidemenuComponent.DEFAULT_USER_NAME,
-      email: user?.email ?? '',
-      initial: this.extractUserInitial(user?.name),
-    };
-  }
-
   private extractUserInitial(name?: string): string {
     return name?.charAt(0).toUpperCase() ?? SidemenuComponent.DEFAULT_USER_INITIAL;
   }
 
   private createNoteEntity(noteId: string): Note {
+    const user = this.userState.user();
+    const ownerId = user?.id ?? '';
+
     return this.noteService.createNoteEntity({
       id: noteId,
       title: SidemenuComponent.NEW_NOTE_TITLE,
       content: '',
       bannerUrl: null,
-      ownerId: this.authService.getCurrentUser()?.userId ?? '',
+      ownerId,
       createdAt: new Date(),
       updatedAt: new Date(),
     });

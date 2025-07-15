@@ -4,26 +4,50 @@
     <h2 class="section-title">Conta Pessoal</h2>
 
     <div class="user-info">
-      <span class="profile-pic">{{ userName.charAt(0) }}</span>
+      <div class="profile-photo" nz-dropdown nzTrigger="click" [nzDropdownMenu]="profileMenu">
+        <ng-container *ngIf="iconUrl(); else fallback">
+          <img [src]="iconUrl()" class="profile-photo-img" alt="Ícone do usuário" />
+        </ng-container>
+        <ng-template #fallback>
+          <div class="profile-pic">{{ userInitial() }}</div>
+        </ng-template>
+      </div>
 
       <div class="profile-form">
         <label for="userNameInput" class="input-label">Nome</label>
-        <input nz-input id="userNameInput" name="userName" [(ngModel)]="userName" placeholder="Digite seu nome" />
+        <input nz-input id="userNameInput" [ngModel]="userNameValue()" (ngModelChange)="updateUserNameFromInput($event)"
+          placeholder="Digite seu nome" />
       </div>
     </div>
   </div>
+
+  <nz-dropdown-menu #profileMenu="nzDropdownMenu">
+    <div class="banner-menu">
+      <div class="banner-menu-header">
+        <p>Ícone de perfil</p>
+        <button class="remove-btn" *ngIf="iconUrl()" (click)="removeIcon()">
+          <p>Remover</p>
+        </button>
+      </div>
+
+      <div class="upload-container">
+        <p>Selecione uma imagem do seu computador</p>
+        <button nz-button nzType="default" (click)="fileInput.click()">Escolher imagem</button>
+        <input #fileInput type="file" hidden accept="image/*" (change)="onFileSelected($event)" />
+      </div>
+    </div>
+  </nz-dropdown-menu>
 
   <div class="invisible-div"></div>
 
   <!-- Painel de Segurança da Conta -->
   <div class="security-panel">
     <h2 class="section-title">Segurança da conta</h2>
-
     <div class="security-item-container">
       <div class="security-item">
         <div class="security-info">
           <label class="info-title">E-mail</label>
-          <p class="info-value">{{ userEmail }}</p>
+          <p class="info-value">{{ userEmailValue() }}</p>
         </div>
       </div>
 
@@ -32,7 +56,7 @@
           <label class="info-title">Senha</label>
           <p class="info-value">Altere sua senha</p>
         </div>
-        <button nz-button nzType="default" class="security-action">Alterar senha</button>
+        <button (click)="openChangePasswordModal()" nz-button nzType="default" class="security-action">Alterar senha</button>
       </div>
     </div>
   </div>
@@ -41,7 +65,6 @@
 
   <div class="suport-panel">
     <h2 class="section-title">Suporte</h2>
-
     <div class="suport-item">
       <div class="suport-info">
         <label class="info-title">Excluir minha conta</label>
@@ -51,3 +74,5 @@
     </div>
   </div>
 </div>
+
+<app-change-password-modal *ngIf="showChangePasswordModal()" (close)="closeChangePasswordModal()" />

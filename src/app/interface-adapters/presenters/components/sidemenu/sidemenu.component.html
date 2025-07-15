@@ -1,7 +1,12 @@
 <div class="in-sidemenu">
     <div class="sidemenu-item user-account">
         <div class="user-account-profile" nz-dropdown nzTrigger="click" [nzDropdownMenu]="userMenu">
-            <span class="profile-pic">{{ userInitial }}</span>
+            <ng-container *ngIf="iconUrl as icon; else initialFallback">
+                <img [src]="icon" class="profile-pic" alt="Ícone do usuário" />
+            </ng-container>
+            <ng-template #initialFallback>
+                <span class="profile-pic">{{ userInitial }}</span>
+            </ng-template>
             <span class="profile-name">{{ userName }}</span>
             <button class="profile-menu-button">
                 <span class="iconify-20px down-icon"></span>
@@ -130,7 +135,12 @@
         <div class="user-menu">
             <div class="user-menu-container">
                 <div class="user-info">
-                    <span class="profile-pic">{{ userInitial }}</span>
+                    <ng-container *ngIf="iconUrl as icon; else fallbackIcon">
+                        <img [src]="icon" class="profile-pic" alt="Ícone do usuário" />
+                    </ng-container>
+                    <ng-template #fallbackIcon>
+                        <span class="profile-pic">{{ userInitial }}</span>
+                    </ng-template>
                     <p>{{ userName }}</p>
                 </div>
             </div>

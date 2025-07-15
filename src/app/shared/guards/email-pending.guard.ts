@@ -1,22 +1,26 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { firstValueFrom } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class EmailPendingGuard implements CanActivate {
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) { }
 
-  canActivate(): boolean {
+  async canActivate(): Promise<boolean> {
     const token = this.authService.getToken();
-    const user = this.authService.getCurrentUser();
 
-    if (token && user && !user.emailVerified) {
-      return true;
+    if (!token) {
+      this.router.navigate(['/']);
+      return false;
     }
 
-    this.router.navigate(['/']);
-    return false;
+    try {
+      const user = await firstValueFrom(this.authService.getCurrentUser());
+      return !user.emailVerified;
+    } catch {
+      this.router.navigate(['/']);
+      return false;
+    }
   }
 }
