@@ -1,20 +1,33 @@
-<div class="delete-modal-backdrop" (click)="close.emit()">
-  <div class="delete-modal" (click)="$event.stopPropagation()">
-    <h3>Quer mesmo excluir sua conta permanentemente?</h3>
-    <p>Essa ação não pode ser desfeita. Todos os seus dados serão removidos.</p>
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-wrapper" (click)="$event.stopPropagation()">
+    <h3>Vamos sentir muito sua falta e torcer por você!</h3>
 
-    <input
-      placeholder="Digite seu e-mail para confirmar"
-    />
+    <p class="warning-text">
+      A exclusão da sua conta é <span class="danger-text">irreversível</span> — todos os seus dados, anotações e
+      arquivos serão perdidos.
+    </p>
 
-    <button
-      class="danger"
-      [disabled]="confirmationText !== userEmail"
-      (click)="confirm.emit()"
-    >
-      Excluir permanentemente minha conta
-    </button>
+    <p style="color: var(--secondary-text);">
+      Mas não se preocupe, você poderá voltar e criar uma nova conta quando quiser.
+    </p>
 
-    <button (click)="close.emit()">Cancelar</button>
+    <p style="color: var(--secondary-text);">
+      Para confirmar, digite <strong>{{ currentUserEmail }}</strong> abaixo:
+    </p>
+
+    <input nz-input type="email" [(ngModel)]="emailValue" placeholder="Digite seu e-mail" [disabled]="isLoading()" />
+
+    <div class="step-buttons">
+      <button nz-button nzType="primary" nzDanger nz-popconfirm
+        [nzPopconfirmTitle]="'Tem certeza que deseja excluir sua conta permanentemente?'"
+        [nzPopconfirmPlacement]="'topRight'" [nzOkText]="'Sim'" [nzCancelText]="'Cancelar'" [nzOkDanger]="true"
+        [nzIcon]="undefined" (nzOnConfirm)="confirmDelete()" [disabled]="isLoading()">
+        Sim, eu entendo e quero excluir permanentemente
+      </button>
+
+      <button nz-button nzType="default" (click)="close.emit()" [disabled]="isLoading()">
+        Cancelar
+      </button>
+    </div>
   </div>
 </div>

@@ -1,0 +1,28 @@
+<div class="recent-notes-wrapper">
+    <p class="section-label">Últimas alterações</p>
+
+    <div class="note-grid">
+        <div class="note-card" *ngFor="let note of recentNotes()" [routerLink]="['/note', note.id]" nz-tooltip
+            [nzTooltipTitle]="note.title || 'Nova página'" [nzTooltipPlacement]="'top'">
+            <div class="note-banner" [ngStyle]="getBackgroundStyle(note)">
+                <ng-container *ngIf="note.iconUrl as icon; else defaultIcon">
+                    <ng-container *ngIf="!isImage(icon); else iconImage">
+                        <span class="emoji-icon">{{ icon }}</span>
+                    </ng-container>
+                    <ng-template #iconImage>
+                        <img [src]="icon" class="img-icon" alt="Ícone da nota" />
+                    </ng-template>
+                </ng-container>
+                <ng-template #defaultIcon>
+                    <span class="iconify-20px note-icon"></span>
+                </ng-template>
+            </div>
+            <p class="note-title">{{ note.title || 'Nova página' }}</p>
+        </div>
+
+        <div class="add-card" (click)="createNewNote()" nz-tooltip [nzTooltipTitle]="'Criar nova nota'"
+            nzTooltipPlacement="top">
+            <span class="iconify-20px edit-icon"></span>
+        </div>
+    </div>
+</div>

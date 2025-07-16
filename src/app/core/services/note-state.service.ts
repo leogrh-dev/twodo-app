@@ -158,6 +158,14 @@ export class NoteStateService {
     return this.deletedNotesSubject.getValue();
   }
 
+  getFavoriteNotes(): Note[] {
+    return this.favoriteNotesSubject.getValue();
+  }
+
+  getUserNotes(): Note[] {
+    return this.userNotesSubject.getValue();
+  }
+
   getDeletedNotesCount(): number {
     return this.deletedNotesSubject.getValue().length;
   }

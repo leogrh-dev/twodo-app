@@ -12,13 +12,14 @@ import {
 } from '@angular/core';
 
 import { SettingsAccountPanelComponent } from '../settings-account-panel/settings-account-panel.component';
+import { SettingsPreferencesPanelComponent } from '../settings-preferences-panel/settings-preferences-panel.component';
 
 @Component({
   selector: 'app-settings-modal',
   standalone: true,
   templateUrl: './settings-modal.component.html',
   styleUrls: ['./settings-modal.component.scss'],
-  imports: [CommonModule, SettingsAccountPanelComponent]
+  imports: [CommonModule, SettingsAccountPanelComponent, SettingsPreferencesPanelComponent]
 })
 export class SettingsModalComponent implements OnInit, OnDestroy {
   readonly destroyRef = inject(DestroyRef);

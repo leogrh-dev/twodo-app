@@ -46,7 +46,7 @@ interface UserInfo {
     NzDropDownModule,
     NzInputModule,
     NzToolTipModule,
-    ThemeSwitcherComponent,
+    //ThemeSwitcherComponent,
     TrashModalComponent,
     AllGroupNotesModalComponent,
     SearchModalComponent,

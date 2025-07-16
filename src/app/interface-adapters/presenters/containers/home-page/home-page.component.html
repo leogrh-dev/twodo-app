@@ -1,6 +1,7 @@
 <div class="home-page full-rlt-container">
     <div class="home-page-container">
         <img [src]="logoPath" alt="TwoDo Logo" class="twodo-logo-img" />
-        <h1>Bem-vindo {{ userName }}</h1>
+        <app-recent-notes *ngIf="hasNotes"></app-recent-notes>
+        <p class="credits-text">Projeto desenvolvido por Leonardo Gabriel Reis Henrique</p>
     </div>
 </div>

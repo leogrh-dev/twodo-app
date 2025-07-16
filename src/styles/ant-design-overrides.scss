@@ -107,9 +107,14 @@
 
 .ant-select-dropdown {
     background-color: var(--surface);
+    border: solid 1px var(--border);
     margin: 0.5rem;
     border-radius: 5px;
-
+    
+    .cdk-virtual-scrollable {
+        min-height: 120px;
+        width: 100%;
+    }
 
     .ant-select-item-option {
         padding: 0.5rem 1rem;

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
-import { CONFIRM_EMAIL_MUTATION, FORGOT_PASSWORD_MUTATION, GET_CURRENT_USER_QUERY, LOGIN_MUTATION, LOGIN_WITH_GOOGLE_MUTATION, REGISTER_MUTATION, RESEND_CONFIRMATION_EMAIL_MUTATION, RESET_PASSWORD_MUTATION, UPDATE_PASSWORD_MUTATION, VERIFY_PASSWORD_MUTATION } from '../../infrastructure/graphql/auth.graphql';
+import { CONFIRM_EMAIL_MUTATION, FORGOT_PASSWORD_MUTATION, GET_CURRENT_USER_QUERY, LOGIN_MUTATION, LOGIN_WITH_GOOGLE_MUTATION, REGISTER_MUTATION, RESEND_CONFIRMATION_EMAIL_MUTATION, RESET_PASSWORD_MUTATION, UPDATE_PASSWORD_MUTATION, UPDATE_USER_NAME_MUTATION, VERIFY_PASSWORD_MUTATION } from '../../infrastructure/graphql/auth.graphql';
 import { User } from '../entities/user.entity';
 
 interface DecodedToken {
@@ -183,4 +183,10 @@ export class AuthService {
     }).pipe(map((result: any) => result?.data?.verifyPassword));
   }
 
+  updateUserName(newName: string): Observable<boolean> {
+    return this.apollo.mutate({
+      mutation: UPDATE_USER_NAME_MUTATION,
+      variables: { input: { newName } },
+    }).pipe(map((result: any) => result?.data?.updateUserName));
+  }
 }

@@ -86,3 +86,15 @@ export const UPDATE_PASSWORD_MUTATION = gql`
     updatePassword(input: $input)
   }
 `;
+
+export const UPDATE_USER_NAME_MUTATION = gql`
+  mutation UpdateUserName($input: UpdateUserNameInput!) {
+    updateUserName(input: $input)
+  }
+`;
+
+export const DELETE_ACCOUNT_MUTATION = gql`
+  mutation DeleteAccount($input: DeleteAccountInput!) {
+    deleteAccount(input: $input)
+  }
+`;

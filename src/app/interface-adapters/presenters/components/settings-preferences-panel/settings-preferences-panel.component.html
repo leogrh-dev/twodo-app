@@ -1,0 +1,16 @@
+<div class="preferences-panel">
+    <h2 class="section-title">Preferências</h2>
+
+    <div class="preference-group">
+        <div>
+            <label class="preference-label">Aparência</label>
+            <p class="preference-description">Personalize a aparência do TwoDo.</p>
+        </div>
+        <nz-select [ngModel]="selectedTheme()" (ngModelChange)="onThemeChange($event)" class="appearance-select">
+            <nz-option nzValue="system" nzLabel="Sistema"></nz-option>
+            <nz-option nzValue="light" nzLabel="Claro"></nz-option>
+            <nz-option nzValue="dark" nzLabel="Escuro"></nz-option>
+        </nz-select>
+    </div>
+
+</div>

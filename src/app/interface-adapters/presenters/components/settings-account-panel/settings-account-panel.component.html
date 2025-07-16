@@ -56,7 +56,8 @@
           <label class="info-title">Senha</label>
           <p class="info-value">Altere sua senha</p>
         </div>
-        <button (click)="openChangePasswordModal()" nz-button nzType="default" class="security-action">Alterar senha</button>
+        <button (click)="openChangePasswordModal()" nz-button nzType="default" class="security-action">Alterar
+          senha</button>
       </div>
     </div>
   </div>
@@ -70,9 +71,11 @@
         <label class="info-title">Excluir minha conta</label>
         <p class="info-value">Exclua permanentemente a conta e remova o acesso de todos os espaços de trabalho.</p>
       </div>
-      <button nz-button nzType="default" nzDanger class="suport-action">Excluir conta</button>
+      <button nz-button nzType="default" nzDanger class="suport-action" (click)="openDeleteModal()">Excluir
+        conta</button>
     </div>
   </div>
 </div>
 
+<app-confirm-delete-account-modal *ngIf="showDeleteModal()" (close)="closeDeleteModal()" />
 <app-change-password-modal *ngIf="showChangePasswordModal()" (close)="closeChangePasswordModal()" />

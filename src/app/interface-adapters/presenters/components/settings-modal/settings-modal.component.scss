@@ -7,7 +7,7 @@
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  z-index: 1;
+  z-index: 10;
   display: grid;
   place-items: center;
   padding: 2rem;
@@ -29,7 +29,7 @@
   border-radius: 10px;
   box-shadow: 0 4px 24px var(--shadow);
   overflow: hidden;
-  z-index: 1001;
+  z-index: 9;
 }
 
 /* =============================
