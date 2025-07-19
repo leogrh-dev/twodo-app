@@ -1,3 +1,6 @@
+/* ==============================
+   Cores Base do Tema
+============================== */
 $color-primary: #1037B8;
 $color-primary-light: #254dd1;
 $color-primary-dark: #001679;
@@ -7,34 +10,44 @@ $color-warning: #faad14;
 $color-error: #F92945;
 $color-info: #1890ff;
 
+/* ==============================
+   Tema Claro (Light Theme)
+============================== */
 @mixin theme-light {
+  /* Cores primárias */
   --primary: #{$color-primary};
   --primary-light: #{$color-primary-light};
   --primary-dark: #{$color-primary-dark};
   --primary-contrast: #000000;
 
+  /* Fundo */
   --background: #ffffff;
   --background-secondary: #f9f9f9;
   --background-terciary: #EFEFEF;
 
+  /* Superfícies */
   --surface: #ffffff;
   --surface-secondary: #fafafa;
   --surface-hover: #f9f9f9;
   --surface-active: #e6f7ff;
 
+  /* Texto */
   --primary-text: #000000;
   --secondary-text: #595959;
   --disabled-text: #bfbfbf;
   --hint-text: #8c8c8c;
   --text-on-primary: #ffffff;
 
+  /* Bordas */
   --border: rgba(19, 19, 19, 0.1);
   --border-light: rgba(19, 19, 19, 0.08);
   --border-dark: rgba(19, 19, 19, 0.12);
 
+  /* Hover e foco em menus */
   --sidemenu-hover: rgba(0, 0, 0, 0.07);
   --sidemenu-focus: rgba(0, 0, 0, 0.14);
 
+  /* Contraste e sombreamento */
   --contrast: #060606;
   --contrast-text: #ffffff;
 
@@ -43,6 +56,7 @@ $color-info: #1890ff;
   --shadow-dark: rgba(0, 0, 0, 0.15);
   --shadow-elevation: 0 2px 8px rgba(0, 0, 0, 0.5);
 
+  /* Cores de status */
   --success: #{$color-success};
   --warning: #{$color-warning};
   --error: #{$color-error};
@@ -53,10 +67,12 @@ $color-info: #1890ff;
   --error-bg: #fff2f0;
   --info-bg: #e6f7ff;
 
+  /* Opacidade de interação */
   --hover-opacity: 0.8;
   --active-opacity: 0.9;
   --disabled-opacity: 0.4;
 
+  /* Tipografia */
   --font-size-xsmall: 0.75rem;
   --font-size-small: 0.875rem;
   --font-size-base: 1rem;
@@ -67,34 +83,44 @@ $color-info: #1890ff;
   --font-size-4xl: 3rem;
 }
 
+/* ==============================
+   Tema Escuro (Dark Theme)
+============================== */
 @mixin theme-dark {
+  /* Cores primárias */
   --primary: #{$color-primary};
   --primary-light: #{$color-primary-light};
   --primary-dark: #{$color-primary-dark};
   --primary-contrast: #ffffff;
 
+  /* Fundo */
   --background: #161616;
   --background-secondary: #202020;
   --background-terciary: #262626;
 
+  /* Superfícies */
   --surface: #141414;
   --surface-secondary: #1f1f1f;
   --surface-hover: #262626;
   --surface-active: #177ddc;
 
+  /* Texto */
   --primary-text: #ffffff;
   --secondary-text: #a6a6a6;
   --disabled-text: #434343;
   --hint-text: #595959;
   --text-on-primary: #ffffff;
 
+  /* Bordas */
   --border: #434343;
   --border-light: #303030;
   --border-dark: #595959;
 
+  /* Hover e foco em menus */
   --sidemenu-hover: rgba(255, 255, 255, 0.05);
   --sidemenu-focus: rgba(255, 255, 255, 0.1);
 
+  /* Contraste e sombreamento */
   --contrast: #060606;
   --contrast-text: #ffffff;
 
@@ -103,6 +129,7 @@ $color-info: #1890ff;
   --shadow-dark: rgba(0, 0, 0, 0.5);
   --shadow-elevation: 0 2px 8px rgba(0, 0, 0);
 
+  /* Cores de status */
   --success: #{$color-success};
   --warning: #{$color-warning};
   --error: #{$color-error};
@@ -113,10 +140,12 @@ $color-info: #1890ff;
   --error-bg: #2a1215;
   --info-bg: #111b26;
 
+  /* Opacidade de interação */
   --hover-opacity: 0.8;
   --active-opacity: 0.9;
   --disabled-opacity: 0.4;
 
+  /* Tipografia */
   --font-size-small: 0.875rem;
   --font-size-base: 1rem;
   --font-size-lg: 1.25rem;
@@ -126,6 +155,9 @@ $color-info: #1890ff;
   --font-size-4xl: 3rem;
 }
 
+/* ==============================
+   Aplicação dos Temas via HTML
+============================== */
 html.theme-light,
 :root {
   @include theme-light;
@@ -135,6 +167,9 @@ html.theme-dark {
   @include theme-dark;
 }
 
+/* ==============================
+   Classes Utilitárias para Tema
+============================== */
 .theme-light {
   @include theme-light;
 }

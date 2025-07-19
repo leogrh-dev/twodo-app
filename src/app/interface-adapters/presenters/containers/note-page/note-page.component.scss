@@ -1,3 +1,6 @@
+/* ==============================
+   Container da página da nota
+============================== */
 .note-page-container {
   display: flex;
   flex-direction: column;
@@ -5,36 +8,41 @@
   width: 100%;
   max-width: 100%;
   position: relative;
-  min-height: calc(100vh - 44px);
   height: calc(100vh - 44px);
+  min-height: calc(100vh - 44px);
   overflow: auto;
 }
 
+/* ==============================
+   Banner da nota
+============================== */
 .note-banner-wrapper {
-  min-width: 100%;
-  width: max-content;
   position: relative;
   z-index: 1;
-  max-height: max-content;
+  width: max-content;
+  min-width: 100%;
   height: max-content;
+  max-height: max-content;
 }
 
+/* ==============================
+   Wrapper de conteúdo da nota
+============================== */
 .note-content-wrapper {
   display: grid;
   grid-template-columns: minmax(96px, 1fr) minmax(auto, 708px) minmax(96px, 1fr);
   padding-bottom: 10vh;
 }
 
+/* ==============================
+   Conteúdo da nota (microfrontend)
+============================== */
 .note-content-container {
   display: flex;
   flex-direction: column;
   grid-column: 2;
   position: relative;
-}
-
-.note-content-container {
   width: 100%;
   max-width: 708px;
   margin-top: 2px;
-  margin-bottom: 0;
 }

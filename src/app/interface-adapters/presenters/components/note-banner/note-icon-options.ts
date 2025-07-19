@@ -1,8 +1,10 @@
+/** Representa uma categoria de emojis com rótulo e lista de emojis. */
 export interface EmojiCategory {
   label: string;
   emojis: string[];
 }
 
+/** Lista de categorias de ícones/emojis disponíveis para representar notas. */
 export const ICON_CATEGORIES: EmojiCategory[] = [
   {
     label: 'Rostos e Emoções',

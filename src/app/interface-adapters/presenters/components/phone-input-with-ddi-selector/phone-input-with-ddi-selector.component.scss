@@ -1,11 +1,23 @@
+/* ==============================
+   Container principal do input
+============================== */
 ::ng-deep .phone-input-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+
+  .ant-select-single .ant-select-selector .ant-select-selection-item {
+    display: flex;
+    align-items: center;
     gap: 0.5rem;
-    
-    .ant-select-single .ant-select-selector .ant-select-selection-item {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
+  }
+}
+
+/* ==============================
+   Estilo para mensagem de erro
+============================== */
+.input-error {
+  color: var(--danger-color);
+  font-size: var(--font-size-small);
+  margin-top: 0.25rem;
 }

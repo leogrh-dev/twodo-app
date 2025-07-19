@@ -1,24 +1,39 @@
+/* ==============================
+   Reset de Box Model
+============================== */
 *,
 *::before,
 *::after {
     box-sizing: border-box;
 }
 
+/* ==============================
+   Reset de Margens
+============================== */
 * {
     margin: 0;
 }
 
+/* ==============================
+   Preferência de Movimento
+============================== */
 @media (prefers-reduced-motion: no-preference) {
     html {
         interpolate-size: allow-keywords;
     }
 }
 
+/* ==============================
+   Corpo do Documento
+============================== */
 body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
 }
 
+/* ==============================
+   Elementos de Mídia
+============================== */
 img,
 picture,
 video,
@@ -28,6 +43,9 @@ svg {
     max-width: 100%;
 }
 
+/* ==============================
+   Inputs e Formulários
+============================== */
 input,
 button,
 textarea,
@@ -35,6 +53,9 @@ select {
     font: inherit;
 }
 
+/* ==============================
+   Títulos e Parágrafos
+============================== */
 p,
 h1,
 h2,
@@ -59,6 +80,9 @@ h6 {
     text-wrap: balance;
 }
 
+/* ==============================
+   Containers de Aplicação
+============================== */
 #root,
 #__next {
     isolation: isolate;

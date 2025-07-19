@@ -3,19 +3,24 @@
     class="expand-sidemenu">
     <span class="iconify-20px open-sidemenu-icon"></span>
   </div>
+
   <div *ngIf="isInNotePage" class="in-note-page-container">
     <button class="note-name-btn" nz-dropdown nzTrigger="click" [nzDropdownMenu]="changeNoteTitle">
       <span class="note-title-text">
-        {{ noteTitle || "Nova página" }}
+        {{ noteTitle || 'Nova página' }}
       </span>
     </button>
 
     <button class="favorite-btn" (click)="toggleFavorite()" nz-tooltip [nzTooltipTitle]="favoriteTooltip">
-      <span class="iconify-20px" [ngClass]="isFavorite ? 'star-fill-icon' : 'star-no-fill-icon'"></span>
+      <span class="iconify-20px" [ngClass]="isFavorite ? 'star-fill-icon' : 'star-no-fill-icon'">
+      </span>
     </button>
   </div>
 </div>
 
+<!-- ==============================
+     Dropdown de edição do título
+============================== -->
 <nz-dropdown-menu #changeNoteTitle="nzDropdownMenu">
   <div class="note-title-dropdown">
     <nz-input-group [nzSuffix]="editIcon">
@@ -29,6 +34,9 @@
   </div>
 </nz-dropdown-menu>
 
+<!-- ==============================
+     Tooltips
+============================== -->
 <ng-template #tooltipTemplateOpenSidemenu>
   <span class="tooltip-content">
     Abrir menu <span class="tooltip-action">(Clique)</span>

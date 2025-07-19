@@ -1,9 +1,11 @@
+/** Representa o objeto de um país, possui nome, ddi e nome abreviado. */
 export interface Country {
   name: string;
   dial_code: string;
   code: string;
 }
 
+/** Lista de países com o DDI. */
 export const countries: Country[] = [
   { name: 'Afeganistão', dial_code: '+93', code: 'af' },
   { name: 'África do Sul', dial_code: '+27', code: 'za' },

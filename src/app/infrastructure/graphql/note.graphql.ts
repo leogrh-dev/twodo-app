@@ -1,8 +1,12 @@
 import { gql } from 'apollo-angular';
 
+// ======================
 // Queries
+// ======================
+
+/** Retorna nota pelo ID */
 export const GET_NOTE_BY_ID_QUERY = gql`
-  query GetNoteById($id: String!) {
+  query getNoteById($id: String!) {
     getNoteById(id: $id) {
       id
       title
@@ -18,8 +22,9 @@ export const GET_NOTE_BY_ID_QUERY = gql`
   }
 `;
 
+/** Retorna todas as notas ativas do usuário autenticado */
 export const GET_USER_NOTES_QUERY = gql`
-  query GetUserNotes {
+  query getUserNotes {
     getUserNotes {
       id
       title
@@ -35,8 +40,9 @@ export const GET_USER_NOTES_QUERY = gql`
   }
 `;
 
+/** Retorna as notas deletadas (lixeira) */
 export const GET_DELETED_NOTES_QUERY = gql`
-  query GetDeletedNotes {
+  query getDeletedNotes {
     getDeletedNotes {
       id
       title
@@ -52,9 +58,13 @@ export const GET_DELETED_NOTES_QUERY = gql`
   }
 `;
 
+// ======================
 // Mutations
+// ======================
+
+/** Cria uma nova nota vazia */
 export const CREATE_NOTE_MUTATION = gql`
-  mutation CreateNote {
+  mutation createNote {
     createNote {
       id
       title
@@ -70,8 +80,9 @@ export const CREATE_NOTE_MUTATION = gql`
   }
 `;
 
+/** Atualiza o título da nota */
 export const UPDATE_NOTE_TITLE_MUTATION = gql`
-  mutation UpdateNoteTitle($input: UpdateNoteTitleInput!) {
+  mutation updateNoteTitle($input: UpdateNoteTitleInput!) {
     updateNoteTitle(input: $input) {
       id
       title
@@ -80,8 +91,9 @@ export const UPDATE_NOTE_TITLE_MUTATION = gql`
   }
 `;
 
+/** Atualiza o conteúdo da nota */
 export const UPDATE_NOTE_CONTENT_MUTATION = gql`
-  mutation UpdateNoteContent($input: UpdateNoteContentInput!) {
+  mutation updateNoteContent($input: UpdateNoteContentInput!) {
     updateNoteContent(input: $input) {
       id
       content
@@ -90,8 +102,9 @@ export const UPDATE_NOTE_CONTENT_MUTATION = gql`
   }
 `;
 
+/** Atualiza a imagem/banner da nota */
 export const UPDATE_NOTE_BANNER_MUTATION = gql`
-  mutation UpdateNoteBanner($input: UpdateNoteBannerInput!) {
+  mutation updateNoteBanner($input: UpdateNoteBannerInput!) {
     updateNoteBanner(input: $input) {
       id
       bannerUrl
@@ -100,8 +113,9 @@ export const UPDATE_NOTE_BANNER_MUTATION = gql`
   }
 `;
 
+/** Remove o banner da nota */
 export const REMOVE_NOTE_BANNER_MUTATION = gql`
-  mutation RemoveNoteBanner($input: RemoveNoteBannerInput!) {
+  mutation removeNoteBanner($input: RemoveNoteBannerInput!) {
     removeNoteBanner(input: $input) {
       id
       bannerUrl
@@ -110,32 +124,9 @@ export const REMOVE_NOTE_BANNER_MUTATION = gql`
   }
 `;
 
-export const RESTORE_NOTE_MUTATION = gql`
-  mutation RestoreNote($id: String!) {
-    restoreNote(id: $id)
-  }
-`;
-
-export const PERMANENTLY_DELETE_NOTE_MUTATION = gql`
-  mutation PermanentlyDeleteNote($id: String!) {
-    permanentlyDeleteNote(id: $id)
-  }
-`;
-
-export const SOFT_DELETE_NOTE_MUTATION = gql`
-  mutation SoftDeleteNote($id: String!) {
-    deleteNote(id: $id)
-  }
-`;
-
-export const TOGGLE_FAVORITE_NOTE_MUTATION = gql`
-  mutation ToggleFavoriteNote($id: String!) {
-    toggleFavoriteNote(id: $id)
-  }
-`;
-
+/** Atualiza o ícone da nota */
 export const UPDATE_NOTE_ICON_MUTATION = gql`
-  mutation UpdateNoteIcon($input: UpdateNoteIconInput!) {
+  mutation updateNoteIcon($input: UpdateNoteIconInput!) {
     updateNoteIcon(input: $input) {
       id
       iconUrl
@@ -144,12 +135,41 @@ export const UPDATE_NOTE_ICON_MUTATION = gql`
   }
 `;
 
+/** Remove o ícone da nota */
 export const REMOVE_NOTE_ICON_MUTATION = gql`
-  mutation RemoveNoteIcon($input: RemoveNoteIconInput!) {
+  mutation removeNoteIcon($input: RemoveNoteIconInput!) {
     removeNoteIcon(input: $input) {
       id
       iconUrl
       updatedAt
     }
+  }
+`;
+
+/** Move a nota para a lixeira (soft delete) */
+export const SOFT_DELETE_NOTE_MUTATION = gql`
+  mutation softDeleteNote($id: String!) {
+    deleteNote(id: $id)
+  }
+`;
+
+/** Restaura uma nota da lixeira */
+export const RESTORE_NOTE_MUTATION = gql`
+  mutation restoreNote($id: String!) {
+    restoreNote(id: $id)
+  }
+`;
+
+/** Deleta permanentemente uma nota */
+export const PERMANENTLY_DELETE_NOTE_MUTATION = gql`
+  mutation permanentlyDeleteNote($id: String!) {
+    permanentlyDeleteNote(id: $id)
+  }
+`;
+
+/** Alterna o status de favorito da nota */
+export const TOGGLE_FAVORITE_NOTE_MUTATION = gql`
+  mutation toggleFavoriteNote($id: String!) {
+    toggleFavoriteNote(id: $id)
   }
 `;

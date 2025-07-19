@@ -1,5 +1,8 @@
 $breakpoint-mobile: 1000px;
 
+/* ==============================
+   Container principal da página
+============================== */
 #email-page {
     display: flex;
     width: 100vw;
@@ -14,6 +17,9 @@ $breakpoint-mobile: 1000px;
             grid-template-columns: 1fr;
         }
 
+        /* ==============================
+       Imagem lateral esquerda
+    ============================== */
         .email-left-container {
             display: flex;
             background-image: url('/assets/images/page-components-images/login-component/twodo-login-background.svg');
@@ -24,6 +30,9 @@ $breakpoint-mobile: 1000px;
             }
         }
 
+        /* ==============================
+       Conteúdo do lado direito
+    ============================== */
         .email-right-container {
             display: flex;
             flex-direction: column;
@@ -38,6 +47,9 @@ $breakpoint-mobile: 1000px;
                 min-width: 30vw;
                 gap: 1.5rem;
 
+                /* ==============================
+           Logo
+        ============================== */
                 .twodo-logo-container {
                     display: flex;
                     align-items: center;
@@ -55,6 +67,9 @@ $breakpoint-mobile: 1000px;
                     }
                 }
 
+                /* ==============================
+           Cabeçalho de mensagem
+        ============================== */
                 .login-form-header {
                     display: flex;
                     gap: 0.5rem;
@@ -76,6 +91,9 @@ $breakpoint-mobile: 1000px;
         }
     }
 
+    /* ==============================
+     Estilização de texto e links
+  ============================== */
     .small-p {
         color: var(--secondary-text);
         font-size: var(--font-size-small);
@@ -84,6 +102,7 @@ $breakpoint-mobile: 1000px;
     .in-link {
         font-size: var(--font-size-small);
         color: var(--primary);
+        cursor: pointer;
 
         &:hover {
             color: var(--primary-light);

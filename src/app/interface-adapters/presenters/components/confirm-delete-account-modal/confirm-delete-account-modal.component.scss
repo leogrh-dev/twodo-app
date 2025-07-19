@@ -1,3 +1,6 @@
+// ==============================
+// Backdrop do modal
+// ==============================
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -10,6 +13,9 @@
   padding: 1.5rem;
 }
 
+// ==============================
+// Wrapper principal do modal
+// ==============================
 .modal-wrapper {
   background: var(--background);
   border-radius: 10px;
@@ -24,6 +30,9 @@
     margin-bottom: 1rem;
   }
 
+  // ==============================
+  // Parágrafos de instrução
+  // ==============================
   p {
     font-size: var(--font-size-small);
     color: var(--text);
@@ -40,10 +49,16 @@
     }
   }
 
+  // ==============================
+  // Campo de entrada de e-mail
+  // ==============================
   input {
     margin-bottom: 1rem;
   }
 
+  // ==============================
+  // Botões de ação
+  // ==============================
   .step-buttons {
     display: flex;
     flex-direction: column;

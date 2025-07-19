@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject, debounceTime, distinctUntilChanged, firstValueFrom } from 'rxjs';
-
 import { Note } from '../entities/note.entity';
 import { NoteService } from './note.service';
 
 @Injectable({ providedIn: 'root' })
 export class NoteStateService {
+  // ======================
+  // Estado principal
+  // ======================
+
   private readonly noteSubject = new BehaviorSubject<Note | null>(null);
   readonly note$ = this.noteSubject.asObservable();
 
@@ -18,15 +21,64 @@ export class NoteStateService {
   private readonly deletedNotesSubject = new BehaviorSubject<Note[]>([]);
   readonly deletedNotes$ = this.deletedNotesSubject.asObservable();
 
-  private readonly pendingContent$ = new Subject<string>();
-  private readonly pendingTitle$ = new Subject<string>();
-
   private readonly favoriteNotesSubject = new BehaviorSubject<Note[]>([]);
   readonly favoriteNotes$ = this.favoriteNotesSubject.asObservable();
+
+  private readonly pendingContent$ = new Subject<string>();
+  private readonly pendingTitle$ = new Subject<string>();
 
   constructor(private readonly noteService: NoteService) {
     this.listenToContentUpdates();
     this.listenToTitleUpdates();
+  }
+
+  // ======================
+  // Nota atual
+  // ======================
+
+  setNote(note: Note): void {
+    this.noteSubject.next(note);
+    this.setPendingChanges(false);
+  }
+
+  getCurrentNote(): Note | null {
+    return this.noteSubject.getValue();
+  }
+
+  noteSnapshot(): Note | null {
+    const current = this.getCurrentNote();
+    if (!current) return null;
+
+    return new Note(
+      current.id,
+      current.title,
+      current.content,
+      current.ownerId,
+      current.bannerUrl,
+      current.createdAt,
+      current.updatedAt,
+      current.isDeleted,
+      current.isFavorite,
+      current.iconUrl ?? null
+    );
+  }
+
+  // ======================
+  // Atualizações em tempo real
+  // ======================
+
+  updateTitle(title: string): void {
+    const clean = title.trim();
+    const note = this.getCurrentNote();
+    if (!note) return;
+
+    note.updateTitle(clean);
+    this.noteSubject.next(note);
+    this.pendingTitle$.next(clean);
+  }
+
+  updateContent(content: string): void {
+    this.pendingContent$.next(content.trim());
   }
 
   private listenToContentUpdates(): void {
@@ -66,28 +118,9 @@ export class NoteStateService {
       });
   }
 
-  setNote(note: Note): void {
-    this.noteSubject.next(note);
-    this.setPendingChanges(false);
-  }
-
-  getCurrentNote(): Note | null {
-    return this.noteSubject.getValue();
-  }
-
-  updateTitle(title: string): void {
-    const clean = title.trim();
-    const note = this.getCurrentNote();
-    if (!note) return;
-
-    note.updateTitle(clean);
-    this.noteSubject.next(note);
-    this.pendingTitle$.next(clean);
-  }
-
-  updateContent(content: string): void {
-    this.pendingContent$.next(content.trim());
-  }
+  // ======================
+  // Banner
+  // ======================
 
   updateBanner(bannerUrl: string): void {
     const note = this.getCurrentNote();
@@ -140,116 +173,9 @@ export class NoteStateService {
     this.updateBanner(bannerUrl);
   }
 
-  setUserNotes(notes: Note[]): void {
-    const filtered = notes.filter(n => !n.isDeleted);
-
-    const favorites = filtered.filter(n => n.isFavorite);
-    const normal = filtered.filter(n => !n.isFavorite);
-
-    this.favoriteNotesSubject.next(favorites);
-    this.userNotesSubject.next(normal);
-  }
-
-  setDeletedNotes(notes: Note[]): void {
-    this.deletedNotesSubject.next(notes);
-  }
-
-  getDeletedNotes(): Note[] {
-    return this.deletedNotesSubject.getValue();
-  }
-
-  getFavoriteNotes(): Note[] {
-    return this.favoriteNotesSubject.getValue();
-  }
-
-  getUserNotes(): Note[] {
-    return this.userNotesSubject.getValue();
-  }
-
-  getDeletedNotesCount(): number {
-    return this.deletedNotesSubject.getValue().length;
-  }
-
-  addUserNote(note: Note): void {
-    const current = this.userNotesSubject.getValue();
-    this.userNotesSubject.next([note, ...current]);
-  }
-
-  updateNoteInList(updated: Note): void {
-    const notes = this.userNotesSubject.getValue();
-    const list = notes.map(note => note.id === updated.id ? updated : note);
-    this.userNotesSubject.next(list);
-  }
-
-  moveNoteToTrash(noteId: string): void {
-    const updated = this.userNotesSubject.getValue().filter(n => n.id !== noteId);
-    this.userNotesSubject.next(updated);
-  }
-
-  removeFromDeletedNotes(noteId: string): void {
-    const filtered = this.deletedNotesSubject.getValue().filter(n => n.id !== noteId);
-    this.deletedNotesSubject.next(filtered);
-  }
-
-  restoreNoteToActive(note: Note): void {
-    this.removeFromDeletedNotes(note.id);
-    this.addUserNote(note);
-  }
-
-  toggleFavoriteNote(noteId: string): void {
-    const allNotes = [...this.favoriteNotesSubject.getValue(), ...this.userNotesSubject.getValue()];
-    const target = allNotes.find(n => n.id === noteId);
-    if (!target) return;
-
-    target.isFavorite = !target.isFavorite;
-    target.updatedAt = new Date();
-
-    this.noteService.toggleFavoriteNote(noteId).subscribe({
-      next: () => this.syncFavorites(target),
-      error: () => {
-        target.isFavorite = !target.isFavorite;
-      },
-    });
-  }
-
-  private syncFavorites(updated: Note): void {
-    const favorites = this.favoriteNotesSubject.getValue();
-    const normal = this.userNotesSubject.getValue();
-
-    const isFav = updated.isFavorite;
-
-    const newFavorites = isFav
-      ? [updated, ...favorites.filter(n => n.id !== updated.id)]
-      : favorites.filter(n => n.id !== updated.id);
-
-    const newNormal = !isFav
-      ? [updated, ...normal.filter(n => n.id !== updated.id)]
-      : normal.filter(n => n.id !== updated.id);
-
-    this.favoriteNotesSubject.next(newFavorites);
-    this.userNotesSubject.next(newNormal);
-  }
-
-  private setPendingChanges(status: boolean): void {
-    this.hasPendingChangesSubject.next(status);
-  }
-
-  noteSnapshot(): Note | null {
-    const current = this.noteSubject.getValue();
-    if (!current) return null;
-
-    return new Note(
-      current.id,
-      current.title,
-      current.content,
-      current.ownerId,
-      current.bannerUrl,
-      current.createdAt,
-      current.updatedAt,
-      current.isDeleted,
-      current.isFavorite
-    );
-  }
+  // ======================
+  // Ícone
+  // ======================
 
   async replaceIcon(iconUrl: string): Promise<void> {
     const note = this.getCurrentNote();
@@ -290,5 +216,114 @@ export class NoteStateService {
 
     this.noteSubject.next(updatedNote);
     this.updateNoteInList(updatedNote);
+  }
+
+  // ======================
+  // Listas principais
+  // ======================
+
+  setUserNotes(notes: Note[]): void {
+    const filtered = notes.filter(n => !n.isDeleted);
+    const favorites = filtered.filter(n => n.isFavorite);
+    const normal = filtered.filter(n => !n.isFavorite);
+
+    this.favoriteNotesSubject.next(favorites);
+    this.userNotesSubject.next(normal);
+  }
+
+  setDeletedNotes(notes: Note[]): void {
+    this.deletedNotesSubject.next(notes);
+  }
+
+  getUserNotes(): Note[] {
+    return this.userNotesSubject.getValue();
+  }
+
+  getFavoriteNotes(): Note[] {
+    return this.favoriteNotesSubject.getValue();
+  }
+
+  getDeletedNotes(): Note[] {
+    return this.deletedNotesSubject.getValue();
+  }
+
+  getDeletedNotesCount(): number {
+    return this.deletedNotesSubject.getValue().length;
+  }
+
+  addUserNote(note: Note): void {
+    const current = this.userNotesSubject.getValue();
+    this.userNotesSubject.next([note, ...current]);
+  }
+
+  updateNoteInList(updated: Note): void {
+    const notes = this.userNotesSubject.getValue();
+    const list = notes.map(note => note.id === updated.id ? updated : note);
+    this.userNotesSubject.next(list);
+  }
+
+  // ======================
+  // Lixeira
+  // ======================
+
+  moveNoteToTrash(noteId: string): void {
+    const updated = this.userNotesSubject.getValue().filter(n => n.id !== noteId);
+    this.userNotesSubject.next(updated);
+  }
+
+  removeFromDeletedNotes(noteId: string): void {
+    const filtered = this.deletedNotesSubject.getValue().filter(n => n.id !== noteId);
+    this.deletedNotesSubject.next(filtered);
+  }
+
+  restoreNoteToActive(note: Note): void {
+    this.removeFromDeletedNotes(note.id);
+    this.addUserNote(note);
+  }
+
+  // ======================
+  // Favoritos
+  // ======================
+
+  toggleFavoriteNote(noteId: string): void {
+    const allNotes = [...this.favoriteNotesSubject.getValue(), ...this.userNotesSubject.getValue()];
+    const target = allNotes.find(n => n.id === noteId);
+    if (!target) return;
+
+    target.isFavorite = !target.isFavorite;
+    target.updatedAt = new Date();
+
+    this.noteService.toggleFavoriteNote(noteId).subscribe({
+      next: () => this.syncFavorites(target),
+      error: () => {
+        target.isFavorite = !target.isFavorite;
+      },
+    });
+  }
+
+  private syncFavorites(updated: Note): void {
+    const favorites = this.favoriteNotesSubject.getValue();
+    const normal = this.userNotesSubject.getValue();
+
+    const isFav = updated.isFavorite;
+
+    const newFavorites = isFav
+      ? [updated, ...favorites.filter(n => n.id !== updated.id)]
+      : favorites.filter(n => n.id !== updated.id);
+
+    const newNormal = !isFav
+      ? [updated, ...normal.filter(n => n.id !== updated.id)]
+      : normal.filter(n => n.id !== updated.id);
+
+    this.favoriteNotesSubject.next(newFavorites);
+    this.userNotesSubject.next(newNormal);
+  }
+
+  // ======================
+  // Utilitários
+  // ======================
+
+  private setPendingChanges(status: boolean): void {
+    this.hasPendingChangesSubject.next(status);
   }
 }
