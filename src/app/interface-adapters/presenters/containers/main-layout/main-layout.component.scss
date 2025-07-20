@@ -1,56 +1,51 @@
+/* ==============================
+   Layout principal
+============================== */
 ::ng-deep .in-main-layout {
   min-height: 100vh;
   background-color: var(--background);
 
-  /* =============================
-     SIDEBAR (Sider do layout)
+  /* ==============================
+     Sider (barra lateral)
   ============================== */
   .ant-layout-sider {
     background: var(--secondary-background);
     transition: all 0s ease-in-out;
   }
 
-  /* =============================
-     CONTEÚDO PRINCIPAL
+  /* ==============================
+     Conteúdo (nz-content)
   ============================== */
   .ant-layout-content {
     background: var(--background);
   }
 
+  /* Overlay do redimensionador */
   .sidemenu-resizer-overlay {
     position: absolute;
     height: 100vh;
   }
 
-  /* =============================
-     TOOLBAR SUPERIOR
+  /* ==============================
+     Toolbar superior
   ============================== */
   .main-toolbar {
     position: relative;
-    top: 0;
-    left: 0;
     height: 32px;
-    width: 100%;
-    max-width: 100vw;
-    min-width: 0;
+    margin: 6px 0;
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    margin: 6px 0;
     transition: all 0.2s ease-in;
   }
 
-  /* =============================
-     CONTEÚDO DE ROTEAMENTO
+  /* ==============================
+     Conteúdo roteado
   ============================== */
   .main {
     position: relative;
     width: 100%;
-    min-width: 100%;
-    max-width: 100%;
     height: calc(100vh - 44px);
-    min-height: calc(100vh - 44px);
-    max-height: calc(100vh - 44px);
     overflow: auto;
   }
 }

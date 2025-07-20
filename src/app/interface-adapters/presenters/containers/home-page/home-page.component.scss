@@ -1,3 +1,6 @@
+/* ==============================
+   Página inicial (Home)
+============================== */
 .home-page {
     display: flex;
     flex-direction: column;
@@ -6,6 +9,9 @@
     min-height: 100%;
     position: relative;
 
+    /* ==============================
+     Container de conteúdo
+    ============================== */
     .home-page-container {
         display: flex;
         flex-direction: column;
@@ -19,12 +25,18 @@
         }
     }
 
+    /* ==============================
+     Título principal
+    ============================== */
     h1 {
         font-size: var(--font-size-base);
         color: var(--secondary-text);
         font-weight: 400;
     }
 
+    /* ==============================
+     Texto de créditos (rodapé)
+    ============================== */
     .credits-text {
         color: var(--secondary-text);
         position: absolute;

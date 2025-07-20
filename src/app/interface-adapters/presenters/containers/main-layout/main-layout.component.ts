@@ -1,4 +1,4 @@
-import { Component, inject, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
@@ -15,6 +15,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-main-layout',
   standalone: true,
+  templateUrl: './main-layout.component.html',
+  styleUrl: './main-layout.component.scss',
   imports: [
     CommonModule,
     RouterOutlet,
@@ -24,17 +26,29 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     SidemenuResizerComponent,
     MainToolbarComponent,
   ],
-  templateUrl: './main-layout.component.html',
-  styleUrl: './main-layout.component.scss',
 })
-export class MainLayoutComponent {
+export class MainLayoutComponent implements OnInit {
+  // ==============================
+  // Estado local
+  // ==============================
+
+  /** Indica se o sidemenu está colapsado */
   isCollapsed = false;
+
+  /** Largura atual do sidemenu */
   sidemenuWidth = 280;
 
+  // ==============================
+  // Injeções
+  // ==============================
 
   private readonly authService = inject(AuthService);
   private readonly userState = inject(UserStateService);
   private readonly destroyRef = inject(DestroyRef);
+
+  // ==============================
+  // Lifecycle
+  // ==============================
 
   ngOnInit(): void {
     this.restoreSidemenuCollapseState();
@@ -42,27 +56,38 @@ export class MainLayoutComponent {
     this.initializeCurrentUser();
   }
 
+  // ==============================
+  // Ações do layout
+  // ==============================
+
+  /** Alterna o estado de colapso do sidemenu */
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed;
     localStorage.setItem('sidemenuCollapsed', String(this.isCollapsed));
   }
 
+  /** Ajusta largura via redimensionador */
   onResizeSidemenu(newWidth: number): void {
     this.sidemenuWidth = newWidth;
     localStorage.setItem('sidemenuWidth', String(newWidth));
   }
 
+  /** Clique simples no resizer → alterna colapso */
   onClickResizer(): void {
     this.toggleCollapse();
   }
 
+  // ==============================
+  // Métodos privados
+  // ==============================
+
+  /** Restaura colapso salvo no localStorage */
   private restoreSidemenuCollapseState(): void {
     const saved = localStorage.getItem('sidemenuCollapsed');
-    if (saved !== null) {
-      this.isCollapsed = saved === 'true';
-    }
+    this.isCollapsed = saved === 'true';
   }
 
+  /** Restaura largura salva no localStorage */
   private restoreSidemenuWidth(): void {
     const saved = localStorage.getItem('sidemenuWidth');
     if (saved !== null) {
@@ -71,14 +96,14 @@ export class MainLayoutComponent {
     }
   }
 
+  /** Carrega usuário atual no estado global */
   private initializeCurrentUser(): void {
     this.authService.getCurrentUser()
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(user => {
-        this.userState.setUser(user);
-      });
+      .subscribe(user => this.userState.setUser(user));
   }
 
+  /** Limita um valor entre min e max */
   private clamp(value: number, min: number, max: number): number {
     return Math.min(Math.max(value, min), max);
   }

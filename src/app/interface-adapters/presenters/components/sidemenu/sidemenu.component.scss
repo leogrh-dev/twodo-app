@@ -1,13 +1,13 @@
-/* =============================
-   Tipografia base
-============================= */
+/* ==============================
+   Tipografia
+============================== */
 p {
   font-size: var(--font-size-small);
 }
 
-/* =============================
-   Estrutura principal do sidemenu
-============================= */
+/* ==============================
+   Estrutura do Sidemenu
+============================== */
 .in-sidemenu {
   min-height: 100vh;
   height: 100vh;
@@ -21,7 +21,6 @@ p {
   padding: 0;
 }
 
-/* Container scrollável dos grupos */
 .sidemenu-group-container {
   flex-shrink: 1;
   flex-grow: 0;
@@ -31,9 +30,9 @@ p {
   gap: 1rem;
 }
 
-/* =============================
-   Grupos de itens (main, notes, favorites)
-============================= */
+/* ==============================
+   Grupos
+============================== */
 .sidemenu-group-main,
 .sidemenu-group-notes,
 .sidemenu-group-favorites {
@@ -41,7 +40,6 @@ p {
   flex-direction: column;
 }
 
-/* Título das seções (Favoritos, Anotações, etc) */
 .sidemenu-section-title {
   font-size: var(--font-size-xsmall);
   font-weight: 600;
@@ -52,9 +50,9 @@ p {
   padding: 0 8px;
 }
 
-/* =============================
-   Itens do menu (linha clicável)
-============================= */
+/* ==============================
+   Itens do Menu
+============================== */
 .sidemenu-item {
   user-select: none;
   display: flex;
@@ -91,7 +89,27 @@ p {
   }
 }
 
-/* Ícones personalizados (imagem ou emoji) */
+.sidemenu-item.active {
+  background: var(--sidemenu-hover);
+
+  .note-options,
+  .options-icon {
+    opacity: 1;
+    background-color: var(--primary-text);
+  }
+
+  .menu-entry p {
+    color: var(--primary-text);
+  }
+
+  .menu-entry .iconify-20px {
+    background-color: var(--primary-text);
+  }
+}
+
+/* ==============================
+   Ícones Personalizados
+============================== */
 .custom-note-icon {
   width: 20px;
   height: 20px;
@@ -109,37 +127,9 @@ p {
   flex-shrink: 0;
 }
 
-/* =============================
-   Estado ativo do item
-============================= */
-.sidemenu-item.active {
-  background: var(--sidemenu-hover);
-
-  .note-options,
-  .options-icon {
-    opacity: 1;
-    background-color: var(--primary-text);
-  }
-
-  .menu-entry p {
-    color: var(--primary-text);
-  }
-
-  .menu-entry .search-icon,
-  .menu-entry .home-icon,
-  .menu-entry .inbox-icon,
-  .menu-entry .trash-icon,
-  .menu-entry .note-icon,
-  .menu-entry .options-icon,
-  .menu-entry .edit-icon,
-  .menu-entry .star-no-fill-icon,
-  .menu-entry .star-fill-icon,
-  .menu-entry .settings-icon {
-    background-color: var(--primary-text);
-  }
-}
-
-/* Estilo especial para botão de mover para lixeira */
+/* ==============================
+   Estado Especial
+============================== */
 .move-to-trash {
   &:hover {
     p {
@@ -152,9 +142,9 @@ p {
   }
 }
 
-/* =============================
-   Bloco do usuário (avatar, menu)
-============================= */
+/* ==============================
+   Avatar do Usuário
+============================== */
 .user-account {
   margin: 6px 8px;
 }
@@ -213,7 +203,9 @@ img.profile-pic {
   display: block;
 }
 
-/* Botões do topo (nova nota, colapsar menu) */
+/* ==============================
+   Botões de Ação (Topo)
+============================== */
 .collapse-sidemenu-button .close-sidemenu-icon,
 .new-note-button .edit-icon {
   background-color: var(--secondary-text);
@@ -224,9 +216,9 @@ img.profile-pic {
   background-color: var(--primary-text);
 }
 
-/* =============================
-   Layout interno dos botões/entradas
-============================= */
+/* ==============================
+   Estrutura de Entradas
+============================== */
 .menu-section-title {
   padding: 0.25rem 0 !important;
   justify-content: space-between;
@@ -256,16 +248,7 @@ img.profile-pic {
     min-width: 0px;
   }
 
-  .search-icon,
-  .home-icon,
-  .inbox-icon,
-  .trash-icon,
-  .note-icon,
-  .options-icon,
-  .edit-icon,
-  .star-no-fill-icon,
-  .star-fill-icon,
-  .settings-icon {
+  .iconify-20px {
     background-color: var(--secondary-text);
     margin-right: 8px;
     transition: all 0.3s ease;
@@ -276,23 +259,15 @@ img.profile-pic {
       color: var(--primary-text);
     }
 
-    .search-icon,
-    .home-icon,
-    .inbox-icon,
-    .trash-icon,
-    .note-icon,
-    .options-icon,
-    .edit-icon,
-    .star-no-fill-icon,
-    .star-fill-icon {
+    .iconify-20px {
       background-color: var(--primary-text);
     }
   }
 }
 
-/* =============================
-   Dropdown do menu do usuário
-============================= */
+/* ==============================
+   Dropdown do Usuário
+============================== */
 .user-menu {
   display: flex;
   flex-direction: column;

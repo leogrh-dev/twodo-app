@@ -1,3 +1,6 @@
+// ==============================
+// Container principal
+// ==============================
 .toolbar-container {
     display: flex;
     align-items: center;
@@ -7,6 +10,9 @@
     position: relative;
 }
 
+// ==============================
+// Botão de expandir menu lateral
+// ==============================
 .expand-sidemenu {
     user-select: none;
     transition: all 0.2s ease-in;
@@ -33,6 +39,9 @@
     }
 }
 
+// ==============================
+// Conteúdo exibido em página de nota
+// ==============================
 .in-note-page-container {
     display: flex;
     justify-content: space-between;
@@ -42,6 +51,7 @@
     padding-right: 10px;
     flex: 1;
 
+    // Botão de favoritar
     .favorite-btn {
         width: 24px;
         display: flex;
@@ -49,6 +59,7 @@
         justify-content: center;
     }
 
+    // Botão de título e favoritar
     .note-name-btn,
     .favorite-btn {
         background: none;
@@ -85,6 +96,9 @@
     }
 }
 
+// ==============================
+// Ícones de estrela
+// ==============================
 .star-no-fill-icon,
 .star-fill-icon {
     background-color: var(--secondary-text);

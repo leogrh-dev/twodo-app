@@ -13,7 +13,6 @@
   padding: 2rem;
 }
 
-
 /* =============================
    Estrutura geral do modal
 ============================= */
@@ -57,7 +56,8 @@
   transition: all 0.3s ease;
   border-radius: 5px;
 
-  .settings-icon, .mixer-icon {
+  .settings-icon,
+  .mixer-icon {
     background-color: var(--secondary-text);
     transition: all 0.3s ease;
     margin-right: 8px;
@@ -75,7 +75,8 @@
   &:hover {
     background-color: var(--sidemenu-hover);
 
-    .settings-icon, .mixer-icon {
+    .settings-icon,
+    .mixer-icon {
       background-color: var(--primary-text);
     }
 
@@ -87,7 +88,8 @@
   &.active {
     background-color: var(--sidemenu-hover);
 
-    .settings-icon, .mixer-icon {
+    .settings-icon,
+    .mixer-icon {
       background-color: var(--primary-text);
     }
 

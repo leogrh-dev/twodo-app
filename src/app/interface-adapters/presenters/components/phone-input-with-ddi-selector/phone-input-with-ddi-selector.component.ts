@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormControl } from '@angular/forms';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { FormControl } from '@angular/forms';
+
 import { countries, Country } from './countries';
 
 @Component({
@@ -14,26 +14,42 @@ import { countries, Country } from './countries';
   styleUrl: './phone-input-with-ddi-selector.component.scss',
 })
 export class PhoneInputWithDdiSelectorComponent {
+  // ==============================
+  // Inputs e Outputs
+  // ==============================
+
   @Input() control!: FormControl;
   @Output() phoneChange = new EventEmitter<string>();
+
+  // ==============================
+  // Estado interno
+  // ==============================
 
   countries = countries;
   selectedCountry = countries.find(c => c.code === 'br')!;
   phoneNumber = '';
 
+  // ==============================
+  // Métodos auxiliares
+  // ==============================
+
+  /** Função de filtro para o dropdown de países */
   filterOption = (input: string, option: any): boolean => {
     return option.nzLabel.toLowerCase().includes(input.toLowerCase());
   };
 
+  /** Retorna o tamanho mínimo para o número de telefone do país selecionado */
   getMinLength(): number {
     return this.selectedCountry.code === 'br' ? 10 : 7;
   }
 
+  /** Retorna o tamanho máximo para o número de telefone do país selecionado */
   getMaxLength(): number {
     return this.selectedCountry.code === 'br' ? 11 : 15;
   }
 
-  onInputChange(value?: string) {
+  /** Atualiza valor do campo e valida erros */
+  onInputChange(value?: string): void {
     const inputValue = value ?? this.phoneNumber;
     const rawPhone = inputValue.replace(/\D/g, '');
 
@@ -51,10 +67,10 @@ export class PhoneInputWithDdiSelectorComponent {
       this.control.setErrors({
         phoneLength: {
           actual: this.phoneNumber.length,
-          min: min,
-          max: max,
-          message: `Número deve ter entre ${min} e ${max} dígitos`
-        }
+          min,
+          max,
+          message: `Número deve ter entre ${min} e ${max} dígitos`,
+        },
       });
     } else if (isValid) {
       const currentErrors = this.control.errors;
@@ -67,23 +83,23 @@ export class PhoneInputWithDdiSelectorComponent {
     this.phoneChange.emit(completePhone);
   }
 
-
+  /** Verifica se o telefone está no intervalo válido */
   isPhoneValid(): boolean {
-    const min = this.getMinLength();
-    const max = this.getMaxLength();
     const length = this.phoneNumber.length;
-
-    return length >= min && length <= max;
+    return length >= this.getMinLength() && length <= this.getMaxLength();
   }
 
+  /** Placeholder exibido no input com base no país */
   getPlaceholder(): string {
     return this.selectedCountry.code === 'br' ? '(11) 99999-9999' : 'Número de telefone';
   }
 
+  /** Formata o label do país no dropdown */
   countryLabel(country: Country): string {
     return `${country.name} (${country.dial_code})`;
   }
 
+  /** Formata telefone para exibição (apenas BR por enquanto) */
   formatPhoneForDisplay(phone: string): string {
     const raw = phone.replace(/\D/g, '');
     if (this.selectedCountry.code === 'br') {
@@ -95,16 +111,18 @@ export class PhoneInputWithDdiSelectorComponent {
     return raw;
   }
 
-  onKeyPress(event: KeyboardEvent) {
+  // ==============================
+  // Eventos de teclado / colar
+  // ==============================
+
+  /** Previne entrada de caracteres inválidos */
+  onKeyPress(event: KeyboardEvent): void {
     const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
 
-    if (allowedKeys.includes(event.key)) {
-      return;
-    }
-    const currentLength = this.phoneNumber.replace(/\D/g, '').length;
-    const maxLength = this.getMaxLength();
+    if (allowedKeys.includes(event.key)) return;
 
-    if (currentLength >= maxLength) {
+    const currentLength = this.phoneNumber.replace(/\D/g, '').length;
+    if (currentLength >= this.getMaxLength()) {
       event.preventDefault();
       return;
     }
@@ -114,7 +132,8 @@ export class PhoneInputWithDdiSelectorComponent {
     }
   }
 
-  onPaste(event: ClipboardEvent) {
+  /** Previne colagem de texto não numérico */
+  onPaste(event: ClipboardEvent): void {
     event.preventDefault();
     const pastedText = event.clipboardData?.getData('text') || '';
     const numbersOnly = pastedText.replace(/\D/g, '');
@@ -123,14 +142,19 @@ export class PhoneInputWithDdiSelectorComponent {
     }
   }
 
+  // ==============================
+  // Validações visuais
+  // ==============================
+
+  /** Retorna a mensagem de erro atual do telefone */
   getPhoneErrorMessage(): string {
     if (this.control.errors?.['phoneLength']) {
-      const error = this.control.errors['phoneLength'];
-      return error.message;
+      return this.control.errors['phoneLength'].message;
     }
     return '';
   }
 
+  /** Define se o erro deve ser exibido */
   shouldShowError(): boolean {
     return this.control.invalid && (this.control.dirty || this.control.touched) && !!this.control.errors?.['phoneLength'];
   }

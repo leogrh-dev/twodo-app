@@ -1,22 +1,39 @@
-import { Component, AfterViewInit, ElementRef, NgZone, ViewChild, inject } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+  NgZone,
+  inject,
+  DestroyRef,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 import { NoteService } from '../../../../core/services/note.service';
 import { NoteStateService } from '../../../../core/services/note-state.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DestroyRef } from '@angular/core';
 import { NoteBannerComponent } from '../../components/note-banner/note-banner.component';
+import { Note } from '../../../../core/entities/note.entity';
 
 @Component({
   standalone: true,
   selector: 'app-note-page',
   templateUrl: './note-page.component.html',
   styleUrls: ['./note-page.component.scss'],
-  imports: [
-    NoteBannerComponent
-  ]
+  imports: [NoteBannerComponent],
 })
-export class NotePageComponent implements AfterViewInit {
-  @ViewChild('reactContainer', { static: true }) reactContainer!: ElementRef<HTMLElement>;
+export class NotePageComponent implements AfterViewInit, OnDestroy {
+  // ==============================
+  // ViewChilds
+  // ==============================
+
+  @ViewChild('reactContainer', { static: true })
+  private reactContainer!: ElementRef<HTMLElement>;
+
+  // ==============================
+  // Injeções
+  // ==============================
 
   private readonly destroyRef = inject(DestroyRef);
   private readonly zone = inject(NgZone);
@@ -24,14 +41,16 @@ export class NotePageComponent implements AfterViewInit {
   private readonly noteService = inject(NoteService);
   private readonly noteStateService = inject(NoteStateService);
 
+  // ==============================
+  // Lifecycle
+  // ==============================
+
   ngAfterViewInit(): void {
     this.route.paramMap
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(params => {
         const noteId = params.get('id');
-        if (noteId) {
-          this.loadNote(noteId);
-        }
+        if (noteId) this.loadNote(noteId);
       });
   }
 
@@ -42,20 +61,28 @@ export class NotePageComponent implements AfterViewInit {
     }
   }
 
+  // ==============================
+  // Métodos privados
+  // ==============================
+
+  /** Obtém dados da nota e carrega o microfrontend */
   private loadNote(noteId: string): void {
-    this.noteService.getNoteById(noteId)
+    this.noteService
+      .getNoteById(noteId)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(noteData => {
         const note = this.noteService.createNoteEntity(noteData);
         this.noteStateService.setNote(note);
-        this.loadMicrofrontend(note);
+        this.mountMicrofrontend(note);
       });
   }
 
-  private loadMicrofrontend(note: any): void {
+  /** Injeta/atualiza microfrontend React com propriedades */
+  private mountMicrofrontend(note: Note): void {
     const container = this.reactContainer.nativeElement;
 
     const props = {
+      noteId: note.id,
       title: note.title,
       content: note.content,
       onTitleChange: (title: string) =>
@@ -64,6 +91,7 @@ export class NotePageComponent implements AfterViewInit {
         this.zone.run(() => this.noteStateService.updateContent(content)),
     };
 
+    // Carrega CSS do microfrontend (se ainda não estiver carregado)
     const cssId = 'note-page-mfe-css';
     if (!document.getElementById(cssId)) {
       const link = document.createElement('link');
@@ -73,17 +101,18 @@ export class NotePageComponent implements AfterViewInit {
       document.head.appendChild(link);
     }
 
+    // Carrega JS do microfrontend e renderiza (ou re-renderiza se já carregado)
     const jsId = 'note-page-mfe';
+    const render = () => (window as any).renderNotePage(container, props);
+
     if (!document.getElementById(jsId)) {
       const script = document.createElement('script');
       script.id = jsId;
       script.src = '/assets/microfrontends/note-page-mfe.js';
-      script.onload = () => {
-        (window as any).renderNotePage(container, props);
-      };
+      script.onload = render;
       document.body.appendChild(script);
     } else {
-      (window as any).renderNotePage(container, props);
+      render();
     }
   }
 }

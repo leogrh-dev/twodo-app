@@ -1,24 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
+import { ThemeService } from '../../../../core/services/theme.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { ThemeService } from '../../../../core/services/theme.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-confirm-email-page',
   standalone: true,
-  imports: [CommonModule, NzButtonModule],
   templateUrl: './confirm-email-page.component.html',
   styleUrls: ['./confirm-email-page.component.scss'],
+  imports: [CommonModule, NzButtonModule],
 })
 export class ConfirmEmailPageComponent implements OnInit {
+  // ==============================
+  // Estado da página
+  // ==============================
+
+  /** Indica se a verificação está em andamento */
   loading = true;
+
+  /** Resultado da verificação */
   success: boolean | null = null;
+
+  /** Caminho do logo com base no tema */
   logoPath: string = 'assets/images/twodo-logos/twodo-logo.svg';
+
+  /** Subscription para o tema */
   themeSubscription: Subscription;
+
+  // ==============================
+  // Construtor e injeções
+  // ==============================
 
   constructor(
     private route: ActivatedRoute,
@@ -34,20 +49,24 @@ export class ConfirmEmailPageComponent implements OnInit {
     });
   }
 
+  // ==============================
+  // Lifecycle
+  // ==============================
+
   ngOnInit(): void {
     const token = this.route.snapshot.queryParamMap.get('token');
+
     if (token) {
       this.authService.confirmEmail(token).subscribe({
-        next: (result: any) => {
-          const success = result?.data?.confirmEmail;
+        next: (success: boolean) => {
           this.success = success;
           this.loading = false;
 
+          this.authService.logout();
+
           if (success) {
-            this.authService.removeToken();
             this.notification.success('Email confirmado!', 'Agora você pode fazer login.');
           } else {
-            this.authService.removeToken();
             this.notification.error('Erro', 'Não foi possível confirmar seu email.');
           }
         },
@@ -64,11 +83,17 @@ export class ConfirmEmailPageComponent implements OnInit {
     }
   }
 
-  goToLogin() {
+  // ==============================
+  // Ações da interface
+  // ==============================
+
+  /** Redireciona para a tela de login */
+  goToLogin(): void {
     this.router.navigate(['/login']);
   }
 
-  contactSupport() {
+  /** Abre e-mail de suporte em nova aba */
+  contactSupport(): void {
     window.open(
       'https://mail.google.com/mail/?view=cm&to=suporte@twodo.com&su=Problema na confirmação de e-mail',
       '_blank'

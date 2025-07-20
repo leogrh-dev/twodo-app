@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output, computed, inject, signal, OnInit, OnDe
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NzInputModule } from 'ng-zorro-antd/input';
+
 import { NoteStateService } from '../../../../core/services/note-state.service';
 import { Note } from '../../../../core/entities/note.entity';
 
@@ -13,14 +14,23 @@ import { Note } from '../../../../core/entities/note.entity';
   styleUrls: ['./search-modal.component.scss'],
 })
 export class SearchModalComponent implements OnInit, OnDestroy {
+  // ==============================
+  // Injeções e eventos
+  // ==============================
+
   private readonly noteState = inject(NoteStateService);
 
   @Output() close = new EventEmitter<void>();
   @Output() openNote = new EventEmitter<string>();
 
-  readonly search = signal('');
+  // ==============================
+  // Estado e sinais
+  // ==============================
 
+  readonly search = signal('');
   readonly allNotes = signal<Note[]>([]);
+
+  /** Lista de notas filtradas por título */
   readonly filteredNotes = computed(() => {
     const query = this.search().trim().toLowerCase();
     if (!query) return [];
@@ -29,6 +39,26 @@ export class SearchModalComponent implements OnInit, OnDestroy {
       note.title.toLowerCase().includes(query)
     );
   });
+
+  // ==============================
+  // Lifecycle
+  // ==============================
+
+  ngOnInit(): void {
+    document.addEventListener('keydown', this.handleEscapeKey);
+
+    this.noteState.userNotes$.subscribe(notes => {
+      this.allNotes.set(notes);
+    });
+  }
+
+  ngOnDestroy(): void {
+    document.removeEventListener('keydown', this.handleEscapeKey);
+  }
+
+  // ==============================
+  // Ações do usuário
+  // ==============================
 
   updateSearch(query: string): void {
     this.search.set(query);
@@ -44,18 +74,11 @@ export class SearchModalComponent implements OnInit, OnDestroy {
     this.close.emit();
   }
 
-  ngOnInit(): void {
-    document.addEventListener('keydown', this.handleEscapeKey);
+  // ==============================
+  // Acessibilidade
+  // ==============================
 
-    this.noteState.userNotes$.subscribe(notes => {
-      this.allNotes.set(notes);
-    });
-  }
-
-  ngOnDestroy(): void {
-    document.removeEventListener('keydown', this.handleEscapeKey);
-  }
-
+  /** Fecha o modal ao pressionar Esc */
   private readonly handleEscapeKey = (event: KeyboardEvent): void => {
     if (event.key === 'Escape') this.close.emit();
   };

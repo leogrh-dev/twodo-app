@@ -1,10 +1,16 @@
 $breakpoint-mobile: 1000px;
 
+/* ==============================
+   Container principal da página
+============================== */
 #login-page {
     display: flex;
     width: 100vw;
     height: 100vh;
 
+    /* ==============================
+     Container geral do conteúdo
+  ============================== */
     .login-page-container {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -14,6 +20,9 @@ $breakpoint-mobile: 1000px;
             grid-template-columns: 1fr;
         }
 
+        /* ==============================
+       Coluna da esquerda (formulário)
+    ============================== */
         .login-left-container {
             display: flex;
             flex-direction: column;
@@ -29,6 +38,9 @@ $breakpoint-mobile: 1000px;
                 min-width: 30vw;
                 gap: 1.5rem;
 
+                /* ==============================
+           Logo e marca
+        ============================== */
                 .twodo-logo-container {
                     display: flex;
                     align-items: center;
@@ -42,6 +54,9 @@ $breakpoint-mobile: 1000px;
                     }
                 }
 
+                /* ==============================
+           Cabeçalho do formulário
+        ============================== */
                 .login-form-header {
                     display: flex;
                     gap: 0.5rem;
@@ -60,6 +75,9 @@ $breakpoint-mobile: 1000px;
                     }
                 }
 
+                /* ==============================
+           Botões de login com terceiros
+        ============================== */
                 .login-form-header-login-with {
                     display: grid;
                     grid-template-columns: 1fr;
@@ -101,6 +119,9 @@ $breakpoint-mobile: 1000px;
                     }
                 }
 
+                /* ==============================
+           Divisor entre login com terceiros e formulário
+        ============================== */
                 .login-with-division {
                     display: grid;
                     grid-template-columns: 1fr auto 1fr;
@@ -123,6 +144,9 @@ $breakpoint-mobile: 1000px;
                     }
                 }
 
+                /* ==============================
+           Formulário de login
+        ============================== */
                 .login-form {
                     display: flex;
                     flex-direction: column;
@@ -161,6 +185,9 @@ $breakpoint-mobile: 1000px;
             }
         }
 
+        /* ==============================
+       Coluna da direita (ilustração)
+    ============================== */
         .login-right-container {
             display: flex;
             background-image: url('/assets/images/page-components-images/login-component/twodo-login-background.svg');
@@ -172,6 +199,9 @@ $breakpoint-mobile: 1000px;
         }
     }
 
+    /* ==============================
+     Utilitários e textos pequenos
+  ============================== */
     .small-p {
         color: var(--secondary-text);
         font-size: var(--font-size-small);

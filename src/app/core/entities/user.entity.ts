@@ -1,3 +1,5 @@
+// user.entity.ts
+
 export class User {
     constructor(
         public readonly id: string,
@@ -5,8 +7,26 @@ export class User {
         public readonly email: string,
         public readonly phone: string,
         public readonly emailVerified: boolean = false,
-        public readonly iconUrl: string | null = null,
+        public readonly iconUrl: string | null = null
     ) { }
+
+    static create(params: {
+        id: string;
+        name: string;
+        email: string;
+        phone: string;
+        emailVerified?: boolean;
+        iconUrl?: string | null;
+    }): User {
+        return new User(
+            params.id,
+            params.name,
+            params.email,
+            params.phone,
+            params.emailVerified ?? false,
+            params.iconUrl ?? null
+        );
+    }
 
     get initial(): string {
         return this.name?.charAt(0)?.toUpperCase() ?? 'U';
@@ -19,7 +39,7 @@ export class User {
             this.email,
             this.phone,
             this.emailVerified,
-            newIconUrl,
+            newIconUrl
         );
     }
 
@@ -30,7 +50,7 @@ export class User {
             this.email,
             this.phone,
             this.emailVerified,
-            this.iconUrl,
+            this.iconUrl
         );
     }
 }

@@ -39,12 +39,10 @@ export class SettingsAccountPanelComponent implements OnDestroy {
   readonly showChangePasswordModal = signal(false);
   readonly showDeleteModal = signal(false);
 
-  readonly userName: () => string;
-  readonly userEmail: () => string;
-  readonly iconUrl: () => string | null;
-  readonly userNameValue: ReturnType<typeof computed>;
-  readonly userEmailValue: ReturnType<typeof computed>;
-  readonly userInitial: ReturnType<typeof computed>;
+  readonly userNameValue = computed(() => this.userState.name());
+  readonly userEmailValue = computed(() => this.userState.email());
+  readonly userInitial = computed(() => this.userState.initial());
+  readonly iconUrl = computed(() => this.userState.iconUrl());
 
   private nameInput$ = new Subject<string>();
   private nameInputSub: Subscription;
@@ -55,14 +53,6 @@ export class SettingsAccountPanelComponent implements OnDestroy {
     private readonly authService: AuthService,
     private readonly notification: NzNotificationService
   ) {
-    this.userName = this.userState.userName;
-    this.userEmail = this.userState.userEmail;
-    this.iconUrl = this.userState.iconUrl;
-
-    this.userNameValue = computed(() => this.userName());
-    this.userEmailValue = computed(() => this.userEmail());
-    this.userInitial = computed(() => this.userName().charAt(0).toUpperCase());
-
     this.nameInputSub = this.nameInput$
       .pipe(debounceTime(3000))
       .subscribe((name) => this.saveUserName(name));

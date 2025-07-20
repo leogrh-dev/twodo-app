@@ -8,68 +8,69 @@ export interface ThemeState {
   isSystemPreference: boolean;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ThemeService {
   private readonly THEME_STORAGE_KEY = 'twodo-theme-preference';
+
   private readonly themeSubject = new BehaviorSubject<ThemeState>({
     mode: 'light',
-    isSystemPreference: false
+    isSystemPreference: false,
   });
 
-  public readonly theme$: Observable<ThemeState> = this.themeSubject.asObservable();
+  readonly theme$: Observable<ThemeState> = this.themeSubject.asObservable();
 
   constructor() {
     this.initializeTheme();
     this.listenToSystemThemeChanges();
   }
 
-  public switchTheme(mode: ThemeMode): void {
-    const newState: ThemeState = {
-      mode,
-      isSystemPreference: false
-    };
+  // ======================
+  // Ações públicas
+  // ======================
 
-    this.applyTheme(newState);
+  /** Alterna entre light e dark manualmente */
+  switchTheme(mode: ThemeMode): void {
+    const state: ThemeState = { mode, isSystemPreference: false };
+    this.applyTheme(state);
     this.saveThemePreference(mode);
-    this.themeSubject.next(newState);
+    this.themeSubject.next(state);
   }
 
-  public useSystemTheme(): void {
+  /** Usa o tema do sistema operacional */
+  useSystemTheme(): void {
     const systemMode = this.getSystemThemePreference();
-    const newState: ThemeState = {
-      mode: systemMode,
-      isSystemPreference: true
-    };
-
-    this.applyTheme(newState);
+    const state: ThemeState = { mode: systemMode, isSystemPreference: true };
+    this.applyTheme(state);
     this.clearThemePreference();
-    this.themeSubject.next(newState);
+    this.themeSubject.next(state);
   }
 
-  public toggleTheme(): void {
-    const currentMode = this.themeSubject.value.mode;
-    const newMode: ThemeMode = currentMode === 'light' ? 'dark' : 'light';
-    this.switchTheme(newMode);
+  /** Alterna entre light e dark com base no estado atual */
+  toggleTheme(): void {
+    const current = this.themeSubject.value.mode;
+    const next: ThemeMode = current === 'light' ? 'dark' : 'light';
+    this.switchTheme(next);
   }
 
-  public getCurrentTheme(): ThemeState {
+  /** Retorna o estado atual do tema */
+  getCurrentTheme(): ThemeState {
     return this.themeSubject.value;
   }
 
-  public isDarkMode(): boolean {
-    return this.themeSubject.value.mode === 'dark';
+  /** Indica se o tema atual é escuro */
+  isDarkMode(): boolean {
+    return this.getCurrentTheme().mode === 'dark';
   }
 
+  // ======================
+  // Inicialização
+  // ======================
+
   private initializeTheme(): void {
-    const savedTheme = this.getSavedThemePreference();
-    
-    if (savedTheme) {
-      const state: ThemeState = {
-        mode: savedTheme,
-        isSystemPreference: false
-      };
+    const saved = this.getSavedThemePreference();
+
+    if (saved) {
+      const state: ThemeState = { mode: saved, isSystemPreference: false };
       this.applyTheme(state);
       this.themeSubject.next(state);
     } else {
@@ -77,74 +78,67 @@ export class ThemeService {
     }
   }
 
-  private applyTheme(themeState: ThemeState): void {
-    const htmlElement = document.documentElement;
-    const bodyElement = document.body;
+  // ======================
+  // Aplicação visual do tema
+  // ======================
 
-    htmlElement.classList.remove('theme-light', 'theme-dark');
-    bodyElement.classList.remove('theme-light', 'theme-dark');
+  private applyTheme(state: ThemeState): void {
+    const html = document.documentElement;
+    const body = document.body;
+    const className = `theme-${state.mode}`;
 
-    const themeClass = `theme-${themeState.mode}`;
-    htmlElement.classList.add(themeClass);
-    bodyElement.classList.add(themeClass);
+    html.classList.remove('theme-light', 'theme-dark');
+    body.classList.remove('theme-light', 'theme-dark');
 
-    htmlElement.style.setProperty('color-scheme', themeState.mode);
+    html.classList.add(className);
+    body.classList.add(className);
 
-    this.updateMetaThemeColor(themeState.mode)
+    html.style.setProperty('color-scheme', state.mode);
+    this.updateMetaThemeColor(state.mode);
   }
 
   private updateMetaThemeColor(mode: ThemeMode): void {
-    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    const meta = document.querySelector('meta[name="theme-color"]');
     const color = mode === 'dark' ? '#141414' : '#ffffff';
-    
-    if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', color);
-    }
+    meta?.setAttribute('content', color);
   }
 
+  // ======================
+  // Preferências do sistema
+  // ======================
+
   private getSystemThemePreference(): ThemeMode {
-    if (typeof window !== 'undefined' && window.matchMedia) {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-    return 'light';
+    return window?.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
 
   private listenToSystemThemeChanges(): void {
-    if (typeof window !== 'undefined' && window.matchMedia) {
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      
-      mediaQuery.addEventListener('change', (e) => {
-        if (this.themeSubject.value.isSystemPreference) {
-          const newMode: ThemeMode = e.matches ? 'dark' : 'light';
-          const newState: ThemeState = {
-            mode: newMode,
-            isSystemPreference: true
-          };
-          
-          this.applyTheme(newState);
-          this.themeSubject.next(newState);
-        }
-      });
-    }
+    const mediaQuery = window?.matchMedia?.('(prefers-color-scheme: dark)');
+    if (!mediaQuery) return;
+
+    mediaQuery.addEventListener('change', (e) => {
+      if (this.themeSubject.value.isSystemPreference) {
+        const newMode: ThemeMode = e.matches ? 'dark' : 'light';
+        const newState: ThemeState = { mode: newMode, isSystemPreference: true };
+        this.applyTheme(newState);
+        this.themeSubject.next(newState);
+      }
+    });
   }
 
+  // ======================
+  // Armazenamento local
+  // ======================
+
   private saveThemePreference(mode: ThemeMode): void {
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem(this.THEME_STORAGE_KEY, mode);
-    }
+    localStorage?.setItem(this.THEME_STORAGE_KEY, mode);
   }
 
   private getSavedThemePreference(): ThemeMode | null {
-    if (typeof localStorage !== 'undefined') {
-      const saved = localStorage.getItem(this.THEME_STORAGE_KEY);
-      return (saved === 'light' || saved === 'dark') ? saved : null;
-    }
-    return null;
+    const saved = localStorage?.getItem(this.THEME_STORAGE_KEY);
+    return saved === 'light' || saved === 'dark' ? saved : null;
   }
 
   private clearThemePreference(): void {
-    if (typeof localStorage !== 'undefined') {
-      localStorage.removeItem(this.THEME_STORAGE_KEY);
-    }
+    localStorage?.removeItem(this.THEME_STORAGE_KEY);
   }
 }

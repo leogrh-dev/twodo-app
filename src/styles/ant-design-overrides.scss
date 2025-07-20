@@ -1,3 +1,6 @@
+/* ==============================
+   Botões padrão e primários
+============================== */
 .ant-btn {
     height: 2.5rem;
     border-radius: 5px;
@@ -47,6 +50,9 @@
     opacity: 0.5;
 }
 
+/* ==============================
+   Formulários
+============================== */
 .ant-form-item {
     color: var(--primary-text);
     margin: 0;
@@ -58,6 +64,14 @@
     gap: 0.5rem;
 }
 
+.ant-form-item-explain-error {
+    margin-top: 0.5rem;
+    font-size: var(--font-size-small);
+}
+
+/* ==============================
+   Campos de input e select
+============================== */
 .ant-input,
 .ant-select:not(.ant-select-customize-input) .ant-select-selector,
 .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
@@ -91,6 +105,9 @@
     font-size: var(--font-size-base);
 }
 
+/* ==============================
+   Checkbox
+============================== */
 .ant-checkbox-input {
     border-color: var(--border);
 
@@ -100,17 +117,15 @@
     }
 }
 
-.ant-form-item-explain-error {
-    margin-top: 0.5rem;
-    font-size: var(--font-size-small);
-}
-
+/* ==============================
+   Dropdown do Select
+============================== */
 .ant-select-dropdown {
     background-color: var(--surface);
     border: solid 1px var(--border);
     margin: 0.5rem;
     border-radius: 5px;
-    
+
     .cdk-virtual-scrollable {
         min-height: 120px;
         width: 100%;
@@ -134,6 +149,9 @@
     }
 }
 
+/* ==============================
+   Notificações
+============================== */
 .ant-notification-notice {
     background-color: var(--surface);
     border-radius: 5px;
@@ -178,6 +196,9 @@
     }
 }
 
+/* ==============================
+   Tooltips
+============================== */
 .ant-tooltip {
     z-index: 9999;
 }
@@ -190,6 +211,13 @@
     font-family: "Open Sans", sans-serif;
 }
 
+.ant-tooltip-arrow-content {
+    display: none;
+}
+
+/* ==============================
+   Color Picker
+============================== */
 .ant-color-picker-trigger {
     border: none;
     transition: all 0.3s ease;
@@ -211,6 +239,15 @@
     }
 }
 
+.ant-color-picker-input-container .ant-color-picker-alpha-input,
+.ant-color-picker-input,
+.ant-color-picker-format-select {
+    display: none;
+}
+
+/* ==============================
+   Popovers
+============================== */
 .ant-popover-inner,
 .ant-popover-arrow-content::before,
 .ant-input-affix-wrapper {
@@ -218,19 +255,28 @@
     color: var(--primary-text);
 }
 
-.ant-color-picker-input-container .ant-color-picker-alpha-input,
-.ant-color-picker-input,
-.ant-color-picker-format-select {
-    display: none;
-}
-
 .ant-input-affix-wrapper {
-    border: none;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 0 12px;
+    color: var(--primary-text);
+    box-shadow: none !important;
+
+    &:hover {
+        border-color: var(--border);
+    }
+
+    &:focus {
+        box-shadow: none;
+    }
 }
 
-.ant-tooltip-arrow-content,
-.ant-popover-arrow-content::before {
-    display: none;
+.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+    border-color: var(--border);
+}
+
+.ant-input::placeholder {
+    color: var(--secondary-text);
 }
 
 .ant-popover-inner {
@@ -262,6 +308,9 @@
     }
 }
 
+/* ==============================
+   Botões Perigosos
+============================== */
 .ant-btn-dangerous.ant-btn-primary {
     background-color: var(--error);
     border-color: var(--error);
@@ -277,13 +326,17 @@
     border-color: var(--error);
     color: var(--error);
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
         border-color: var(--error);
         opacity: var(--hover-opacity);
         color: var(--error);
     }
 }
 
+/* ==============================
+   Menus Dropdown
+============================== */
 .ant-dropdown-menu {
     background-color: var(--background-secondary);
     border: solid 1px var(--border);
@@ -305,28 +358,4 @@
             background-color: var(--background-terciary);
         }
     }
-}
-
-.ant-input-affix-wrapper {
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    padding: 0 12px;
-    color: var(--primary-text);
-    box-shadow: none !important;
-
-    &:hover {
-        border-color: var(--border);
-    }
-
-    &:focus {
-        box-shadow: none;
-    }
-}
-
-.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
-    border-color: var(--border);
-}
-
-.ant-input::placeholder {
-    color: var(--secondary-text);
 }

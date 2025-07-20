@@ -1,10 +1,11 @@
 import { Component, inject, signal, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+
 import { Note } from '../../../../core/entities/note.entity';
 import { NoteStateService } from '../../../../core/services/note-state.service';
 import { NoteService } from '../../../../core/services/note.service';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'app-recent-notes',
@@ -14,11 +15,19 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
   styleUrls: ['./recent-notes.component.scss']
 })
 export class RecentNotesComponent {
+  // ==============================
+  // Injeções e sinais
+  // ==============================
+
   private readonly noteState = inject(NoteStateService);
   private readonly noteService = inject(NoteService);
   private readonly router = inject(Router);
 
   readonly recentNotes = signal<Note[]>([]);
+
+  // ==============================
+  // Inicialização
+  // ==============================
 
   constructor() {
     effect(() => {
@@ -36,9 +45,9 @@ export class RecentNotesComponent {
     });
   }
 
-  isImage(url: string): boolean {
-    return url?.startsWith('http');
-  }
+  // ==============================
+  // Estilo de fundo do banner
+  // ==============================
 
   getBackgroundStyle(note: Note): { [key: string]: string } {
     if (!note.bannerUrl) {
@@ -56,11 +65,23 @@ export class RecentNotesComponent {
     };
   }
 
+  // ==============================
+  // Criação de nova nota
+  // ==============================
+
   createNewNote(): void {
     this.noteService.createNote().subscribe(note => {
       if (note?.id) {
         this.router.navigate(['/note', note.id]);
       }
     });
+  }
+
+  // ==============================
+  // Utilitário
+  // ==============================
+
+  isImage(url: string): boolean {
+    return url?.startsWith('http');
   }
 }

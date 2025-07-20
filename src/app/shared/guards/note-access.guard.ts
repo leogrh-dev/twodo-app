@@ -1,13 +1,26 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { NoteService } from '../../core/services/note.service';
-import { NoteStateService } from '../../core/services/note-state.service';
 import { firstValueFrom } from 'rxjs';
 
+import { NoteService } from '../../core/services/note.service';
+import { NoteStateService } from '../../core/services/note-state.service';
+
+/**
+ * NoteAccessGuard protege a rota de acesso à nota.
+ * Redireciona caso a nota não exista ou esteja deletada.
+ */
 export const NoteAccessGuard: CanActivateFn = async (route) => {
+  // ==============================
+  // Injeções de dependência
+  // ==============================
+
   const router = inject(Router);
   const noteService = inject(NoteService);
   const noteStateService = inject(NoteStateService);
+
+  // ==============================
+  // Recupera ID da nota da URL
+  // ==============================
 
   const noteId = route.paramMap.get('id');
   if (!noteId) {
@@ -15,21 +28,23 @@ export const NoteAccessGuard: CanActivateFn = async (route) => {
     return false;
   }
 
+  // ==============================
+  // Tenta carregar a nota
+  // ==============================
+
   try {
     const noteData = await firstValueFrom(noteService.getNoteById(noteId));
 
-    console.log('[Guard] Nota recebida:', noteData);
-
+    // Verifica se está deletada
     if (noteData?.isDeleted) {
-      console.warn('[Guard] Nota está deletada, redirecionando...');
       await router.navigateByUrl('/');
       return false;
     }
 
+    // Armazena no estado global
     noteStateService.setNote(noteService.createNoteEntity(noteData));
     return true;
-  } catch (error) {
-    console.error('[Guard] Erro ao carregar nota:', error);
+  } catch {
     await router.navigateByUrl('/');
     return false;
   }

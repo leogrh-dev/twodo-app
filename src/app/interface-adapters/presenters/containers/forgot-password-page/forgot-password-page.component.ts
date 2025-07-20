@@ -1,20 +1,31 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../../core/services/auth.service';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
+
+import { AuthService } from '../../../../core/services/auth.service';
+import { ThemeService } from '../../../../core/services/theme.service';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
+
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { ThemeService } from '../../../../core/services/theme.service';
-import { ThemeSwitcherComponent } from '../../components/theme-switcher/theme-switcher.component';
-import { Subscription } from 'rxjs';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+
+import { ThemeSwitcherComponent } from '../../components/theme-switcher/theme-switcher.component';
 
 @Component({
   selector: 'app-forgot-password-page',
   standalone: true,
+  templateUrl: './forgot-password-page.component.html',
+  styleUrls: ['./forgot-password-page.component.scss'],
   imports: [
     CommonModule,
     NzFormModule,
@@ -25,15 +36,30 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
     ReactiveFormsModule,
     ThemeSwitcherComponent,
   ],
-  templateUrl: './forgot-password-page.component.html',
-  styleUrls: ['./forgot-password-page.component.scss']
 })
-export class ForgotPasswordPageComponent {
+export class ForgotPasswordPageComponent implements OnInit, OnDestroy {
+  // ==============================
+  // Estado da interface
+  // ==============================
 
+  /** Formulário de recuperação de senha */
   form!: FormGroup;
+
+  /** Caminho dinâmico do logo */
   logoPath: string = 'assets/images/twodo-logos/twodo-logo.svg';
-  themeSubscription: Subscription;
+
+  /** Flag de carregamento */
   isSendingEmail = false;
+
+  // ==============================
+  // Subscriptions
+  // ==============================
+
+  private themeSubscription!: Subscription;
+
+  // ==============================
+  // Injeções
+  // ==============================
 
   constructor(
     private fb: FormBuilder,
@@ -49,12 +75,25 @@ export class ForgotPasswordPageComponent {
     });
   }
 
-  ngOnInit() {
+  // ==============================
+  // Lifecycle
+  // ==============================
+
+  ngOnInit(): void {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
     });
   }
 
+  ngOnDestroy(): void {
+    this.themeSubscription.unsubscribe();
+  }
+
+  // ==============================
+  // Ações da interface
+  // ==============================
+
+  /** Envia o formulário de recuperação de senha */
   onSubmit(): void {
     if (this.form.invalid) {
       this.notification.warning('Email inválido', 'Por favor, insira um email válido.');
@@ -78,11 +117,5 @@ export class ForgotPasswordPageComponent {
         this.notification.error('Erro', 'Não foi possível enviar o email.');
       }
     });
-  }
-
-  ngOnDestroy() {
-    if (this.themeSubscription) {
-      this.themeSubscription.unsubscribe();
-    }
   }
 }

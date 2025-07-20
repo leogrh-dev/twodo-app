@@ -1,5 +1,8 @@
 $breakpoint-mobile: 1000px;
 
+/* ==============================
+   Container principal
+============================== */
 #confirm-email-page {
   display: flex;
   width: 100vw;
@@ -14,6 +17,9 @@ $breakpoint-mobile: 1000px;
       grid-template-columns: 1fr;
     }
 
+    /* ==============================
+       Imagem lateral esquerda
+    ============================== */
     .confirm-email-left-container {
       display: flex;
       background-image: url('/assets/images/page-components-images/login-component/twodo-login-background.svg');
@@ -24,6 +30,9 @@ $breakpoint-mobile: 1000px;
       }
     }
 
+    /* ==============================
+       Conteúdo do lado direito
+    ============================== */
     .confirm-email-right-container {
       display: flex;
       flex-direction: column;
@@ -38,6 +47,9 @@ $breakpoint-mobile: 1000px;
         min-width: 30vw;
         gap: 1.5rem;
 
+        /* ==============================
+           Logo
+        ============================== */
         .twodo-logo-container {
           display: flex;
           align-items: center;
@@ -55,6 +67,9 @@ $breakpoint-mobile: 1000px;
           }
         }
 
+        /* ==============================
+           Mensagens
+        ============================== */
         .login-form-header {
           display: flex;
           gap: 0.5rem;

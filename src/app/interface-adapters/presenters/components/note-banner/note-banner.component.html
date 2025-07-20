@@ -40,16 +40,17 @@
   </div>
 </div>
 
+<!-- ==============================
+     Menu de imagem do banner
+============================== -->
 <nz-dropdown-menu #changeBannerImage="nzDropdownMenu">
   <div class="banner-menu">
     <div class="banner-menu-header">
       <div class="custom-tabs">
-        <button class="tab-button" [class.active]="activeTab() === 'gallery'" (click)="selectTab('gallery')">
-          Galeria
-        </button>
-        <button class="tab-button" [class.active]="activeTab() === 'upload'" (click)="selectTab('upload')">
-          Upload
-        </button>
+        <button class="tab-button" [class.active]="activeTab() === 'gallery'"
+          (click)="selectTab('gallery')">Galeria</button>
+        <button class="tab-button" [class.active]="activeTab() === 'upload'"
+          (click)="selectTab('upload')">Upload</button>
       </div>
       <button class="remove-btn" (click)="removeBanner()">
         <p>Remover</p>
@@ -79,13 +80,9 @@
         <div class="upload-container">
           <div class="upload-text">
             <p>Selecione uma imagem para Upload</p>
-            <p class="subtitle-upload">
-              Imagens com 1500px de largura se encaixam melhores
-            </p>
+            <p class="subtitle-upload">Imagens com 1500px de largura se encaixam melhores</p>
           </div>
-          <button nz-button nzType="default" (click)="fileInput.click()">
-            Escolher imagem
-          </button>
+          <button nz-button nzType="default" (click)="fileInput.click()">Escolher imagem</button>
           <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" style="display: none" />
         </div>
       </div>
@@ -93,16 +90,17 @@
   </div>
 </nz-dropdown-menu>
 
+<!-- ==============================
+     Menu de ícone da nota
+============================== -->
 <nz-dropdown-menu #changeNoteIcon="nzDropdownMenu">
   <div class="banner-menu">
     <div class="banner-menu-header">
       <div class="custom-tabs">
-        <button class="tab-button" [class.active]="iconTab() === 'emoji'" (click)="selectIconTab('emoji')">
-          Emoji
-        </button>
-        <button class="tab-button" [class.active]="iconTab() === 'upload'" (click)="selectIconTab('upload')">
-          Upload
-        </button>
+        <button class="tab-button" [class.active]="iconTab() === 'emoji'"
+          (click)="selectIconTab('emoji')">Emoji</button>
+        <button class="tab-button" [class.active]="iconTab() === 'upload'"
+          (click)="selectIconTab('upload')">Upload</button>
       </div>
       <button class="remove-btn" (click)="removeIcon()">
         <p>Remover</p>
@@ -129,9 +127,7 @@
             <p>Selecione uma imagem para o ícone</p>
             <p class="subtitle-upload">Recomenda-se proporção quadrada</p>
           </div>
-          <button nz-button nzType="default" (click)="iconInput.click()">
-            Escolher imagem
-          </button>
+          <button nz-button nzType="default" (click)="iconInput.click()">Escolher imagem</button>
           <input #iconInput type="file" accept="image/*" (change)="onIconFileSelected($event)" style="display: none" />
         </div>
       </div>

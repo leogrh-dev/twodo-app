@@ -1,3 +1,6 @@
+// ======================
+// Imports
+// ======================
 import { ChangeDetectionStrategy, Component, EventEmitter, Output, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -5,7 +8,6 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-
 import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
@@ -17,22 +19,24 @@ import { AuthService } from '../../../../core/services/auth.service';
   imports: [CommonModule, FormsModule, ReactiveFormsModule, NzFormModule, NzInputModule, NzButtonModule],
 })
 export class ChangePasswordModalComponent {
+  // ======================
+  // Outputs
+  // ======================
   @Output() close = new EventEmitter<void>();
 
+  // ======================
+  // Injeções e dependências
+  // ======================
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly notification = inject(NzNotificationService);
 
+  // ======================
+  // Estado e sinais
+  // ======================
   passwordVisible = signal(false);
   confirmVisible = signal(false);
   isLoading = signal(false);
-
-  passwordForm: FormGroup = this.fb.group({
-    currentPassword: ['', Validators.required],
-    newPassword: ['', Validators.required],
-    confirmPassword: ['', Validators.required],
-  });
-
   passwordStrength = signal(0);
   passwordChecks = signal({
     length: false,
@@ -41,6 +45,18 @@ export class ChangePasswordModalComponent {
     special: false,
   });
 
+  // ======================
+  // Formulário reativo
+  // ======================
+  passwordForm: FormGroup = this.fb.group({
+    currentPassword: ['', Validators.required],
+    newPassword: ['', Validators.required],
+    confirmPassword: ['', Validators.required],
+  });
+
+  // ======================
+  // Métodos de exibição de senha
+  // ======================
   togglePasswordVisibility() {
     this.passwordVisible.update(v => !v);
   }
@@ -49,6 +65,9 @@ export class ChangePasswordModalComponent {
     this.confirmVisible.update(v => !v);
   }
 
+  // ======================
+  // Validação da nova senha
+  // ======================
   checkPasswordStrength() {
     const pwd = this.passwordForm.get('newPassword')?.value || '';
     const checks = {
@@ -58,11 +77,13 @@ export class ChangePasswordModalComponent {
       special: /[^a-zA-Z0-9]/.test(pwd),
     };
     this.passwordChecks.set(checks);
-
     const passed = Object.values(checks).filter(Boolean).length;
     this.passwordStrength.set(passed);
   }
 
+  // ======================
+  // Envio do formulário
+  // ======================
   submit() {
     const currentPassword = this.passwordForm.get('currentPassword')?.value;
     const newPassword = this.passwordForm.get('newPassword')?.value;
@@ -80,7 +101,6 @@ export class ChangePasswordModalComponent {
 
     const checks = this.passwordChecks();
     const validStrength = [checks.length, checks.letters, checks.numbers, checks.special].filter(Boolean).length >= 3;
-
     if (!validStrength) {
       this.notification.warning('Senha fraca', 'Sua senha deve atender a pelo menos 3 critérios de segurança.');
       return;
@@ -115,6 +135,9 @@ export class ChangePasswordModalComponent {
     });
   }
 
+  // ======================
+  // Ações ao clicar fora do modal
+  // ======================
   onBackdropClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
     if (target.classList.contains('modal-backdrop')) {
@@ -123,6 +146,9 @@ export class ChangePasswordModalComponent {
     }
   }
 
+  // ======================
+  // Reset do formulário
+  // ======================
   resetForm() {
     this.passwordForm.reset();
     this.passwordStrength.set(0);
