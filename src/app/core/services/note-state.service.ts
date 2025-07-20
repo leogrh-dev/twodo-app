@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { computed, Injectable } from '@angular/core';
 import { BehaviorSubject, Subject, debounceTime, distinctUntilChanged, firstValueFrom } from 'rxjs';
 import { Note } from '../entities/note.entity';
 import { NoteService } from './note.service';
@@ -64,6 +64,19 @@ export class NoteStateService {
   }
 
   // ======================
+  // Sinais reativos (Signals)
+  // ======================
+
+  /** Sinal com todas as notas ativas do usuário */
+  readonly userNotes = computed(() => this.userNotesSubject.getValue());
+
+  /** Sinal com todas as notas favoritas */
+  readonly favoriteNotes = computed(() => this.favoriteNotesSubject.getValue());
+
+  /** Sinal com todas as notas da lixeira */
+  readonly deletedNotes = computed(() => this.deletedNotesSubject.getValue());
+
+  // ======================
   // Atualizações em tempo real
   // ======================
 
@@ -83,7 +96,7 @@ export class NoteStateService {
 
   private listenToContentUpdates(): void {
     this.pendingContent$
-      .pipe(debounceTime(2000), distinctUntilChanged())
+      .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe(content => {
         const note = this.getCurrentNote();
         if (!note) return;
@@ -268,6 +281,7 @@ export class NoteStateService {
 
   moveNoteToTrash(noteId: string): void {
     const updated = this.userNotesSubject.getValue().filter(n => n.id !== noteId);
+    console.log("🚀 ~ NoteStateService ~ moveNoteToTrash ~ updated:", updated)
     this.userNotesSubject.next(updated);
   }
 

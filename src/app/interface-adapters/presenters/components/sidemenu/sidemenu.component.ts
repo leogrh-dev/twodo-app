@@ -291,4 +291,13 @@ export class SidemenuComponent implements OnInit {
       isFavorite: false,
     });
   }
+
+  // ==============================
+  // Eventos da UI
+  // ==============================
+
+  /** Impede propagação do clique no ícone de opções da nota */
+  onNoteOptionsClick(event: MouseEvent): void {
+    event.stopPropagation();
+  }
 }

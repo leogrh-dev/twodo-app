@@ -14,6 +14,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NoteService } from '../../../../core/services/note.service';
 import { NoteStateService } from '../../../../core/services/note-state.service';
 import { NoteBannerComponent } from '../../components/note-banner/note-banner.component';
+import { Note } from '../../../../core/entities/note.entity';
 
 @Component({
   standalone: true,
@@ -77,9 +78,11 @@ export class NotePageComponent implements AfterViewInit, OnDestroy {
   }
 
   /** Injeta/atualiza microfrontend React com propriedades */
-  private mountMicrofrontend(note: any): void {
+  private mountMicrofrontend(note: Note): void {
     const container = this.reactContainer.nativeElement;
+
     const props = {
+      noteId: note.id,
       title: note.title,
       content: note.content,
       onTitleChange: (title: string) =>

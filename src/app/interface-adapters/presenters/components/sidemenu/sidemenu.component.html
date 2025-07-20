@@ -41,12 +41,12 @@
             </div>
         </div>
 
-        <div class="sidemenu-item">
+        <!-- <div class="sidemenu-item">
             <div class="menu-entry">
                 <span class="iconify-20px inbox-icon"></span>
                 <p>Caixa de entrada</p>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <div class="sidemenu-group-container">
@@ -199,7 +199,7 @@
 
             <p>{{ note.title || 'Nova página' }}</p>
 
-            <span class="iconify-20px options-icon note-options" nz-dropdown nzTrigger="click"
+            <span class="iconify-20px options-icon note-options" (click)="onNoteOptionsClick($event)" nz-dropdown nzTrigger="click"
                 [nzDropdownMenu]="noteMenu" style="margin-right: 0"></span>
         </div>
 
@@ -242,8 +242,7 @@
      Modais (dinâmicos)
 ============================== -->
 <app-all-group-notes-modal *ngIf="modalState() !== null" [group]="selectedGroupType" [title]="groupTitle"
-    [notes]="modalState() === 'user' ? allUserNotes() : allFavoriteNotes()" (close)="modalState.set(null)"
-    (openNote)="navigateToNote($event)"></app-all-group-notes-modal>
+    (close)="modalState.set(null)" [notes]="allUserNotes()" (openNote)="navigateToNote($event)"></app-all-group-notes-modal>
 
 <app-trash-modal *ngIf="showTrashModal()" (close)="showTrashModal.set(false)"></app-trash-modal>
 
