@@ -1,131 +1,145 @@
-# Twodo
+# Twodo - Frontend
 
-> Um web app de notas moderno e intuitivo inspirado no Notion, construído com foco em produtividade e organização.
+> Interface moderna, responsiva e intuitiva para o sistema de notas Twodo, construída com Angular 19 e Clean Architecture.
 
 ## 📖 Sobre o Projeto
 
-O **Twodo** é uma aplicação web para criação e gerenciamento de notas que combina simplicidade e funcionalidade. Desenvolvido seguindo rigorosamente os princípios da **Clean Architecture** do Uncle Bob, o projeto prioriza manutenibilidade, testabilidade e escalabilidade.
+O **Twodo Frontend** é a aplicação responsável pela experiência do usuário, consumo da API GraphQL e apresentação das funcionalidades de notas, autenticação, personalização de tema e gerenciamento de arquivos. Toda a arquitetura é baseada nos princípios da **Clean Architecture**, garantindo uma base sólida, modular e escalável.
 
 ### 🎯 Objetivo
-Criar uma ferramenta de produtividade que permita aos usuários organizar suas ideias, tarefas e conhecimentos de forma eficiente e intuitiva.
+Prover uma interface clara e eficiente para a organização de ideias, tarefas e documentos, com alta qualidade técnica e ótima experiência de usuário.
+
+---
 
 ## 🏗️ Arquitetura
 
-Este projeto adota a **Clean Architecture** como padrão arquitetural fundamental, organizando o código em camadas bem definidas:
+Este frontend segue **rigorosamente** os princípios da **Clean Architecture** de Uncle Bob, com separação clara de responsabilidades entre as camadas da aplicação.
 
 ```
 🏛️ Clean Architecture Layers
 ├── 🟢 Entities (Regras de Negócio Corporativas)
-├── 🔵 Use Cases (Regras de Negócio da Aplicação)  
-├── 🟡 Interface Adapters (Controladores, Presenters, Gateways)
-└── 🔴 Frameworks & Drivers (UI, Database, Web, Devices)
+├── 🔵 Use Cases & Services (Regras de Aplicação)
+├── 🟡 Interface Adapters (Presenters, Containers, Mappers)
+└── 🔴 Frameworks & Drivers (Angular, GraphQL, UI, Browser APIs)
 ```
 
-### Princípios Seguidos:
-- **Regra da Dependência**: Camadas internas não conhecem camadas externas
-- **Inversão de Controle**: Dependências apontam para abstrações
-- **Separação de Responsabilidades**: Cada camada tem um propósito específico
-- **Independência de Frameworks**: Lógica de negócio isolada de tecnologias
+### Princípios Aplicados
+- **Regra da Dependência**: As dependências sempre apontam para dentro
+- **Independência de Frameworks**: A lógica de negócio não conhece Angular, GraphQL ou serviços externos
+- **Inversão de Dependência**: Serviços são injetados via abstrações
+- **Testabilidade Extrema**: Componentes desacoplados e orientados por injeção de dependência
+
+---
 
 ## 🛠️ Stack Tecnológica
 
 ### Frontend
-- **Angular 19** - Framework principal
-- **TypeScript** (strict mode) - Linguagem de desenvolvimento
-- **GraphQL** - Comunicação com API
+- **Angular 19** — Framework principal
+- **TypeScript** — Strict mode habilitado
+- **GraphQL (Apollo)** — Comunicação com backend
+- **Ng-Zorro** — Biblioteca de componentes UI baseada em Ant Design
+- **SCSS** — Pré-processador de estilos com temas customizados
 
-### Backend  
-- **NestJS** - Framework Node.js
-- **MongoDB** - Base de dados NoSQL
-- **GraphQL** - API layer
+### Backend
+- [**Twodo Backend**](https://github.com/leogrh-dev/twodo-backend) — API construída com NestJS e GraphQL
 
-### Ferramentas
-- **GitHub** - Versionamento de código
-- **Multirepo** - Frontend e backend separados
+---
 
 ## 📁 Estrutura do Projeto
 
-O projeto segue uma organização **multirepo** para melhor isolamento e manutenibilidade:
-
 ```
-twodo/
-├── 📱 twodo-frontend/     # Aplicação Angular
-├── 🔧 twodo-backend/      # API NestJS
-└── 📚 docs/              # Documentação do projeto
+src/
+├─ app/
+│  ├─ core/                 # Entidades e serviços de domínio
+│  ├─ infrastructure/       # Comunicação GraphQL com backend
+│  ├─ interface-adapters/   # Presenters e containers (páginas e componentes)
+│  ├─ shared/               # Guards e utilitários globais
+│  └─ app.routes.ts         # Arquivo de rotas
+├─ assets/                  # Imagens, logos e microfrontends
+├─ environments/            # Arquivos de ambiente (prod/dev)
+├─ styles/                  # Temas, resets e overrides do Ant Design
+├─ index.html               # HTML principal
+├─ main.ts                  # Entry point da aplicação
+└─ theme.less               # Tema customizado para ng-zorro
 ```
 
 ### Organização por Domínio
-Cada repositório é estruturado por **feature/domínio**, não por tipo de arquivo, facilitando a manutenção e compreensão do código.
+
+O projeto é organizado por **domínio funcional**, refletindo o contexto da aplicação. Cada pasta agrupa os arquivos de forma coesa:
+
+- `note/`, `auth/`, `user/` organizados de forma independente
+- Componentes e páginas estão separados em `components/` e `containers/`
+
+---
+
+## 🔐 Exemplo de `.env` (Angular)
+
+Variáveis de ambiente ficam em `environment.ts` e `environment.prod.ts`. Exemplo:
+
+```ts
+export const environment = {
+  production: false,
+  graphqlEndpoint: 'http://localhost:3000/graphql',
+  googleClientId: 'sua-client-id.apps.googleusercontent.com'
+};
+```
+
+---
 
 ## 🚀 Como Executar
 
 ### Pré-requisitos
-- Node.js (versão 18+)
-- npm ou yarn
-- MongoDB (local ou remoto)
+- Node.js 18+
+- Angular CLI (`npm install -g @angular/cli`)
+- Backend do Twodo rodando ([link](https://github.com/leogrh-dev/twodo-backend))
 
-### Frontend (Angular)
+### Passos
+
 ```bash
-cd twodo-frontend
+# Instale as dependências
 npm install
+
+# Rode o frontend
 ng serve
 ```
+
 Acesse: `http://localhost:4200`
 
-### Backend (NestJS)
-```bash
-cd twodo-backend
-npm install
-npm run start:dev
-```
-API disponível em: `http://localhost:3000/graphql`
-
-## 🧪 Testes
-
-O projeto mantém alta cobertura de testes, especialmente nos **Use Cases**:
-
-```bash
-# Frontend
-ng test
-
-# Backend
-npm run test
-npm run test:e2e
-```
+---
 
 ## 📈 Status do Desenvolvimento
 
 🔄 **Em Desenvolvimento Ativo**
 
 ### Próximas Funcionalidades:
-- [ ] Sistema de autenticação
-- [ ] Editor de texto rico
+- [ ] Editor de texto rico com formatação
+- [ ] Drag & Drop entre notas
+- [ ] Modo escuro automático por sistema
 - [ ] Organização por workspaces
 - [ ] Colaboração em tempo real
-- [ ] Busca avançada
+
+---
 
 ## 🤝 Contribuindo
 
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-funcionalidade`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
-4. Push para a branch (`git push origin feature/nova-funcionalidade`)
+1. Faça um fork do repositório
+2. Crie uma branch (`git checkout -b FEAT/nova-funcionalidade`)
+3. Commit suas alterações (`git commit -m 'FEAT: nova funcionalidade'`)
+4. Push na sua branch (`git push origin FEAT/nova-funcionalidade`)
 5. Abra um Pull Request
 
-### 📋 Diretrizes de Desenvolvimento:
-- Seguir rigorosamente a Clean Architecture
-- Escrever testes para todos os Use Cases
-- Manter TypeScript em strict mode
-- Documentar decisões arquiteturais importantes
+### 📋 Diretrizes de Contribuição:
+- Seguir **rigorosamente a Clean Architecture**
+- Não acoplar lógica de negócio a componentes Angular
+- Reutilizar services do domínio em múltiplos contexts
+- Componentes devem ser desacoplados e testáveis
 
-## 📄 Licença
+---
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para detalhes.
-
-## 👥 Equipe
+## 👥 Autor
 
 Desenvolvido por Leonardo Gabriel Reis Henrique
 
 ---
 
-**Twodo** - Organize suas ideias, potencialize sua produtividade.
+**Twodo Frontend** — produtividade com arquitetura de verdade.
