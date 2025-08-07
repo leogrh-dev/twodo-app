@@ -112,9 +112,7 @@ Acesse: `http://localhost:4200`
 🔄 **Em Desenvolvimento Ativo**
 
 ### Próximas Funcionalidades:
-- [ ] Editor de texto rico com formatação
 - [ ] Drag & Drop entre notas
-- [ ] Modo escuro automático por sistema
 - [ ] Organização por workspaces
 - [ ] Colaboração em tempo real
 
